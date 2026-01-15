@@ -61,6 +61,29 @@ This work has the LPPL maintenance status `maintained'.
 The Current Maintainer of this work is **Mingyu Xia**.
 %</readme>
 %
+%<*eg-preamble>
+%% \iffalse
+\documentclass{article}
+\def\MakePercentIgnore{\catcode`\%9\relax}
+\def\MakePercentComment{\catcode`\%14\relax}
+\def\DocInput#1{\MakePercentIgnore\input{#1}\MakePercentComment}
+\catcode`\^^A 14\relax
+\usepackage{geometry, verbatim, listings}
+\geometry{margin = 1in}
+\usepackage{latexdemo}
+\usepackage{physics2}
+\usepackage{unicode-math}
+\usephysicsmodule{ab, ab.braket, diagmat, doubleprod}
+\usephysicsmodule[showtop = 3, showleft = 2]{xmat}
+\usephysicsmodule{ab.legacy, nabla.legacy, op.legacy,
+                  qtext.legacy, bm-um.legacy}
+\begin{document}
+  \pagestyle{empty}
+  \DocInput{\jobname.tex}
+\end{document}
+%% \fi
+%</eg-preamble>
+%
 %<*internal>
 \fi
 %</internal>
@@ -239,7 +262,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
 \[ 0 \left(\frac12\right) 3 \quad
 0 \delopen(\frac12\delclose) 3 \]
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
@@ -255,7 +278,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
 \[\Biggg(\biggg(\Bigg(\bigg(\Big(\big((
 )\big)\Big)\bigg)\Bigg)\biggg)\Biggg)\]
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
@@ -289,7 +312,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
    \ab [ \frac12 ]  \quad
    \ab\{ \frac12 \}    \]
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
@@ -305,7 +328,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
    \ab\biggg|\frac12| \quad
    \ab*    \|\frac12\|   \]
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
@@ -339,7 +362,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
 \[ \pab{\0} \bab{\0} \Bab{\0}
    \aab{\0} \vab{\0} \Vab{\0} \]
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
@@ -353,7 +376,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
 \def\0{n+\frac12}
 \[ \pab[Big]{\0} \quad \bab*{\0} \]
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
@@ -385,7 +408,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
    \bra*< \frac \phi 2 | \quad
    \bra\Big< \phi  |     \]
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
@@ -404,7 +427,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
    \ket*| \frac \psi 2 > \quad
    \ket\Big| \psi >      \]
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
@@ -430,7 +453,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
 \[ \braket<\0>   \ \braket*<\0>\
    \braket\Bigg<\0> \]
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
@@ -453,7 +476,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
 \[ \ketbra\Bigg| \0 >< \psi | \quad
    \ketbra| \0 >_x^y < \psi | \]
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
@@ -475,7 +498,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
 \begin{DefineCode}
 \[ \ab| {\braket<\psi|\hat H|\psi>} | \]
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
@@ -485,10 +508,17 @@ The Current Maintainer of this work is **Mingyu Xia**.
 % \modu{braket} is conflict with \modu{ab.braket}, they cannot be used together.
 %
 % \subsection{The \modu{braket} module --- Dirac bra-ket notation}
-% \begingroup
-% \makeatletter\def\phy@requiremodule#1{}%
-% \def\PackageWarning#1#2{}%
-% \catcode`\%14\relax \input phy-braket.sty \catcode`\%9\relax \makeatother
+%
+% \iffalse
+%<*example>
+% \fi
+\begingroup
+\makeatletter\def\phy@requiremodule#1{}%
+\def\PackageWarning#1#2{}%
+\catcode`\%14\relax \input phy-braket.sty \catcode`\%9\relax \makeatother
+% \iffalse
+%</example>
+% \fi
 % Please notice that this module is conflict with the \modu{ab.braket} module.
 % Don't use them together.
 %
@@ -514,7 +544,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
 \[ \ket {\0} \quad \ket* {\0}
              \quad \ket[Big] {\0} \]
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
@@ -528,7 +558,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
    \braket*{\0} {\psi}   \quad
    \braket[big] {\0} {\psi} \]
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
@@ -548,7 +578,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
      \quad
    \braket[Big,3] {\0}{A}{\psi} \]
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
@@ -565,11 +595,17 @@ The Current Maintainer of this work is **Mingyu Xia**.
 \[ \ketbra [Bigg] {\0} {\psi} \quad
    \ketbra {\0} [_x^y] {\psi} \]
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
+% \iffalse
+%<*example>
+% \fi
 % \endgroup
+% \iffalse
+%</example>
+% \fi
 %
 % \subsection{The \modu{diagmat} module --- simple diagonal matrices}
 % This module provides \cs{diagmat} command:
@@ -587,7 +623,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
   \diagmat { 1, \sqrt2, \sqrt[3]4 }
 \]
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
@@ -604,7 +640,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
     { a, b, c, d }
 \]
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
@@ -625,7 +661,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
 \begin{DefineCode}
 $ A \doublecross B \doubledot C $
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
@@ -668,7 +704,7 @@ $ A \doublecross B \doubledot C $
   \xmat{a}{2}{3}
 \]
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
@@ -683,7 +719,7 @@ $ A \doublecross B \doubledot C $
   \pxmat{M}{3}{3}
 \]
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
@@ -698,7 +734,7 @@ $ A \doublecross B \doubledot C $
     {X}{m}{n}
 \]
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
@@ -721,7 +757,7 @@ $ A \doublecross B \doubledot C $
 ^^A   [showtop = 2, showleft = 3]{xmat}
 \[ \pxmat{A}{8}{8} \]
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
@@ -737,7 +773,7 @@ $ A \doublecross B \doubledot C $
 ^^A    [showtop = 2, showleft = 3]{xmat}
 \[ \pxmat{A}{4}{4} \]
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
@@ -752,7 +788,7 @@ $ A \doublecross B \doubledot C $
 \[ \pxmat[showtop = 3, showleft = 2]
      {A}{4}{4}               \]
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
@@ -769,7 +805,7 @@ $ A \doublecross B \doubledot C $
     {x}{m}{n}
 \]
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
@@ -808,7 +844,7 @@ $ A \doublecross B \doubledot C $
    \norm[Big]{\0}       \quad
    \order*{\0}             \]
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
@@ -821,7 +857,7 @@ $ A \doublecross B \doubledot C $
    \peval*{\0}_a^b     \quad
    \beval[big]{\0}_a^b    \]
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
@@ -853,7 +889,7 @@ $ A \doublecross B \doubledot C $
 $\bm{0}\bm{A}\bm{z}
  \bm{\alpha}\bm{\Omega}$
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
@@ -871,7 +907,7 @@ $\bm{0}\bm{A}\bm{z}
 \begin{DefineCode}
 \[\grad V\ \div (x,y,z)\ \curl(x,y,z)\]
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
@@ -900,7 +936,7 @@ $\bm{0}\bm{A}\bm{z}
 \begin{DefineCode}
 $\asin x\ \rank A\ \PV f(z)\ \pv f(z)$
 \end{DefineCode}
-% \PrintDemo{style = parallel}
+\PrintDemo{style = parallel}
 % \iffalse
 %</example>
 % \fi
