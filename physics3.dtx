@@ -1,0 +1,2034 @@
+% \iffalse meta-comment
+%
+% File: physics3.dtx
+% -----------------------------------------------------------------------
+% -----------------------------------------------------------------------
+% -----------------------------------------------------------------------
+%   This work consists of the files
+%                               and README.md.                          *
+% -----------------------------------------------------------------------
+% -----------------------------------------------------------------------
+%
+%<*internal>
+\iffalse
+%</internal>
+%
+%<*readme>
+[![CTAN Version](https://img.shields.io/ctan/v/physics3)](https://ctan.org/pkg/physics3)
+[![GitHub Last Commit](https://img.shields.io/github/last-commit/myhsia/physics3)](https://github.com/myhsia/physics3/commits)
+[![GitHub Repo stars](https://img.shields.io/github/stars/myhsia/physics3)](https://github.com/myhsia/physics3)
+
+The `physics3` Package
+======================
+
+This package defines commands for typesetting math formulae faster and
+more simply. `physics3` is a modularized package, each module provides its
+own function while `physics3.sty` itself only provides very few functions.
+Therefore you can load modules separately after loading `physics3`.
+
+Modules of `physics3` provide the following supports:
+
+- Automatic braces;
+- Dirac bra-ket notation;
+- Easy way to typeset diagonal matrices and matrices with similar entries;
+- Double cross and double dot (binary) operators for tensors;
+
+Issues
+------
+
+The issue tracker for `LXGW` is currently located
+[on GitHub](https://github.com/myhsia/physics3).
+
+Copyright and License
+---------------------
+
+  Copyright (C) 2026      by Mingyu Xia     <myhsia@outlook.com>
+
+  Copyright (C) 2022-2024 by Tingxuan Zhang <alphaztx@163.com>
+
+This work may be distributed and/or modified under the conditions
+of the LaTeX Project Public License (LPPL), either version 1.3c of
+this license or (at your option) any later version.
+The latest version of this license is in
+
+    http://www.latex-project.org/lppl.txt
+
+and version 1.3c or later is part of all distributions of LaTeX
+version 2008 or later.
+
+This work has the LPPL maintenance status `maintained'.
+
+The Current Maintainer of this work is **Mingyu Xia**.
+%</readme>
+%
+%<*internal>
+\fi
+%</internal>
+%
+%<*driver>
+\documentclass[11pt, letterpaper]{l3doc}
+\usepackage{mathtools}
+\usepackage[warnings-off={mathtools-colon, mathtools-overbracket}]{unicode-math}
+\usepackage{physics3, framed, xcolor}
+\setlength \FrameSep {1pt}
+\usepackage[mono = false]{libertine}
+\usephysicsmodule{ab, ab.braket, diagmat, doubleprod}
+\usephysicsmodule[showtop = 3, showleft = 2]{xmat}
+\usephysicsmodule{ab.legacy, nabla.legacy, op.legacy,
+                  qtext.legacy, bm-um.legacy}
+\makeatletter
+\def\contentsonly{\@starttoc{toc}}
+\protected\def\pardanger{\ifnum\lastnodetype=1%
+  \leavevmode\hbox to \z@{\hss\dbend\hskip10pt\hskip\parindent}\else
+  \ifnum\lastnodetype=11%
+  \leavevmode\hbox to \z@{\hss\dbend\hskip10pt}%
+  \fi\fi\ignorespaces}
+\definecolor{moducolor}{RGB}{0,0,150}
+\def\modu#1{\texorpdfstring{\textcolor{moducolor}{\textsf{#1}}}{“#1”}}
+\linespread{1.06}
+\usepackage[normalem]{ulem}
+\newcounter{example}[subsection]
+\renewcommand\theexample{\thesubsection.\arabic{example}}
+\newwrite\example@out
+\def\example@name{\jobname.example.aux}
+\long\def\example@start{\begingroup\@bsphack
+  \immediate\openout\example@out=\example@name
+  \let\do\@makeother\dospecials\catcode`\^^M\active
+  \def\verbatim@processline{\immediate\write\example@out{\the\verbatim@line}}^^A
+  \verbatim@start}
+\long\def\example@end{\immediate\closeout\example@out\@esphack\endgroup
+  \trivlist\item\relax
+    \leavevmode\hbox to \z@{^^A
+      \hbox to \z@{\hss{\footnotesize[\theexample]}\hskip4pt}
+      \begin{minipage}{.6\textwidth}^^A
+        \verbatiminput \example@name
+      \end{minipage}^^A
+      \begin{minipage}{.36\textwidth}^^A
+        \begin{framed}
+          \input \example@name
+        \end{framed}
+      \end{minipage}^^A
+    \hss}^^A
+  \endtrivlist}
+\newenvironment{example}
+  {\stepcounter{example}\example@start}{\example@end}
+\@addtoreset{CodelineNo}{section}
+\newbox\@tempboxb
+\DeclareDocumentCommand\macrodef{O{4em}O{.6}mo+m}{\leavevmode
+\ensuremath{%
+  \setbox\@tempboxa\hbox to #1 {\hss\cs{#3}}%
+  \setbox\@tempboxb\vbox{\hsize=#2\textwidth
+    \textwidth=\hsize
+    \leftskip=\z@
+    \parindent=\z@
+    \textbf{begindef}\IfValueT{#4}{ \textcolor{gray}{(#4)}}\par
+    \begingroup\leftskip2em\parindent-1em#5\par\endgroup
+    \textbf{enddef}%
+  }%
+  \dp\@tempboxb=\dimexpr\ht\@tempboxb-\ht\@tempboxa\relax
+  \ht\@tempboxb=\ht\@tempboxa
+  \box\@tempboxa\leftarrow\box\@tempboxb
+}}
+\protected\long\def\macroifelse#1#2#3{\par
+  \textbf{if} #1 \textbf{then}\par
+  \begingroup\advance\leftskip1em#2\par\endgroup
+  \textbf{else}\par
+  \begingroup\advance\leftskip1em#3\par\endgroup
+  \textbf{endif}\par
+}
+\protected\long\def\macroif#1#2{\par
+  \textbf{if} #1 \textbf{then}\par
+  \begingroup\advance\leftskip1em#2\par\endgroup
+  \textbf{endif}\par
+}
+\protected\def\macrocr{\par}
+\newdimen\ttwd
+\protected\def\updatettwd{%
+  \setbox\@tempboxa\hbox{\normalsize\ttfamily a}
+  \ttwd=\wd\@tempboxa
+}
+\updatettwd
+\makeatother
+\begin{document}
+  \DeleteShortVerb\|
+  \DocInput{\jobname.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \begin{documentation}
+%
+% \title{The \pkg{physics3} package}
+%
+% \author{Mingyu Xia\thanks{\texttt{^^A
+%     \href{mailto:xiamingyu@westlake.edu.cn}{xiamingyu@westlake.edu.cn}^^A
+%   }}
+% }
+%
+% \date{Released 2026-01-17\quad \texttt{v0.1A}}
+%
+% \maketitle
+%
+% \begin{abstract}
+% This is the document for \pkg{physics3} package, which defines commands for
+% typesetting math formulae faster and more simply. \pkg{physics3} is a
+% modularized package, each module provides its own function. %
+
+% This document describes the \pkg{physics3} package in more detail.
+% But if you are a user of the legacy \pkg{physics} package, you can click
+% \href{./physics3-legacy.pdf}{here} to see the documentation for
+% \pkg{physics} users before you start. If you never used \pkg{physics} package
+% before, just read \emph{this} documentation.
+% \end{abstract}
+%
+% \tableofcontents
+%
+% \section{Introduction}
+%
+% \subsection{The purpose of this package}
+%
+% This package aims to provide a bundle of commands for typesetting math faster
+% in different modules. The commands provided by \pkg{physics3} and its
+% different modules are designed to be short and easy to memorize.
+%
+% \subsection{Packages required}
+%
+% The \pkg{physics3} package itself only requires the \pkg{keyval} package,
+% which is part of the \pkg{latex-graphics} bundle. Almost every \LaTeX\
+% distribution will include this bundle.
+%
+% Different modules of \pkg{physics3} might require different packages. It will
+% be explained in the following sections that which module requires which
+% package.
+%
+% The \pkg{physics3} package requires \LaTeXe\ kernel released after 2020/10.
+% Please make sure that your \LaTeX\ distribution is not too old.
+%
+% \subsection{Loading \pkg{physics3} and its modules}
+%
+% Just like loading any package, write
+% \begin{quote}
+%   "\usepackage{physics3}"
+% \end{quote}
+% in the preamble to load the \pkg{physics3} package. In the current version,
+% \pkg{physics3} doesn't provide a package option.
+%
+% \pkg{physics3} itself doesn't provide many features.
+% You need to load different modules of \pkg{physics3} to have different
+% features applied to your document.
+%
+% \subsection{Loading a module of \pkg{physics3}}
+%
+% You can load a module of \pkg{physics3} only \emph{after} you write
+% "\usepackage{physics3}" in the preamble. Load a \pkg{physics3} module
+% like this
+% \begin{function}{\usephysicsmodule}
+%   \begin{syntax}
+%     \cs{usephysicsmodule}\marg{module}
+%   \end{syntax}
+% \end{function}
+% The usage of \cs{usephysicsmodule} is similar to \cs{usepackage}, so you can
+% load several modules in one line. For example,
+% \begin{quote}
+%   "\usephysicsmodule{ab, ab.braket}"
+% \end{quote}
+% This line loads the \modu{ab} and \modu{ab.braket} modules.
+%
+% You can also load \emph{one} module with options. The options of a
+% \pkg{physics3} module can be a comma-separated key-value list. For example,
+% \begin{quote}
+%   "\usephysicsmodule[tightbraces = true]{ab}"\\
+%   "\usephysicsmodule{ab.braket, doubleprod}"
+% \end{quote}
+% These two lines load the \modu{ab} module with option
+% "tightbraces = true" and load \modu{ab.braket} and \modu{doubleprod} modules.
+%
+% The following sections introduce all the user-level modules of \pkg{physics3}.
+% View back to the table of contents to see the names of user-level modules.
+%
+% \section{Modules of \pkg{physics3}}
+%
+% \subsection{Features of the bare \pkg{physics3} package}
+%
+% The following commands are available once you load \pkg{physics3} in preamble.
+% \cs{delopen} and \cs{delclose}, followed by a math delimiter. They can be
+% regarded as abbreviations of ``open delimiter'' and ``close delimiter''. If
+% you had heard of the \pkg{mleftright} package. You can regard \cs{delopen}
+% and \cs{delclose} as a simpler version of \cs{mleft} and \cs{mright}.
+% For example,
+% \iffalse
+%<*example>
+% \fi
+\[ 0 \left(\frac12\right) 3 \quad
+   0 \delopen(\frac12\delclose) 3 \]
+% \iffalse
+%</example>
+% \fi
+% \cs{biggg} and \cs{Biggg}, followed by a math delimiter. They are even bigger
+% than \cs{Bigg}. \cs{biggg} and \cs{Biggg} may be useful when you need to write
+% something really tall in math mode, but most OpenType math font do not support
+% \cs{langle} (or U+27E8) and \cs{rangle} (or U+27E9) in this large size. Take
+% an example,
+% \iffalse
+%<*example>
+% \fi
+\[\Biggg(\biggg(\Bigg(\bigg(\Big(\big((
+)\big)\Big)\bigg)\Bigg)\biggg)\Biggg)\]
+% \iffalse
+%</example>
+% \fi
+% \cs{bigggl}, \cs{bigggm}, \cs{bigggr}, \cs{Bigggl}, \cs{Bigggm} and \cs{Bigggr}
+% are also supported.
+%
+% \subsection{The \modu{ab} module --- automatic braces}
+%
+% This module provides the command \cs{ab}. The \cs{ab} command, as a shorthand
+% of ``automatic braces'', would specify the size of the following pair of
+% delimiters.
+% \begin{function}{\ab}
+%   \begin{syntax}
+% \cs{ab}" ( ... ) "    \cs{ab}" [ ... ] "
+% \cs{ab}"\{ ... \}" or \cs{ab} \cs{lbrace} ... \cs{rbrace}
+% \cs{ab}" < ... > " or \cs{ab} \cs{langle} ... \cs{rangle}
+% \cs{ab}" | ... | " or \cs{ab} \cs{vert}   ... \cs{vert}   or ^^A
+% \cs{ab} \cs{Vert} ... \cs{Vert}
+%   \end{syntax}
+%   The delimiters after \cs{ab} should not be out of the range
+%   described by the chart above.
+%   For example, it's illegal to write an ``"\ab("'' without a ``")"'';
+%   it's also illegal to write "\ab=foo=".
+% \end{function}
+% Take some correct examples:
+% \iffalse
+%<*example>
+% \fi
+\[ \ab ( \frac12 )  \quad
+   \ab [ \frac12 ]  \quad
+   \ab\{ \frac12 \}    \]
+% \iffalse
+%</example>
+% \fi
+% You can also write a command from \cs{big} to \cs{Biggg} between \cs{ab}
+% and the first delimiter, which means to specify the size of delimiters manually.
+% Also, you can write a star ("*") between \cs{ab} and the first delimiter,
+% to prevent \cs{ab} from setting the size of delimiters. For example,
+% \iffalse
+%<*example>
+% \fi
+\[ \ab      <\frac12> \quad
+   \ab\biggg|\frac12| \quad
+   \ab*    \|\frac12\|   \]
+% \iffalse
+%</example>
+% \fi
+% Always remember, do not put an \cs{ab} separately at the end of math mode like
+% \verb|$\ab$|, because \cs{ab} will try to absorb the following math shift
+% character (\verb|$|) as its argument.
+%
+% \begin{texnote}
+%   The \modu{ab} module uses ``document commands''
+%   module of \LaTeXe\ kernel (source file: ltcmd.dtx). This \LaTeXe\ kernel
+%   module provides a document-level command parser. \cs{ab} is a complex
+%   encapsulation of some internal document-level commands. Take an example,
+%   if you define a document-level command like this:
+%   \begin{quote}
+%   "\NewDocumentCommand \foo { r() } {::#1::}"
+%   \end{quote}
+%   You can write \verb|\foo(bar)| legally, but "\foo(()" will be regarded
+%   illegal when you write another document-level command or end the paragraph.
+%   Similarly, things like \verb|\ab(()| will also cause errors.
+% \end{texnote}
+%
+% The \modu{ab} module also provides \texttt{\textbackslash}$X$\texttt{ab}
+% commands, where $X$ can be "p", "b", "B", "a", "v" and "V". These commands
+% take a normal argument but not an argument delimited with paired delimiters.
+% For example,
+% \iffalse
+%<*example>
+% \fi
+\def\0{\frac12}
+\[ \pab{\0} \bab{\0} \Bab{\0} \]
+\[ \aab{\0} \vab{\0} \Vab{\0} \]
+% \iffalse
+%</example>
+% \fi
+% These \texttt{\textbackslash$X$ab} commands can take an optional star and
+% an optional \oarg{biggg} argument. Star stands for using the default sizes.
+% For example,
+% \iffalse
+%<*example>
+% \fi
+\def\0{n+\frac12}
+\[ \pab[Big]{\0} \quad \bab*{\0} \]
+% \iffalse
+%</example>
+% \fi
+%
+% \paragraph{The options of \modu{ab} module}
+% "tightbraces", a bool type key, whose default value is "true",
+% influences whether thin skips are reserved around the paired delimiters.
+% It only works with the automatically sized delimiters.
+%
+% \subsection{The \modu{ab.braket} module --- Dirac bra-ket notation}
+%
+% This module provides four commands --- \cs{bra}, \cs{ket}, \cs{braket} and
+% \cs{ketbra}. After these commands can be a star ("*") or a ``biggg''
+% command. These commands share similar syntaxes like \cs{ab}'s syntax. But,
+% \emph{the bra-ket commands from \modu{ab.braket} module are completely
+% different from \cs{ab}}. Their internal structures are different.
+% \begin{function}{\bra}
+%   \begin{syntax}
+%     \cs{bra} "<" \meta{subformula} "|"
+%   \end{syntax}
+%   The argument of \cs{bra} should be delimited with "<" and "|".
+% \end{function}
+% For example,
+% \iffalse
+%<*example>
+% \fi
+\[ \bra < \frac \phi 2 | \quad
+   \bra*< \frac \phi 2 | \quad
+   \bra\Big< \phi  |     \]
+% \iffalse
+%</example>
+% \fi
+% \begin{function}{\ket}
+%   \begin{syntax}
+%     \cs{ket} "|" \meta{subformula} ">"
+%   \end{syntax}
+%   The argument of \cs{ket} should be delimited with "|" and ">".
+% \end{function}
+% For example,
+% \iffalse
+%<*example>
+% \fi
+\[ \ket | \frac \psi 2 > \quad
+   \ket*| \frac \psi 2 > \quad
+   \ket\Big| \psi >      \]
+% \iffalse
+%</example>
+% \fi
+% If you want to write ``$>$'' and ``$<$'' for relations in the argument of
+% \cs{bra} and \cs{ket}, you can write "\mathrel{>}" and "\mathrel{<}"
+% (although there is almost no such need).%
+% \begin{function}{\braket}
+%   \begin{syntax}
+%     \cs{braket} "<" \meta{subformula} ">"
+%   \end{syntax}
+%   The argument of \cs{braket} should be delimited with "<" and ">".
+%   In the \meta{subformula} argument, every ``"|"'' will be regarded as an
+%   extensible vertical bar.
+% \end{function}
+% For example,
+% \iffalse
+%<*example>
+% \fi
+\def\0{\frac\phi2|\psi}
+\[ \braket<\phi> \ \braket<\phi|\psi> \
+   \braket<\phi|A|\psi> \]
+\[ \braket<\0>   \ \braket*<\0>\
+   \braket\Bigg<\0> \]
+% \iffalse
+%</example>
+% \fi
+% \begin{function}{\ketbra}
+%   \begin{syntax}
+%     \cs{ketbra} "|" \meta{subformula$_1$} ">" \meta{optional} "<" \meta{subformula$_2$} "|"
+%   \end{syntax}
+%   The argument of \cs{ketbra} should be delimited with "|" and "|".
+%   In the argument, ">" and "<" will be regarded as extensible $\rangle$
+%   and $\langle$.
+% \end{function}
+% For example,
+% \iffalse
+%<*example>
+% \fi
+\def\0{\frac\phi2}
+\[ \ketbra     | \0 >< \psi | \quad
+   \ketbra*    | \0 >< \psi | \]
+\[ \ketbra\Bigg| \0 >< \psi | \quad
+   \ketbra| \0 >_x^y < \psi | \]
+% \iffalse
+%</example>
+% \fi
+% \pardanger
+% If you want to write ``$>$'' and ``$<$'' for relations in the argument of
+% \cs{braket} and \cs{ketbra}, you can write \cs{>} and \cs{<} (although there
+% is almost no such need). It is quite different from \verb|\mathrel{>}| or
+% \verb|\mathrel{<}| because in these commands' argument, ">" and "<"
+% will be redefined.
+%
+% \paragraph{Important Notes:}
+% Commands provided by \modu{ab.braket} should NOT be placed barely
+% in \meta{subformula} of \cs{ab}\texttt|\meta{subformula}\texttt|.
+% Errors will arise if you write such code. To avoid the errors, you can write
+% like this:
+% \iffalse
+%<*example>
+% \fi
+\[ \ab| {\braket<\psi|\hat H|\psi>} | \]
+% \iffalse
+%</example>
+% \fi
+% Just add the braces.
+%
+% Next, the \modu{braket} module will be introduced. Please notice that
+% \modu{braket} is conflict with \modu{ab.braket}, they cannot be used together.
+%
+% \subsection{The \modu{braket} module --- Dirac bra-ket notation}
+% \begingroup
+% \makeatletter\def\phy@requiremodule#1{}%
+% \def\PackageWarning#1#2{}%
+% \catcode`\%14\relax \input phy-braket.sty \catcode`\%9\relax \makeatother
+% Please notice that this module is conflict with the \modu{ab.braket} module.
+% Don't use them together.
+%
+% This module contains four commands --- \cs{bra}, \cs{ket}, \cs{braket} and
+% \cs{ketbra}. After these commands can be a star ("*") or a
+% square-bracket-delimited size option, the size option can
+% take the following values:
+% \begin{center}
+% "big",\quad"Big",\quad"bigg",\quad"Bigg",\quad
+% "biggg"\quad or\quad"Biggg".
+% \end{center}
+% Star stands for ``do not size the bra-ket automatically''.
+%
+% The argument(s) of these four commands are braced with \verb|{| and \verb|}|.
+% \cs{bra} and \cs{ket} take one mandatory argument. For example,
+% \iffalse
+%<*example>
+% \fi
+\def\0{\frac\phi2}
+\[ \bra {\0} \quad \bra* {\0}
+             \quad \bra[Big] {\0} \]
+\[ \ket {\0} \quad \ket* {\0}
+             \quad \ket[Big] {\0} \]
+% \iffalse
+%</example>
+% \fi
+% The \cs{braket} command, in default, can take two arguments.
+% \iffalse
+%<*example>
+% \fi
+\def\0{\frac\phi2}
+\[ \braket {\0} {\psi}   \quad
+   \braket*{\0} {\psi}   \quad
+   \braket[big] {\0} {\psi} \]
+% \iffalse
+%</example>
+% \fi
+% If you want \cs{braket} to take one or three arguments, you can write the
+% number of arguments in the square bracket. If you need to specify the size
+% of bra-ket simultaneously, you need to separate the number and the size with
+% a comma:
+% \iffalse
+%<*example>
+% \fi
+\def\0{\frac\phi2}
+\[ \braket [1] {\0} \quad
+   \braket*[1] {\0} \]
+\[ \braket [3] {\0}{A}{\psi}    \]
+\[ \braket[3,big] {\0}{A}{\psi}
+     \quad
+   \braket[Big,3] {\0}{A}{\psi} \]
+% \iffalse
+%</example>
+% \fi
+% The \cs{ketbra} command takes two mandatory arguments. It can also take an
+% optional argument between the two mandatory arguments. The optional argument
+% will be placed between $\rangle$ and $\langle$:
+% \iffalse
+%<*example>
+% \fi
+\def\0{\frac\phi2}
+\[ \ketbra  {\0} {\psi}    \quad
+   \ketbra* {\0} {\psi}       \]
+\[ \ketbra [Bigg] {\0} {\psi} \quad
+   \ketbra {\0} [_x^y] {\psi} \]
+% \iffalse
+%</example>
+% \fi
+% \endgroup
+%
+% \subsection{The \modu{diagmat} module --- simple diagonal matrices}
+% This module provides \cs{diagmat} command:
+% \begin{quote}
+%   \cs{diagmat} "[empty = \meta{empty entry}]" \marg{diag}
+% \end{quote}
+% where \meta{diag} is the diagonal of the diagonal matrix. The entries should
+% be separated by commas. The "empty" option is optional, with default value
+% "0". For example,
+% \iffalse
+%<*example>
+% \fi
+\[
+  \diagmat { 1, \sqrt2, \sqrt[3]4 }
+\]
+% \iffalse
+%</example>
+% \fi
+% \cs{pdiagmat}, \cs{bdiagmat}, \cs{Bdiagmat}, \cs{vdiagmat} and \cs{Vdiagmat}
+% are also available. Prefixes like "p", "b", "B" have the same
+% meaning as the "p", "b", "B" in \pkg{amsmath}'s "pmatrix",
+% "bmatrix" and "Bmatrix". For example,
+% \iffalse
+%<*example>
+% \fi
+\[
+  \pdiagmat [ empty = {} ]
+    { a, b, c, d }
+\]
+% \iffalse
+%</example>
+% \fi
+% This module requires \pkg{amsmath}.
+%
+% \paragraph{The options of \modu{diagmat} module}
+% You can set the default value of \cs{diagmat}'s empty entries in the module
+% option like this:
+% \begin{quote}
+% "\usephysicsmodule[empty={\cdot}]{diagmat}"
+% \end{quote}
+%
+% \subsection{The \modu{doubleprod} module --- tensors' double product operator}
+% Take an example of this module:
+% \iffalse
+%<*example>
+% \fi
+$ A \doublecross B \doubledot C $
+% \iffalse
+%</example>
+% \fi
+% \cs{doublecross} and \cs{doubledot} are regarded as binary operators by \TeX.
+%
+% \paragraph{The options of \modu{doubleprod} module}
+% You can control the scale of ``$\times$'' and ``$\cdot$'' in \cs{doublecross}
+% and \cs{doubledot} in module option. For example,
+% \begin{quote}
+% "\usephysicsmodule[crossscale=0.75,dotscale=1.2]{doubleprod}"
+% \end{quote}
+% The default values of "crossscale" and "dotscale" are "0.8" and
+% "1". You can also control the distances between the two ``$\times$''s and
+% ``$\cdot$''s through the "crossopenup" and "dotopenup" options.
+% For example,
+% \begin{quote}
+% "\usephysicsmodule[crossopenup=.05,dotopenup=.25]{doubleprod}"
+% \end{quote}
+% The default values of "crossopenup" and "dotopenup" are "0.02"
+% and "0.2". The value stands for the multiple of current font size.
+% Moreover, you can change the symbols produced by \cs{doublecross} and
+% \cs{doubledot} by setting "crosssymbol" and "dotsymbol" in module
+% option.
+%
+% \subsection{The \modu{xmat} module --- matrices with formatted entries}
+%
+% The \modu{xmat} module provides \cs{xmat} command for matrices with formatted
+% entries:
+% \begin{quote}
+% \cs{xmat}\oarg{options}\marg{entry}\marg{rows shown}\marg{cols shown}
+% \end{quote}
+% If \meta{rows shown} and \meta{cols shown} are digits, the value of them
+% must be less at least 2 than the value of \pkg{amsmath}'s "MaxMatrixCols"
+% counter. For example,
+% \iffalse
+%<*example>
+% \fi
+\[
+  \xmat{a}{2}{3}
+\]
+% \iffalse
+%</example>
+% \fi
+% \cs{pxmat}, \cs{bxmat}, \cs{Bxmat}, \cs{vxmat} and \cs{Vxmat} are also
+% available. The meaning of "p" and so on is the same as the "p"
+% in "pmatrix" of \pkg{amsmath}. For example,
+% \iffalse
+%<*example>
+% \fi
+\[
+  \pxmat{M}{3}{3}
+\]
+% \iffalse
+%</example>
+% \fi
+% If \meta{rows shown} and \meta{cols shown} contain non-digit characters,
+% extra dots will be added. For example,
+% \iffalse
+%<*example>
+% \fi
+\[
+  \bxmat[showleft = 2, showtop = 1]
+    {X}{m}{n}
+\]
+% \iffalse
+%</example>
+% \fi
+% In this example we used the "showleft" and "showtop" options. The
+% default value of them is the value of "MaxMatrixCols" minus 2. You can
+% also set them in the module option like this:
+% \begin{quote}
+%   "\usephysicsmodule[showtop = 3, showleft = 3]{xmat}"
+% \end{quote}
+% Then every \cs{xmat} with non-digital \meta{rows shown} and \meta{cols shown}
+% will have 2 top-most rows and 3 left-most columns shown. This will also
+% influence ``\cs{xmat}''s with digital \meta{rows shown} and \meta{cols shown}
+% when \meta{rows shown} and \meta{cols shown} are larger than the values
+% corresponding to "showtop" and "showleft". For example,
+% \iffalse
+%<*example>
+% \fi
+^^A \usephysicsmodule
+^^A   [showtop = 2, showleft = 3]{xmat}
+\[ \pxmat{A}{8}{8} \]
+% \iffalse
+%</example>
+% \fi
+% However, when \meta{rows shown} and \meta{cols shown} are 1 greater than
+% \meta{showtop} and \meta{showleft}, for example, \meta{rows shown}$\:=4$ and
+% \meta{cols shown}$\:=4$ in last example's settings, \cs{xmat} will still add
+% the extra dots:
+% \iffalse
+%<*example>
+% \fi
+^^A \usephysicsmodule
+^^A    [showtop = 2, showleft = 3]{xmat}
+\[ \pxmat{A}{4}{4} \]
+% \iffalse
+%</example>
+% \fi
+% In such situations, we need to specify "showtop" and "showleft"
+% manually. For example,
+% \iffalse
+%<*example>
+% \fi
+^^A \usephysicsmodule
+^^A   [showtop = 2, showleft = 3]{xmat}
+\[ \pxmat[showtop = 3, showleft = 2]
+     {A}{4}{4}               \]
+% \iffalse
+%</example>
+% \fi
+%
+% The \cs{xmat} command provides the "format" option, which allows users
+% to use a new entry format. For example,
+% \iffalse
+%<*example>
+% \fi
+\[
+  \xmat [showleft = 1, showtop = 2,
+    format = \texttt{#1[#2][#3]}]
+    {x}{m}{n}
+\]
+% \iffalse
+%</example>
+% \fi
+% In the value of "format" key, \verb|#1| stands for the common entry,
+% or the first mandatory \meta{entry} argument of \cs{xmat}; \verb|#2|
+% stands for the row index and \verb|#3| stands for the column index.
+%
+% This module requires \pkg{amsmath}.
+%
+% \paragraph{The options of \modu{xmat} module}
+% Only "showtop" and "showleft" can be used as module options.
+% "format" should be only used in the optional argument of the
+% \cs{xmat} command.
+%
+% The legacy modules have similar names like \meta{module}".legacy". Most of
+% them are designed to provide solutions to maintain documents written with the
+% legacy \pkg{physics} package. It's not suggested to use them in a new
+% document.
+%
+% \subsection{The \modu{ab.legacy} module}
+% \begin{function}{\abs, \norm, \eval (\peval \beval), \order}
+% This module provides the above commands.
+% They share the same syntax as
+% \begin{syntax}
+%   \cs{\meta{cmd}}"*"\oarg{biggg}\marg{subformula}.
+% \end{syntax}
+% Star and \meta{biggg} are optional. Star stands for ``use the default size''.
+% \end{function}
+% For example,
+% \iffalse
+%<*example>
+% \fi
+\def\0{1+\frac12}
+\[ \abs{\0}             \quad
+   \norm[Big]{\0}       \quad
+   \order*{\0}             \]
+% \iffalse
+%</example>
+% \fi
+% \iffalse
+%<*example>
+% \fi
+\def\0{1+\frac12x}
+\[ \eval{\0}_a^b       \quad
+   \peval*{\0}_a^b     \quad
+   \beval[big]{\0}_a^b    \]
+% \iffalse
+%</example>
+% \fi
+% You can set the ``order'' symbol in this module through
+% the "order" option like this:
+% \begin{quote}
+%   "\usephysicsmodule[order = O]{ab.legacy}"
+% \end{quote}
+% For further information of this module, see \S%\ref*{lega-subsec:ab-and-legacy}
+% of \hyperref{./physics3-legacy.pdf}{}{}{physics3-legacy}.
+%
+% \subsection{The \modu{bm-um.legacy} module}
+% If you are maintaining a document with plenty of ``\cs{bm}''s or
+% ``\cs{boldsymbol}''s in it but want to use \pkg{unicode-math} package
+% simultaneously, you could take a look at this module.
+%
+% The \cs{bm} command from \pkg{bm} package uses \cs{mathversion} to support
+% its function, but there are few OpenType math fonts who released with a bold
+% version. The \modu{bm-um.legacy} module provides a \cs{bm} command too, but
+% this \cs{bm} can only take \emph{one} math character or a series of math
+% characters sharing the same category code as its argument.
+% If the argument was Latin letters or Greek letters, \cs{bm} would switch to
+% the bold italic glyphs corresponding to them (if there exists bold italic
+% glyphs); else \cs{bm} would switch to the bold upright glyphs. For example,
+% \iffalse
+%<*example>
+% \fi
+$\bm{0}\bm{A}\bm{z}
+ \bm{\alpha}\bm{\Omega}$
+% \iffalse
+%</example>
+% \fi
+%
+% \subsection{The \modu{nabla.legacy} module}
+% This module provides some commands related to nabla ($\nabla$). Notice that
+% this module requires the \pkg{fixdif} package with file date 2023/01/31 at
+% minimum.
+%
+% This module defines \cs{grad} and \cs{curl} and redefines \cs{div}.
+% For example,
+% \iffalse
+%<*example>
+% \fi
+\[\grad V\ \div (x,y,z)\ \curl(x,y,z)\]
+% \iffalse
+%</example>
+% \fi
+% The ``$\divsymbol$'' symbol was redefined as \cs{divsymbol}.
+%
+% \subsection{The \modu{op.legacy} module}
+% \begin{function}{
+%   \asin, \acos, \atan,
+%   \acsc, \asec, \acot,
+%   \Tr,   \tr,   \rank,
+%   \erf,  \Res,  \res,
+%   \PV,   \pv,
+%   \Re,   \Im}
+%   This module provides a series of commands for log-like operators,
+%   where \cs{Re} and \cs{Im} are redefined. The first four lines of commands
+%   yield what they look like in math mode.
+%
+%   \cs{PV} yields ``$\PV$'' as an ordinary symbol and \cs{pv} yields ``$\pv$''.
+%
+%   \cs{Re} and \cs{Im} are redefined as ``$\Re$'' and ``$\Im$''. $\Resymbol$
+%   and $\Imsymbol$ are redefined as \cs{Resymbol} and \cs{Imsymbol}, in default.
+%   For example,
+% \iffalse
+%<*example>
+% \fi
+$\asin x\ \rank A\ \PV f(z)\ \pv f(z)$
+% \iffalse
+%</example>
+% \fi
+%   \paragraph{The options of \modu{op.legacy} module}
+%   This module \emph{does not} require \pkg{amsmath}.
+%   "ReIm", a bool key with default value "true", determines whether to
+%   redefine \cs{Re} and \cs{Im}. If you want to reserve the definition of
+%   \cs{Re} and \cs{Im}, you can write like this:
+%   \begin{quote}
+%     "\usephysicsmodule[ReIm = false]{op.legacy}"
+%   \end{quote}
+% \end{function}
+%
+% \subsection{The \modu{qtext.legacy} module}
+% This module was written just to offer a method to maintain documents written
+% with the legacy \pkg{physics} package. See \S%\ref*{lega-subsec:qtext} of
+% \href{./physics3-legacy.pdf}{\texttt{texdoc physics3-legacy}} for
+% more information.
+% \end{documentation}
+%
+% \appendix
+%
+% \begin{implementation}
+%
+% \section{Code Implementation}
+%
+% \subsection{The \pkg{physics3} package}
+%
+%    \begin{macrocode}
+%<*package>
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{physics3}
+  [2024/01/10 v1.0.1 Tools for typesetting math for physics.]
+%    \end{macrocode}
+%
+% \subsubsection{Common variables}
+%
+% \begin{variable}
+%   {
+%     \phy@tempcnta,
+%     \phy@tempdima,
+%     \phy@tempdimbd,
+%     \phy@tempskipa,
+%     \phy@tempmuskipa,
+%     \phy@tempboxa,
+%     \ifphy@tempswa,
+%     \phy@toksa,
+%   }
+%   \begin{syntax}
+%     \cs{phy@temp}\meta{register type}\meta{a or b}
+%   \end{syntax}
+%   Some \LaTeXe\ variables starting with ``"\phy@temp"''.
+%   These variables can be shared by any module of \pkg{physics3}.
+% \end{variable}
+%    \begin{macrocode}
+\newcount  \phy@tempcnta
+\newdimen  \phy@tempdima
+\newdimen  \phy@tempdimbd
+\newskip   \phy@tempskipa
+\newmuskip \phy@tempmuskipa
+\newbox    \phy@tempboxa
+\newif     \ifphy@tempswa
+\newtoks   \phy@toksa
+%    \end{macrocode}
+%
+% \subsubsection{Package requirements and module-loading methods}
+%
+% \pkg{physics3} requires \pkg{keyval} (part of the graphics bundle) to
+% process options of modules.
+%    \begin{macrocode}
+\RequirePackage{keyval}
+\def\phy@true{true}
+\def\phy@false{false}
+%    \end{macrocode}
+% \begin{macro}{\phy@define@key, \phy@setkeys, \phy@processkeyopt}
+%   \begin{syntax}
+%     \cs{phy@define@key} \marg{module} \marg{key} \oarg{default value} \marg{code}
+%     \cs{phy@setkeys} \marg{module} \marg{key-val list}
+%     \cs{phy@processkeyopt} \marg{module}
+%   \end{syntax}
+%   The position of \cs{phy@processkeyopt} in a \pkg{physics3} module is just the same
+%   as the position of \cs{ProcessOptions} in a regular \LaTeX\ package.
+% \end{macro}
+%    \begin{macrocode}
+\long\def\phy@define@key#1{\define@key{phy-#1}}
+\long\def\phy@setkeys#1{\setkeys{phy-#1}}
+\def\phy@processkeyopt#1{\let\reserved@a\@empty%
+  \edef\reserved@a{\@ptionlist{\@currname.\@currext}}%
+  \edef\reserved@a{\noexpand\phy@setkeys{#1}{\reserved@a}}%
+  \reserved@a% the next line thanks to `geometry'
+  \AtEndOfPackage{\let\@unprocessedoptions\relax}}
+%    \end{macrocode}
+% We use almost the same way to load \pkg{physics3} modules as \LaTeXe\ kernel
+% does. We use a lot of kernel commands in \LaTeXe.
+% \begin{macro}{\usephysicsmodule, \phy@requiremodule}
+%   \begin{syntax}
+%     \cs{usephysicsmodule} \oarg{key-val options} \marg{module} \oarg{key-val options}
+%     \cs{phy@requiremodule} \oarg{key-val options} \marg{module} \oarg{key-val options}
+%   \end{syntax}
+%   \cs{usephysicsmodule} is a user command, and \cs{phy@requiremodule} is a developer
+%   command.
+% \end{macro}
+%    \begin{macrocode}
+\def\usephysicsmodule{\phy@FWoptions\@pkgextension}
+\let\phy@requiremodule\usephysicsmodule
+\@onlypreamble\usephysicsmodule
+\def\phy@FWoptions#1{\@ifnextchar[%]
+  {\phy@FW@ptions#1}{\phy@FW@ptions#1[]}}
+\@onlypreamble\phy@FWoptions
+\def\phy@FW@ptions#1[#2]#3{\@ifnextchar[%]
+  {\phy@FW@pti@ns#1[{#2}]#3}{\phy@FW@pti@ns#1[{#2}]#3[]}}
+\@onlypreamble\phy@FW@ptions
+\def\phy@FW@pti@ns#1[#2]#3[#4]{%
+  \def\reserved@b##1,{%
+    \ifx\@nnil##1\relax\else
+      \ifx\@nnil##1\@nnil\else
+       \noexpand\@onefilewithoptions{phy-##1}[{\unexpanded{#2}}][{#4}]%
+       \noexpand\@pkgextension
+      \fi
+      \expandafter\reserved@b
+    \fi}%
+    \edef\reserved@a{\zap@space#3 \@empty}%
+    \edef\reserved@a{\expandafter\reserved@b\reserved@a,\@nnil,}%
+  \reserved@a}
+\@onlypreamble\phy@FW@pti@ns
+%    \end{macrocode}
+%
+% \subsubsection{The (used to be) \modu{common} module}
+%
+% The code below used to be the automatically-loaded \modu{common} module,
+% but now we load it together with \pkg{physics3}'s code. This change may
+% bring better performance in Windows system.
+%
+% Check if \pkg{unicode-math} loaded and (re)define the vert symbols.
+% The \cs{relax}'s at the ends of \cs{vert} and \cs{Vert}'s definitions must not be
+% removed. They are for \cs{ifx} to compare. \pkg{unicode-math} sets these symbols
+% \cs{fam}1, \cs{symoperators} is equal to 1 in \LaTeXe\ kernel. Moreover, we make
+% \cs{mid} as a delimiter but it may not work.
+%    \begin{macrocode}
+\AtBeginDocument{\ifcsname symrm\endcsname
+  \protected\def\|{\Udelimiter 0 \symoperators "2016 }%
+  \protected\def\vert{\Udelimiter 0 \symoperators "007C\relax}%
+  \protected\def\Vert{\Udelimiter 0 \symoperators "2016\relax}%
+  \protected\def\mid{\Udelimiter 3 \symoperators "007C }%
+\fi}
+\protected\def\Vert{\delimiter"026B30D\relax}
+\protected\def\mid{\delimiter"326A30C }
+%    \end{macrocode}
+% \begin{macro}{\delopen, \delclose}
+%   \begin{syntax}
+%     \cs{delopen} \meta{left delimiter}
+%     \cs{delclose} \meta{right delimiter}
+%   \end{syntax}
+%   Actually in \TeX, \cs{left} and \cs{right} will enclose the subformula as ``inner'',
+%   but \cs{delopen} and \cs{delclose} will make the subformula an empty open node and
+%   a non-empty close node.
+% \end{macro}
+%    \begin{macrocode}
+\DeclareRobustCommand\delopen{\mathopen{}\mathclose\bgroup\left}
+\DeclareRobustCommand\delclose{\aftergroup\egroup\right}
+% Extension to 2e kernel's or amsmath's biggggg commands.
+%    \end{macrocode}
+% \cs{bBigg@} is a command from \pkg{amsmath}. The code below should
+% update with \pkg{amsmath} together.
+%    \begin{macrocode}
+\ifdefined\bBigg@
+  \DeclareRobustCommand\biggg{\bBigg@{3}}
+  \DeclareRobustCommand\Biggg{\bBigg@{3.5}}
+\else
+  \DeclareRobustCommand\biggg[1]{\leavevmode@ifvmode
+    {\hbox{$\left#1\vbox to20.5\p@{}\right.\n@space$}}}
+  \DeclareRobustCommand\Biggg[1]{\leavevmode@ifvmode
+    {\hbox{$\left#1\vbox to23.5\p@{}\right.\n@space$}}}
+  \AtBeginDocument{\ifdefined\bBigg@
+    \DeclareRobustCommand\biggg{\bBigg@{3}}%
+    \DeclareRobustCommand\Biggg{\bBigg@{3.5}}%
+  \fi}
+\fi
+\DeclareRobustCommand\bigggl{\mathopen\biggg}
+\DeclareRobustCommand\bigggm{\mathrel\biggg}
+\DeclareRobustCommand\bigggr{\mathclose\biggg}
+\DeclareRobustCommand\Bigggl{\mathopen\Biggg}
+\DeclareRobustCommand\Bigggm{\mathrel\Biggg}
+\DeclareRobustCommand\Bigggr{\mathclose\Biggg}
+%    \end{macrocode}
+% \begin{macro}{\phy@mathvphantom}
+%   \begin{syntax}
+%     \cs{phy@mathvphantom} \marg{math mode material}
+%   \end{syntax}
+%   This command is just like \cs{vphantom} in \LaTeXe\ kernel but only works
+%   in math mode.
+% \end{macro}
+%    \begin{macrocode}
+\def\phy@mathvphantom#1{\setbox\phy@tempboxa=\hbox{}%
+  \mathchoice
+    {\setbox\@tempboxa\hbox{$\displaystyle#1$}%
+      \ht\phy@tempboxa=\ht\@tempboxa
+      \dp\phy@tempboxa=\dp\@tempboxa
+      \box\phy@tempboxa}
+    {\setbox\@tempboxa\hbox{$\textstyle#1$}%
+      \ht\phy@tempboxa=\ht\@tempboxa
+      \dp\phy@tempboxa=\dp\@tempboxa
+      \box\phy@tempboxa}
+    {\setbox\@tempboxa\hbox{$\scriptstyle#1$}%
+      \ht\phy@tempboxa=\ht\@tempboxa
+      \dp\phy@tempboxa=\dp\@tempboxa
+      \box\phy@tempboxa}
+    {\setbox\@tempboxa\hbox{$\scriptscriptstyle#1$}%
+      \ht\phy@tempboxa=\ht\@tempboxa
+      \dp\phy@tempboxa=\dp\@tempboxa
+      \box\phy@tempboxa}%
+}
+%    \end{macrocode}
+%
+% \subsubsection{The (used to be) \modu{explsetup} module}
+%
+% Some common variables and functions for experimental \LaTeX3 syntax.
+%    \begin{macrocode}
+%<@@=phy>
+\ExplSyntaxOn
+\int_new:N \l_@@_tmpa_int
+\int_new:N \l_@@_tmpb_int
+\tl_new:N \l_@@_tmpa_tl
+\tl_new:N \l_@@_tmpb_tl
+%    \end{macrocode}
+% The function that can gobble one token.
+%    \begin{macrocode}
+\cs_new:Npn \_@@_gobble_i:n #1 { }
+\ExplSyntaxOff
+%<@@=>
+%</package>
+%    \end{macrocode}
+%
+% \noindent\hrulefill\quad
+% \lower.5ex\hbox{Modules written in \LaTeXe\ syntax}^^A
+% \quad\hrulefill
+%
+% \subsection{The \modu{ab} module}
+%
+% \begingroup\color{gray}%
+% \noindent$\langle*\hbox{\sffamily gibberish}\rangle$\par
+% This module is important but the code is hard to read. One of the motivations
+% I manage \pkg{physics3} with \pkg{DocStrip} is that, when I tried to write a
+% new module based on \modu{ab} after 5 months when I maintained \pkg{physics3}
+% the last time, I found that I could not understand the code I wrote at all!
+% Therefore, it's significant to comment out the alien code in \modu{ab}.\par
+% \noindent$\langle/\hbox{\sffamily gibberish}\rangle$\par
+% \endgroup
+%    \begin{macrocode}
+%<*ab>
+\ProvidesFile{phy-ab.sty}
+  [2023/10/24 `ab' (autobraces) module of physics3]
+%    \end{macrocode}
+% If you don't know when to use \cs{phy@define@key}, \cs{phy@setkeys} and
+% \cs{phy@processkeyopt} in a module, see ahead. In \modu{ab}, the |tightbraces|
+% option can control if the automatically-sized braces are tight or not. Do you
+% remember \cs{delopen} and \cs{delclose}?
+%    \begin{macrocode}
+\phy@define@key{ab}{tightbraces}[true]{\def\@phy@abtight{#1}}
+\phy@setkeys{ab}{tightbraces=true}
+\phy@processkeyopt{ab}
+%    \end{macrocode}
+%
+% \begin{macro}{\phy@abopen, \phy@abclose}
+%   \begin{syntax}
+%     \cs{phy@abopen} \meta{left delimiter}
+%     \cs{phy@abclose} \meta{right delimiter}
+%   \end{syntax}
+%   They are defined either \{\cs{delopen}, \cs{delclose}\} or
+%   \{\cs{left}, \cs{right}\}. If a module requires \modu{ab},
+%   these two commands are likely to be used.
+% \end{macro}
+%    \begin{macrocode}
+\ifx\@phy@abtight\phy@true
+  \let\phy@abopen\delopen
+  \let\phy@abclose\delclose
+\else
+  \let\phy@abopen\left
+  \let\phy@abclose\right
+\fi
+%    \end{macrocode}
+%
+% \subsubsection{The implementation of \cs{ab}}
+% This is the alienest part of \modu{ab}. It's better to draw something rather
+% than write boring comments. First let's take a look at \cs{ab}'s syntax.
+% After \cs{ab} should be a pair of delimiters; take \texttt{()} as an example.
+% Between \cs{ab} and ``\texttt{(}'' can be a biggg command or star, or even
+% nothing. \cs{ab} is defined as follows:
+% \[ \macrodef{ab}{\cs{phy@d@lx} \texttt{\{mb\}} \texttt{\{ab\}}} \]
+% where \texttt{ab} is the branch name of "\ab()", and \texttt{mb} is the branch
+% name of "\ab\big()" and "\ab*()". Then let's see the syntax of \cs{phy@d@lx}.
+% \[
+%   \hbox{\ttfamily
+%   \cs{phy@d@lx} \marg{biggg or star branch name}
+%                 \marg{automatic branch name} \{\#3\}}
+% \]
+% Here exists an \texttt{\#3}. \texttt{\#3} is one token immediately following
+% \cs{ab}, which can be \{\,a biggg command or a star\,\} or a ``\texttt{(}'',
+% under our assumption.
+%
+% \cs{phy@d@lx} is defined as follows:
+% \[
+%   \macrodef {phy@d@lx} [
+%     \#1: biggg or star branch name, \meta{mb};
+%     \#2: automatic branch name, \meta{ab};
+%     \#3, the token after \cs{ab} ]
+%     {%
+%       \macroifelse {\#3 == biggg or \#3 == star
+%         ($\Leftrightarrow$ csname \{phy@del\cs{string}\#3\} is defined)}
+%         {let \meta{next cs} = csname \{phy@d@lx\meta{mb}\}}
+%         {let \meta{next cs} = csname \{phy@d@lx\meta{ab}\}}
+%       \meta{next cs} \#3
+%     }
+% \]
+% The condition should be true when \#3 is |\big| or |*|, and it should be
+% false when \#3 is ``|(|''. Accordingly, in math mode,
+% \begin{align*}
+%   \hbox{\ttfamily\cs{ab} \cs{big} (}&\quad\to\quad
+%   \hbox{\ttfamily\cs{phy@d@lxmb} \cs{big} (}\\
+%   \hbox{\ttfamily\cs{ab} \phantom{\cs{big}} (}&\quad\to\quad
+%   \hbox{\ttfamily\cs{phy@d@lxab} \phantom{\cs{big}} (}
+% \end{align*}
+% Then we meet two new commands --- \cs{phy@d@lxmb} and \cs{phy@d@lxab}. Syntax
+% is as follows.
+% \begin{align*}
+%   &\hbox{\ttfamily\cs{phy@d@lxmb} \meta{biggg or *}
+%     \meta{left delimiter} \meta{subformula} \meta{right delimiter}}\\
+%   &\hbox{\ttfamily\cs{phy@d@lxab} \phantom{\meta{biggg or *}}
+%     \meta{left delimiter} \meta{subformula} \meta{right delimiter}}
+% \end{align*}
+% Notice that \texttt{ab} and \texttt{mb} in the above commands are names of
+% \cs{ab}'s two branches --- they are like namespaces. \cs{phy@d@lxmb} and
+% \cs{phy@d@lxab} are defined by the following two lines:
+% \begin{quote}
+%   "\phy@d@l@genxm{mb}"
+%   "\phy@d@l@genxa{ab}"
+% \end{quote}
+% \cs{phy@d@l@genxm} and \cs{phy@d@l@genxa} are defined as follows:
+% \begin{align*}
+%   & \macrodef {phy@d@l@genxm} [\#1: biggg or star branch name, \meta{mb}]
+%     {%
+%       \macrodef [12\ttwd] {phy@d@lx\meta{mb}}
+%         [\#\#1: biggg or star; \#\#2: left delimiter]
+%         {%
+%           \cs{begingroup}
+%           \macroifelse {\#\#1 == star}
+%             {\meta{temp} $\gets$ \cs{relax}}
+%             {\meta{temp} $\gets$ \#\#1}
+%           csname \{phy@\meta{mb}@\cs{string}\#\#2\} \meta{temp} \#\#2 \macrocr
+%           \% requires an \cs{endgroup} after the right delimiter
+%         }
+%     } \\[1ex]
+%     & \macrodef {phy@d@l@genxa} [\#1: automatic branch name, \meta{ab}]
+%     {%
+%       \macrodef [12\ttwd] {phy@d@lx\meta{ab}} [\#\#1: left delimiter]
+%         {%
+%           csname \{phy@\meta{ab}@\cs{string}\#\#1\} \#\#1
+%         }
+%     }
+% \end{align*}
+% So we can get
+% \begin{align*}
+%   \hbox{\ttfamily\cs{ab} \cs{big} (}&\quad\to\quad
+%   \hbox{\cs{begingroup} csname \{phy@mb@(\} \cs{big}\hskip2\ttwd\ \texttt(}\\
+%   \hbox{\ttfamily\cs{ab} *\phantom{big} (}&\quad\to\quad
+%   \hbox{\cs{begingroup} csname \{phy@mb@(\} \cs{relax} \texttt(}\\
+%   \hbox{\ttfamily\cs{ab} \phantom{\cs{big}} (}&\quad\to\quad
+%   \hbox{\hskip11\ttwd\ csname \{phy@ab@(\} \texttt(}
+% \end{align*}
+% The csnames above (\cs{phy@mb@(} and \cs{phy@ab@(}) are generated
+% with \cs{phy@AB@gen}.
+% \[
+%   \hbox{\cs{phy@AB@gen} \marg{branch name} \meta{left delimiter}
+%   \marg{arg spec} \marg{definition}}
+% \]
+% If \meta{branch name} is \texttt{mb}, \marg{arg spec} should be "mr()",
+% where "m" is for biggg or star;
+% If \meta{branch name} is \texttt{ab}, \marg{arg spec} should be "r()".
+%
+% \begin{texnote}
+% The ``"("'' in the example above must not be replaced by a subformula braced
+% by a pair of "{}".
+% \end{texnote}
+% \begin{macro}{\phy@AB@gen}
+%   \begin{syntax}
+%     \cs{phy@AB@gen} \marg{branch name} \meta{left delimiter} \marg{arg spec} \marg{definition}
+%   \end{syntax}
+% \end{macro}
+%    \begin{macrocode}
+\def\phy@AB@gen#1#2{\expandafter\DeclareDocumentCommand\csname phy@#1@\string#2\endcsname}
+\phy@AB@gen{ab}({r()}{\phy@abopen(#1\phy@abclose)}
+\phy@AB@gen{ab}[{r[]}{\phy@abopen[#1\phy@abclose]}
+\phy@AB@gen{ab}\{{r\{\}}{\phy@abopen\{#1\phy@abclose\}}
+\phy@AB@gen{ab}|{r||}{\phy@abopen|#1\phy@abclose|}
+\phy@AB@gen{ab}\|{r\|\|}{\phy@abopen\|#1\phy@abclose\|}
+\phy@AB@gen{ab}<{r<>}{\phy@abopen<#1\phy@abclose>}
+\phy@AB@gen{ab}\lbrace{r\lbrace\rbrace}{\phy@abopen\lbrace#1\phy@abclose\rbrace}
+\phy@AB@gen{ab}\vert{r\vert\vert}{\phy@abopen\vert#1\phy@abclose\vert}
+\phy@AB@gen{ab}\Vert{r\Vert\Vert}{\phy@abopen\Vert#1\phy@abclose\Vert}
+\phy@AB@gen{ab}\langle{r\langle\rangle}{\phy@abopen\langle#1\phy@abclose\rangle}
+%    \end{macrocode}
+% \cs{endgroup}'s in the end of the following definitions are corresponding to
+% \cs{begingroup}'s in the definition of \cs{phy@d@l@genxm}.
+%    \begin{macrocode}
+\phy@AB@gen{mb}({mr()}{\mathopen#1(#2\mathclose#1)\endgroup}
+\phy@AB@gen{mb}[{mr[]}{\mathopen#1[#2\mathclose#1]\endgroup}
+\phy@AB@gen{mb}\{{mr\{\}}{\mathopen#1\lbrace#2\mathclose#1\rbrace\endgroup}
+\phy@AB@gen{mb}|{mr||}{\mathopen#1\vert#2\mathclose#1\vert\endgroup}
+\phy@AB@gen{mb}\|{mr\|\|}{\mathopen#1\Vert#2\mathclose#1\Vert\endgroup}
+\phy@AB@gen{mb}<{mr<>}{\mathopen#1\langle#2\mathclose#1\rangle\endgroup}
+\phy@AB@gen{mb}\lbrace{mr\lbrace\rbrace}{\mathopen#1\lbrace#2\mathclose#1\rbrace\endgroup}
+\phy@AB@gen{mb}\vert{mr\vert\vert}{\mathopen#1\vert#2\mathclose#1\vert\endgroup}
+\phy@AB@gen{mb}\Vert{mr\Vert\Vert}{\mathopen#1\Vert#2\mathclose#1\Vert\endgroup}
+\phy@AB@gen{mb}\langle{mr\langle\rangle}{\mathopen#1\langle#2\mathclose#1\rangle\endgroup}
+%    \end{macrocode}
+% \begin{macro}{\phy@del\string.}
+%   The syntax seems not important. These following lines seems only for \cs{ifcsname}
+%   to judge if the commands are defined.
+% \end{macro}
+%    \begin{macrocode}
+\def\phy@del#1#2#3{\phy@abopen#1#3\phy@abclose#2}
+\expandafter\def\csname phy@del\string*\endcsname#1#2#3{\mathopen#1#3\mathclose#2}
+\expandafter\def\csname phy@del\string\big\endcsname#1#2#3{\bigl#1#3\bigr#2}
+\expandafter\def\csname phy@del\string\Big\endcsname#1#2#3{\Bigl#1#3\Bigr#2}
+\expandafter\def\csname phy@del\string\bigg\endcsname#1#2#3{\biggl#1#3\biggr#2}
+\expandafter\def\csname phy@del\string\Bigg\endcsname#1#2#3{\Biggl#1#3\Biggr#2}
+\expandafter\def\csname phy@del\string\biggg\endcsname#1#2#3{\bigggl#1#3\bigggr#2}
+\expandafter\def\csname phy@del\string\Biggg\endcsname#1#2#3{\Bigggl#1#3\Bigggr#2}
+%    \end{macrocode}
+% \begin{macro}{\phy@d@lx}
+%   \begin{syntax}
+%     \cs{phy@d@lx} \marg{biggg or star branch name} \marg{automatic branch name} \{\#3\}
+%   \end{syntax}
+% \end{macro}
+%    \begin{macrocode}
+\def\phy@d@lx#1#2#3{%
+  \ifcsname phy@del\string#3\endcsname
+    \def\reserved@a{#1}% #3 is star or \biggg
+  \else
+    \def\reserved@a{#2}% #3 is delimiter
+  \fi
+  \csname phy@d@lx\reserved@a\endcsname#3}
+%    \end{macrocode}
+% \begin{macro}{\phy@d@l@genxm, \phy@d@l@genxa}
+%   \begin{syntax}
+%     \cs{phy@d@l@genxm} \marg{biggg or star branch name}
+%     \cs{phy@d@l@genxa} \marg{automatic branch name}
+%   \end{syntax}
+% \end{macro}
+%    \begin{macrocode}
+\def\phy@d@l@genxm#1{%
+  \expandafter\def\csname phy@d@lx#1\endcsname##1##2{%
+    \begingroup % \endgroup is at the end of #4 of \phy@AB@gen
+    \ifx##1*\let\phy@tempa=\relax\else\let\phy@tempa=##1\fi
+    \csname phy@#1@\string##2\endcsname\phy@tempa##2}}
+\def\phy@d@l@genxa#1{%
+  \expandafter\def\csname phy@d@lx#1\endcsname##1{%
+    \csname phy@#1@\string##1\endcsname##1}}
+%    \end{macrocode}
+% \begin{macro}{\phy@d@lxmb, \phy@d@lxab}
+%   \begin{syntax}
+%     \cs{phy@d@lxmb} \meta{biggg or *} \meta{left delimiter} \meta{subformula} \meta{right delimiter}
+%     \cs{phy@d@lxab} \phantom{\meta{biggg or *}} \meta{left delimiter} \meta{subformula} \meta{right delimiter}
+%   \end{syntax}
+% \end{macro}
+%    \begin{macrocode}
+\phy@d@l@genxm{mb}
+\phy@d@l@genxa{ab}
+%    \end{macrocode}
+% \begin{macro}{\ab}
+%   The users' command \cs{ab}.
+% \end{macro}
+%    \begin{macrocode}
+\DeclareRobustCommand\ab{\phy@d@lx{mb}{ab}}
+%    \end{macrocode}
+% \subsubsection{\cs{pab}-like commands}
+% This is so simple. No need to comment a lot.
+% 
+% \begin{macro}{\phy@d@l@geny}
+%   \begin{syntax}
+%     \cs{phy@d@l@geny} \meta{command} \meta{left delimiter} \meta{right delimiter}
+%   \end{syntax}
+%   This command used to define commands like \cs{pab}.
+% \end{macro}
+%    \begin{macrocode}
+\def\phy@d@l@geny#1#2#3{%
+  \DeclareDocumentCommand#1{som}{% ##1: star; ##2: bigg (csname); ##3: subformula.
+    \IfBooleanTF{##1}%
+      {#2##3#3}%
+      {\IfValueTF{##2}%
+        {\csname##2l\endcsname#2##3\csname##2r\endcsname#3}%
+        {\phy@abopen#2##3\phy@abclose#3}%
+      }%
+  }%
+}
+\phy@d@l@geny\pab()
+\phy@d@l@geny\bab[]
+\phy@d@l@geny\Bab\lbrace\rbrace
+\phy@d@l@geny\vab\vert\vert
+\phy@d@l@geny\aab\langle\rangle
+\phy@d@l@geny\Vab\Vert\Vert
+%</ab>
+%    \end{macrocode}
+% \subsection{The \modu{ab.braket} module}
+%    \begin{macrocode}
+%<*ab.braket>
+\ProvidesFile{phy-ab.braket.sty}
+  [2023/10/24 `ab.braket' module of physics3]
+%    \end{macrocode}
+% This module requires \cs{phy@abopen} and \cs{phy@abclose} from \modu{ab}.
+% This module may have conflict with \modu{braket}.
+%    \begin{macrocode}
+\phy@requiremodule{ab}
+\ifdefined\phy@bra@@
+  \PackageWarning{physics3}{You cannot load `ab.braket' and `braket'
+    modules together.\MessageBreak Only `ab.braket' module works now.}
+\fi
+%    \end{macrocode}
+% \begin{macro}{\bra}
+%   \begin{syntax}
+%     \cs{bra} \char`\<\ \meta{subformula} \char`\|
+%   \end{syntax}
+% \end{macro}
+%    \begin{macrocode}
+\phy@AB@gen{br.m}<{mr<|}{\mathopen#1\langle#2\mathclose#1\vert\endgroup}
+\phy@AB@gen{br.a}<{r<|}{\phy@abopen\langle#1\phy@abclose\vert}
+\phy@d@l@genxm{br.m}
+\phy@d@l@genxa{br.a}
+\DeclareRobustCommand\bra{\phy@d@lx{br.m}{br.a}}
+%    \end{macrocode}
+% \begin{macro}{\ket}
+%   \begin{syntax}
+%     \cs{ket} \char`\|\ \meta{subformula} \char`\>
+%   \end{syntax}
+% \end{macro}
+%    \begin{macrocode}
+\phy@AB@gen{kt.m}|{mr|>}{\mathopen#1\vert#2\mathclose#1\rangle\endgroup}
+\phy@AB@gen{kt.a}|{r|>}{\phy@abopen\vert#1\phy@abclose\rangle}
+\phy@d@l@genxm{kt.m}
+\phy@d@l@genxa{kt.a}
+\DeclareRobustCommand\ket{\phy@d@lx{kt.m}{kt.a}}
+%    \end{macrocode}
+% \begin{macro}{\braket}
+%   \begin{syntax}
+%     \cs{braket} \char`\<\ \meta{subformula 1} \char`\|\ \meta{subformula 2} {\color{gray}\textrm{[}\char`\|\ \meta{subformula 3} \textrm{\dots]}} \char`\>
+%   \end{syntax}
+% \end{macro}
+%    \begin{macrocode}
+\begingroup
+\catcode`\|=\active
+\gdef\phy@@mb@bk#1#2{\begingroup
+  \mathcode`\|="8000\def|{\egroup#1\vert\bgroup}%
+  \def\<{\mathrel{<}}\def\>{\mathrel{>}}%
+  \mathopen#1\langle\bgroup#2\egroup\mathclose#1\rangle\endgroup}
+\gdef\phy@@ab@bk#1{\begingroup
+  \mathcode`\|="8000\def|{\egroup\phy@abb@bkv\bgroup}%
+  \def\<{\mathrel{<}}\def\>{\mathrel{>}}%
+  \phy@abopen\langle\bgroup#1\egroup\phy@abclose\rangle\endgroup}
+\endgroup
+\def\phy@abb@bkv{\middle\vert}
+\phy@AB@gen{bk.m}<{mr<>}{\phy@@mb@bk#1{#2}\endgroup}
+\phy@AB@gen{bk.a}<{r<>}{\phy@@ab@bk{#1}}
+\phy@d@l@genxm{bk.m}
+\phy@d@l@genxa{bk.a}
+\DeclareRobustCommand\braket{\phy@d@lx{bk.m}{bk.a}}
+%    \end{macrocode}
+% \begin{macro}{\ketbra}
+%   \begin{syntax}
+%     \cs{braket} \char`\|\ \meta{subformula 1} \char`\>\ \meta{subformula 2} \char`\<\ \meta{subformula 3} \char`\|
+%   \end{syntax}
+% \end{macro}
+%    \begin{macrocode}
+\begingroup
+\catcode`\<=\active
+\catcode`\>=\active
+\gdef\phy@@mb@kb#1#2{\begingroup
+  \mathcode`\<="8000 \mathcode`\>="8000%
+  \def<{#1\langle}\def>{#1\rangle}%
+  \def\<{\phy@abb@l}\def\>{\phy@abb@r}%
+  \mathopen#1\vert#2\mathclose#1\vert\endgroup}
+\endgroup
+\gdef\phy@@ab@kb#1>#2<#3\phy@@end{\begingroup
+  \def\<{\phy@abb@l}\def\>{\phy@abb@r}%
+  \phy@abopen\vert\mathopen{\phy@mathvphantom{#3}}#1\phy@abclose\rangle#2%
+  \phy@abopen\langle#3\mathclose{\phy@mathvphantom{#1}}\phy@abclose\vert
+\endgroup}
+\AtBeginDocument{\ifcsname symbf\endcsname
+  \def\phy@abb@l{\Umathchar 3 \symoperators "003C }%
+  \def\phy@abb@r{\Umathchar 3 \symoperators "003E }%
+\fi}
+\def\phy@abb@l{\mathchar"313C }
+\def\phy@abb@r{\mathchar"313E }
+\phy@AB@gen{kb.m}|{mr||}{\phy@@mb@kb#1{#2}\endgroup}
+\phy@AB@gen{kb.a}|{r||}{\phy@@ab@kb#1\phy@@end}
+\phy@d@l@genxm{kb.m}
+\phy@d@l@genxa{kb.a}
+\DeclareRobustCommand\ketbra{\phy@d@lx{kb.m}{kb.a}}
+%</ab.braket>
+%    \end{macrocode}
+% \subsection{The \modu{braket} module}
+%    \begin{macrocode}
+%<*braket>
+\ProvidesFile{phy-braket.sty}
+  [2023/10/24 `braket' module of physics3]
+%    \end{macrocode}
+% This module requires \cs{phy@abopen} and \cs{phy@abclose} from \modu{ab}.
+% This module may have conflict with \modu{ab.braket}.
+%    \begin{macrocode}
+\phy@requiremodule{ab}
+\ifdefined\phy@abb@bkv
+  \PackageWarning{physics3}{You cannot load `ab.braket' and `braket'
+    modules together.\MessageBreak Only `braket' module works now.}
+\fi
+%    \end{macrocode}
+% \begin{macro}{\bra}
+%   \begin{syntax}
+%     \cs{bra} * \oarg{biggg} \marg{subformula}
+%   \end{syntax}
+% \end{macro}
+%    \begin{macrocode}
+\DeclareDocumentCommand\bra{ s o m }{%
+  \IfBooleanTF{#1}
+    {\mathopen\langle#3\mathclose\vert}
+    {\IfValueTF{#2}
+      {\csname#2l\endcsname\langle#3\csname#2r\endcsname\vert}
+      {\phy@abopen\langle#3\phy@abclose\vert}%
+    }%
+}
+%    \end{macrocode}
+% \begin{macro}{\ket}
+%   \begin{syntax}
+%     \cs{ket} * \oarg{biggg} \marg{subformula}
+%   \end{syntax}
+% \end{macro}
+%    \begin{macrocode}
+\DeclareDocumentCommand\ket{ s o m }{%
+  \IfBooleanTF{#1}
+    {\mathopen\vert#3\mathclose\rangle}
+    {\IfValueTF{#2}
+      {\csname#2l\endcsname\vert#3\csname#2r\endcsname\rangle}
+      {\phy@abopen\vert#3\phy@abclose\rangle}%
+    }%
+}
+%    \end{macrocode}
+% \begin{macro}{\braket}
+%   \begin{syntax}
+%     \cs{ket} * [\meta{biggg}, $n \in \{1,2,3\}$] \marg{subformula 1} \dots \marg{subformula $n$}
+%   \end{syntax}
+% \end{macro}
+%    \begin{macrocode}
+\DeclareDocumentCommand\braket{ s O{} }{%
+  \IfBooleanTF{#1}%
+    {%
+      \gdef\@phy@bk@argnum{ii}%
+      \phy@bk@doopt{#2}%
+      \gdef\@phy@bk@l{mathopen}%
+      \gdef\@phy@bk@m{mathord}%
+      \gdef\@phy@bk@r{mathclose}%
+    }%
+    {%
+      \gdef\@phy@bk@argnum{ii}%
+      \gdef\@phy@bk@l{phy@abopen}%
+      \gdef\@phy@bk@m{middle}%
+      \gdef\@phy@bk@r{phy@abclose}%
+      \phy@bk@doopt{#2}%
+    }%
+  \csname phy@bk@in@\@phy@bk@argnum\endcsname%
+}
+%    \end{macrocode}
+% \begin{macro}{\phy@bk@in@i, \phy@bk@in@ii, \phy@bk@in@iii}
+%   \begin{syntax}
+%     \cs{phy@bk@in@\meta{n.roman}} \marg{subformula 1} \dots \marg{subformula $n$}
+%   \end{syntax}
+%   \meta{n.roman} is $n$ in roman lowercase, where $n \in \{1,2,3\}$.
+% \end{macro}
+%    \begin{macrocode}
+\def\phy@bk@in@i#1{%
+  \csname\@phy@bk@l\endcsname\langle{#1}%
+  \csname\@phy@bk@r\endcsname\rangle}
+\def\phy@bk@in@ii#1#2{%
+  \csname\@phy@bk@l\endcsname\langle{#1}%
+  \csname\@phy@bk@m\endcsname\vert{#2}%
+  \csname\@phy@bk@r\endcsname\rangle}
+\def\phy@bk@in@iii#1#2#3{%
+  \csname\@phy@bk@l\endcsname\langle{#1}%
+  \csname\@phy@bk@m\endcsname\vert{#2}%
+  \csname\@phy@bk@m\endcsname\vert{#3}%
+  \csname\@phy@bk@r\endcsname\rangle}
+%    \end{macrocode}
+% \begin{macro}{\phy@bk@doopt, \phy@bk@do@pt}
+%   \begin{syntax}
+%     \cs{phy@bk@doopt} \marg{clist}
+%   \end{syntax}
+%   Parse the optional argument of \cs{braket}. This will add 3 entries to hash.
+% \end{macro}
+%    \begin{macrocode}
+\def\@phy@bk@do@pt#1,{\ifx#1\relax\@empty\else
+  \edef\reserved@a{\zap@space#1 \@empty}%
+  \ifx\reserved@a\@empty\else
+    \ifcsname phy@del\expandafter\string\csname\reserved@a\endcsname\endcsname
+      \xdef\@phy@bk@l{\reserved@a l}%
+      \xdef\@phy@bk@m{\reserved@a}% but not m (m stands for \mathrel)
+      \xdef\@phy@bk@r{\reserved@a r}%
+    \else
+      \ifnum\reserved@a>3%
+        \PackageError{physics3}{\string\braket\space can only take 3
+          mandatory arguments at most}{Check if you had written a number
+          more than 3 in the [optional] argument.}%
+      \fi
+      \xdef\@phy@bk@argnum{\romannumeral\reserved@a}%
+    \fi
+  \fi
+  \expandafter\@phy@bk@do@pt\fi}
+\def\phy@bk@doopt#1{\@phy@bk@do@pt#1,\relax,}
+%    \end{macrocode}
+% \begin{macro}{\ketbra}
+%   \begin{syntax}
+%     \cs{ketbra} * [\meta{biggg}] \marg{subformula 1} \oarg{between 1 and 2} \marg{subformula 2}
+%   \end{syntax}
+% \end{macro}
+%    \begin{macrocode}
+\DeclareDocumentCommand\ketbra{ s o m O{} m }{%
+  \IfBooleanTF{#1}%
+    {\mathopen\vert#3\mathclose\rangle#4\mathopen\langle#5\mathclose\vert}%
+    {\IfValueTF{#2}%
+      {\csname#2l\endcsname\vert#3\csname#2r\endcsname\rangle#4%
+        \csname#2l\endcsname\langle#5\csname#2r\endcsname\vert}%
+      {\begingroup
+        \phy@abopen\vert\mathopen{\phy@mathvphantom{#5}}#3\phy@abclose\rangle#4%
+        \phy@abopen\langle#5\mathclose{\phy@mathvphantom{#3}}\phy@abclose\vert
+      \endgroup}%
+    }%
+}
+%</braket>
+%    \end{macrocode}
+% \subsection{The \modu{doubleprod} module}
+%    \begin{macrocode}
+%<*doubleprod>
+\ProvidesFile{phy-doubleprod.sty}
+  [2023/10/24 `doubleprod' (vertically stacked binary operators) module of physics3]
+%    \end{macrocode}
+% Boolean options.
+%    \begin{macrocode}
+\phy@define@key{doubleprod}{crosssymbol}{\def\@phy@dbl@c{#1}}
+\phy@define@key{doubleprod}{dotsymbol}{\def\@phy@dbl@d{#1}}
+\phy@define@key{doubleprod}{crossscale}{\def\@phy@dbl@sc{#1}}
+\phy@define@key{doubleprod}{dotscale}{\def\@phy@dbl@sd{#1}}
+\phy@define@key{doubleprod}{crossopenup}{\def\@phy@dbl@oc{#1}}
+\phy@define@key{doubleprod}{dotopenup}{\def\@phy@dbl@od{#1}}
+\phy@setkeys{doubleprod}{crosssymbol=\times,dotsymbol=\ldotp,
+  crossscale=0.8,dotscale=1,crossopenup=.02,dotopenup=.2}
+\phy@processkeyopt{doubleprod}
+\def\phy@dbl@gen#1#2#3#4{%
+  \DeclareRobustCommand#1{\mathbin{\vcenter{\baselineskip\z@skip%
+    \lineskip#4\phy@dblcurrf@size%
+    \setbox\@tempboxa=\hbox{\fontsize{#2\phy@dblcurrf@size}\z@$#3$}%
+    \copy\@tempboxa\box\@tempboxa}}}}
+\def\phy@dblcurrf@size{\dimexpr\f@size pt\relax}
+\phy@dbl@gen\doublecross\@phy@dbl@sc\@phy@dbl@c\@phy@dbl@oc
+\phy@dbl@gen\doubledot\@phy@dbl@sd\@phy@dbl@d\@phy@dbl@od
+%</doubleprod>
+%    \end{macrocode}
+%
+% \noindent\hrulefill\quad
+% \lower.5ex\hbox{Modules written in \LaTeX3 syntax}^^A
+% \quad\hrulefill
+%
+% We use |phy| as the namespace for \pkg{physics3} modules.
+%    \begin{macrocode}
+%<@@=phy>
+%    \end{macrocode}
+% \subsection{The \modu{diagmat} module}
+%    \begin{macrocode}
+%<*diagmat>
+\ProvidesExplFile{phy-diagmat.sty}{2024/01/10}{}
+  {`diagmat' module of physics3}
+\RequirePackage { amsmath }
+\phy@define@key { diagmat } { empty } [ 0 ] { \tl_gset:Nn \l_@@_mat_empty_tl { #1 } }
+%    \end{macrocode}
+% This module requires some new variables.
+%    \begin{macrocode}
+\clist_new:N \l_@@_mat_diag_clist
+\int_new:N \l_@@_mat_dim_int
+\tl_new:N \l_@@_mat_line_tl
+\tl_new:N \l_@@_diagmat_tl
+\tl_new:N \l_@@_mat_empty_tl
+\tl_gset:Nn \l_@@_mat_empty_tl { 0 }
+\phy@processkeyopt { diagmat }
+\keys_define:nn { phy/diagmat }
+  {
+    empty .tl_set:N = \l_@@_mat_empty_tl ,
+  }
+%    \end{macrocode}
+% \begin{macro}{\diagmat}
+%   \begin{syntax}
+%     \cs{\meta{delimiter type}diagmat} \oarg{key-val list} \marg{diagonal}
+%   \end{syntax}
+% \end{macro}
+%    \begin{macrocode}
+\DeclareDocumentCommand \diagmat { O{} m }
+  { \_@@_diagmat_type:nnn { } { #1 } { #2 } }
+\DeclareDocumentCommand \pdiagmat { O{} m }
+  { \_@@_diagmat_type:nnn { p } { #1 } { #2 } }
+\DeclareDocumentCommand \bdiagmat { O{} m }
+  { \_@@_diagmat_type:nnn { b } { #1 } { #2 } }
+\DeclareDocumentCommand \Bdiagmat { O{} m }
+  { \_@@_diagmat_type:nnn { B } { #1 } { #2 } }
+\DeclareDocumentCommand \vdiagmat { O{} m }
+  { \_@@_diagmat_type:nnn { v } { #1 } { #2 } }
+\DeclareDocumentCommand \Vdiagmat { O{} m }
+  { \_@@_diagmat_type:nnn { V } { #1 } { #2 } }
+%    \end{macrocode}
+% \begin{macro}{\_@@_diagmat_type:nnn}
+%   \begin{syntax}
+%     \cs{_@@_diagmat_type:nnn} \marg{delimiter type} \marg{key-val list} \marg{diagonal}
+%   \end{syntax}
+% \end{macro}
+%    \begin{macrocode}
+\cs_new:Npn \_@@_diagmat_type:nnn #1#2#3
+  {
+    \group_begin:
+    \clist_set:Nn \l_@@_mat_diag_clist { #3 }
+    \int_set:Nn \l_@@_mat_dim_int { \clist_count:N \l_@@_mat_diag_clist }
+    \int_compare:nNnT { \l_@@_mat_dim_int } > { \value { MaxMatrixCols } }
+      { \setcounter { MaxMatrixCols } { \l_@@_mat_dim_int } }
+    \keys_set:nn { phy/diagmat } { #2 }
+    \tl_gclear:N \l_@@_diagmat_tl
+    \int_step_inline:nnn { 1 } { \l_@@_mat_dim_int }
+      {
+        \int_step_inline:nnn { 1 } { \l_@@_mat_dim_int }
+          {
+            \int_compare:nNnTF { ##1 } = { ####1 }
+              {
+                \clist_gpop:NN \l_@@_mat_diag_clist \l_@@_tmpa_tl
+                \tl_if_empty:NTF \l_@@_tmpa_tl
+                  { \tl_gput_right:Nn \l_@@_mat_line_tl { \l_@@_mat_empty_tl } }
+%    \end{macrocode}
+% Maybe it's better to use \verb|\expandafter\scantokens\expandafter{\l_@@_tmpa_tl}| in the next line.
+%    \begin{macrocode}
+                  { \tl_gput_right:No \l_@@_mat_line_tl { \l_@@_tmpa_tl } }
+              }
+              { \tl_gput_right:Nn \l_@@_mat_line_tl { \l_@@_mat_empty_tl } }
+            \int_compare:nNnTF { ####1 } = { \l_@@_mat_dim_int }
+              {
+                \tl_gput_right:Nn \l_@@_mat_line_tl { \\ }
+              }
+              {
+                \tl_gput_right:Nn \l_@@_mat_line_tl { & }
+              }
+          }
+        \tl_gput_right:No \l_@@_diagmat_tl { \l_@@_mat_line_tl }
+        \tl_gclear:N \l_@@_mat_line_tl
+      }
+    \begin { #1 matrix }
+      \tl_use:N \l_@@_diagmat_tl
+    \end { #1 matrix }
+    \group_end:
+  }
+%</diagmat>
+%    \end{macrocode}
+% \subsection{The \modu{xmat} module}
+%    \begin{macrocode}
+%<*xmat>
+\ProvidesExplFile{phy-xmat.sty}{2023/10/24}{}
+  {`xmat' module of physics3}
+\RequirePackage { amsmath }
+\phy@define@key { xmat } { showtop }
+  { \int_gset:Nn \l_@@_xmat_showtop_int { #1 } }
+\phy@define@key { xmat } { showleft }
+  { \int_gset:Nn \l_@@_xmat_showleft_int { #1 } }
+%    \end{macrocode}
+% This module requires some new variables.
+%    \begin{macrocode}
+\bool_new:N \l_@@_xmat_extra_vdots_bool
+\bool_new:N \l_@@_xmat_extra_cdots_bool
+\int_new:N \l_@@_xmat_showtop_int
+\int_new:N \l_@@_xmat_showleft_int
+\tl_new:N \l_@@_xmat_tl
+\int_gset:Nn \l_@@_xmat_showtop_int { \value { MaxMatrixCols } - 2 }
+\int_gset:Nn \l_@@_xmat_showleft_int { \value { MaxMatrixCols } - 2 }
+\cs_new:Npn \_@@_xmat_entry_format:nnn #1#2#3
+  {
+    #1 \c_math_subscript_token { #2 #3 }
+  }
+\phy@processkeyopt { xmat }
+\DeclareDocumentCommand \xmat { O{} m m m }
+ { \_@@_xmat_type:nnnnn { } { #1 } { #2 } { #3 } { #4 } }
+\DeclareDocumentCommand \pxmat { O{} m m m }
+ { \_@@_xmat_type:nnnnn { p } { #1 } { #2 } { #3 } { #4 } }
+\DeclareDocumentCommand \bxmat { O{} m m m }
+ { \_@@_xmat_type:nnnnn { b } { #1 } { #2 } { #3 } { #4 } }
+\DeclareDocumentCommand \Bxmat { O{} m m m }
+ { \_@@_xmat_type:nnnnn { B } { #1 } { #2 } { #3 } { #4 } }
+\DeclareDocumentCommand \vxmat { O{} m m m }
+ { \_@@_xmat_type:nnnnn { v } { #1 } { #2 } { #3 } { #4 } }
+\DeclareDocumentCommand \Vxmat { O{} m m m }
+ { \_@@_xmat_type:nnnnn { V } { #1 } { #2 } { #3 } { #4 } }
+\keys_define:nn { phy/xmat }
+  {
+    format  .cs_set:Np = \_@@_xmat_entry_format:nnn #1#2#3 ,
+    showtop .int_set:N = \l_@@_xmat_showtop_int ,
+    showleft.int_set:N = \l_@@_xmat_showleft_int ,
+  }
+%    \end{macrocode}
+% \begin{macro}[pTF]{\_@@_if_digits_only:n}
+%   \begin{syntax}
+%     \cs{_@@_if_digits_only:nTF} \marg{token list} \marg{true code} \marg{flase code}
+%   \end{syntax}
+%   Use \LaTeX3 regular expression to tell if \meta{token list}
+%   (the numbers of rows or columns) contain digits only. 
+% \end{macro}
+%    \begin{macrocode}
+\prg_new_conditional:Npnn \_@@_if_digits_only:n #1 { TF }
+  {
+    \regex_match:nnTF { \A [[:digit:]]* \Z } { #1 }
+      { \prg_return_true: } { \prg_return_false: }
+  }
+%    \end{macrocode}
+% \begin{macro}{\_@@_xmat_type:nnnnn}
+%   \begin{syntax}
+%     \cs{_@@_xmat_type:nnnnn} \marg{delimiter type} \marg{key-val list} \marg{common entry} \marg{row number} \marg{column number}
+%   \end{syntax}
+% \end{macro}
+%    \begin{macrocode}
+\cs_new:Npn \_@@_xmat_type:nnnnn #1#2#3#4#5
+  {
+    \group_begin:
+    \tl_gclear:N \l_@@_xmat_tl
+    \keys_set:nn { phy/xmat } { #2 } % 
+    \_@@_if_digits_only:nTF { #4 }
+      {
+        \int_compare:nNnTF { #4 } < { \l_@@_xmat_showtop_int + 1 }
+          {
+            \int_set:Nn \l_@@_xmat_showtop_int { #4 }
+            \bool_set_false:N \l_@@_xmat_extra_vdots_bool
+          }
+          {
+            \bool_set_true:N \l_@@_xmat_extra_vdots_bool
+          }
+      }
+      {
+        \bool_set_true:N \l_@@_xmat_extra_vdots_bool
+      }
+    \_@@_if_digits_only:nTF { #5 }
+      {
+        \int_compare:nNnTF { #5 } < { \l_@@_xmat_showleft_int + 1 }
+          {
+            \int_set:Nn \l_@@_xmat_showleft_int { #5 }
+            \bool_set_false:N \l_@@_xmat_extra_cdots_bool
+          }
+          {
+            \bool_set_true:N \l_@@_xmat_extra_cdots_bool
+          }
+      }
+      {
+        \bool_set_true:N \l_@@_xmat_extra_cdots_bool
+      }
+    \int_step_inline:nn { \l_@@_xmat_showtop_int }
+      {
+        \tl_put_right:Nn \l_@@_xmat_tl
+          { \_@@_xmat_entry_format:nnn { #3 } { ##1 } { 1 } }
+        \int_step_inline:nnn { 2 } { \l_@@_xmat_showleft_int }
+          {
+            \tl_put_right:Nn \l_@@_xmat_tl
+              { & \_@@_xmat_entry_format:nnn { #3 } { ##1 } { ####1 } }
+          }
+        \bool_if:NT \l_@@_xmat_extra_cdots_bool
+          {
+            \tl_put_right:Nn \l_@@_xmat_tl
+              { & \cdots & \_@@_xmat_entry_format:nnn { #3 } { ##1 } { #5 } }
+          }
+        \tl_put_right:Nn \l_@@_xmat_tl { \\ }
+      }
+    \bool_if:NT \l_@@_xmat_extra_vdots_bool
+      {
+        \tl_put_right:Nn \l_@@_xmat_tl { \vdots }
+        \prg_replicate:nn { \l_@@_xmat_showleft_int - 1 }
+          {
+            \tl_put_right:Nn \l_@@_xmat_tl { & \vdots }
+          }
+        % Add \ddots if vdots_bool and cdots_bool be true simultaneously.
+        \bool_if:NT \l_@@_xmat_extra_cdots_bool
+          {
+            \tl_put_right:Nn \l_@@_xmat_tl { & \ddots & \vdots }
+          } % else relax
+        \tl_put_right:Nn \l_@@_xmat_tl { \\ }
+        % The last row.
+        \tl_put_right:Nn \l_@@_xmat_tl
+          { \_@@_xmat_entry_format:nnn { #3 } { #4 } { 1 } }
+        \int_step_inline:nnn { 2 } { \l_@@_xmat_showleft_int }
+          {
+            \tl_put_right:Nn \l_@@_xmat_tl
+              { & \_@@_xmat_entry_format:nnn { #3 } { #4 } { ##1 } }
+          }
+        \bool_if:NT \l_@@_xmat_extra_cdots_bool
+          {
+            \tl_put_right:Nn \l_@@_xmat_tl
+              { & \cdots & \_@@_xmat_entry_format:nnn { #3 } { #4 } { #5 } }
+          }
+      } % else relax
+    \begin { #1 matrix }
+      \tl_use:N \l_@@_xmat_tl
+    \end { #1 matrix }
+    \group_end:
+  }
+%</xmat>
+%    \end{macrocode}
+% This part ends here.
+%    \begin{macrocode}
+%<@@=>
+%    \end{macrocode}
+%
+% \noindent\hrulefill\quad
+% \lower.5ex\hbox{Legacy modules written in \LaTeXe\ syntax}^^A
+% \quad\hrulefill
+%
+% \subsection{The \modu{ab.legacy} module}
+%    \begin{macrocode}
+%<*ab.legacy>
+\ProvidesFile{phy-ab.legacy.sty}
+  [2023/10/24 `ab.legacy' module of physics3]
+%    \end{macrocode}
+% Requires \modu{ab}'s |tight| option.
+%    \begin{macrocode}
+\phy@requiremodule{ab}
+\phy@define@key{ab.legacy}{order}[\mathcal{O}]{\def\phy@ab@ordersym{#1}}
+\phy@setkeys{ab.legacy}{order}
+\phy@processkeyopt{ab.legacy}
+\phy@d@l@geny\abs\vert\vert
+\phy@d@l@geny\norm\Vert\Vert
+\DeclareDocumentCommand\order{som}{%
+  \phy@ab@ordersym
+  \IfBooleanTF{#1}
+    {(#3)}
+    {\IfValueTF{#2}
+      {\csname#2l\endcsname(#3\csname#2r\endcsname)}
+      {\phy@abopen(#3\phy@abclose)}%
+    }%
+}
+\phy@d@l@geny\eval.\vert
+\phy@d@l@geny\peval(\vert
+\phy@d@l@geny\beval[\vert
+%</ab.legacy>
+%    \end{macrocode}
+% \subsection{The \modu{nabla.legacy} module}
+%    \begin{macrocode}
+%<*nabla.legacy>
+\ProvidesFile{phy-nabla.legacy.sty}
+  [2023/10/24 `nabla.legacy' module of physics3]
+\phy@requiremodule{ab}
+%    \end{macrocode}
+% Requires \pkg{fixdif} version 2.$x$.
+%    \begin{macrocode}
+\RequirePackage{fixdif}[2023/01/31]
+\letdif\phy@nl@nabla{nabla}
+\AtBeginDocument{\ifcsname div\endcsname\let\divsymbol\div\fi
+  \DeclareRobustCommand\grad{\phy@nl@nabla\ab}%
+  \DeclareRobustCommand\div{\phy@nl@nabla\cdot\ab}%
+  \DeclareRobustCommand\curl{\phy@nl@nabla\times\ab}%
+  \DeclareRobustCommand\laplacian{\phy@nl@nabla^2\ab}%
+}
+%</nabla.legacy>
+%    \end{macrocode}
+% \subsection{The \modu{op.legacy} module}
+%    \begin{macrocode}
+%<*op.legacy>
+\ProvidesFile{phy-op.legacy.sty}
+  [2023/10/24 `op.legacy' module of physics3]
+\phy@define@key{op.lega}{ReIm}[true]{\def\phy@reserveda{#1}}
+\phy@define@key{op.lega}{PV}{\def\@phy@oplega@PV{#1}}
+\phy@define@key{op.lega}{pv}{\def\@phy@oplega@pv{#1}}
+\phy@setkeys{op.lega}{PV=\mathcal{P},pv={p.v.},ReIm=true}
+\phy@processkeyopt{ab}
+\DeclareRobustCommand\asin{\mathop{\operator@font asin}\nolimits}
+\DeclareRobustCommand\acos{\mathop{\operator@font acos}\nolimits}
+\DeclareRobustCommand\atan{\mathop{\operator@font atan}\nolimits}
+\DeclareRobustCommand\acsc{\mathop{\operator@font acsc}\nolimits}
+\DeclareRobustCommand\asec{\mathop{\operator@font asec}\nolimits}
+\DeclareRobustCommand\acot{\mathop{\operator@font acot}\nolimits}
+\DeclareRobustCommand\Tr{\mathop{\operator@font Tr}\nolimits}
+\DeclareRobustCommand\tr{\mathop{\operator@font tr}\nolimits}
+\DeclareRobustCommand\rank{\mathop{\operator@font rank}\nolimits}
+\DeclareRobustCommand\erf{\mathop{\operator@font erf}\nolimits}
+\DeclareRobustCommand\Res{\mathop{\operator@font Res}\nolimits}
+\DeclareRobustCommand\res{\mathop{\operator@font res}\nolimits}
+\DeclareRobustCommand\PV{\mathord{\@phy@oplega@PV}}
+\DeclareRobustCommand\pv{\mathop{\operator@font\@phy@oplega@pv{}}\nolimits}
+%    \end{macrocode}
+% Restore \cs{Re} and \cs{Im} in \cs{Resymbol} and \cs{Imsymbol}.
+% The \cs{AtBeginDocument}
+% hook is used for the compatibility of \pkg{unicode-math}.
+%    \begin{macrocode}
+\ifx\phy@reserveda\phy@true
+\AtBeginDocument{%
+  \let\Resymbol\Re%
+  \let\Imsymbol\Im%
+  \DeclareRobustCommand\Re{\mathop{\operator@font Re}\nolimits}%
+  \DeclareRobustCommand\Im{\mathop{\operator@font Im}\nolimits}%
+}
+\fi
+%</op.legacy>
+%    \end{macrocode}
+% \subsection{The \modu{qtext.legacy} module}
+% This module is written for the compatibility with the bad commands provided by
+% \pkg{physics} only. The commands in this module should NEVER be used!
+%    \begin{macrocode}
+%<*qtext.legacy>
+\ProvidesFile{phy-qtext.legacy.sty}
+  [2023/10/24 `qtext.legacy' module of physics3.sty]
+\RequirePackage{amstext}
+\def\phy@qtext@#1#2{#1\text{#2}\quad}
+\DeclareRobustCommand\qqtext{\@ifstar{\phy@qtext@{}}{\phy@qtext@\quad}}
+\DeclareRobustCommand\qq{\qqtext}
+\DeclareRobustCommand\qcomma{,\quad}
+\DeclareRobustCommand\qc{\qcomma}
+\DeclareRobustCommand\qcc{\@ifstar{\phy@qtext@{}{c.c}}{\phy@qtext@\quad{c.c}}}
+\def\phy@qtext@lega@gen@#1{%
+  \expandafter\DeclareRobustCommand\csname q#1\endcsname%
+    {\@ifstar{\phy@qtext@{}{#1}}{\phy@qtext@\quad{#1}}}}
+\phy@qtext@lega@gen@{if}
+\phy@qtext@lega@gen@{then}
+\phy@qtext@lega@gen@{else}
+\phy@qtext@lega@gen@{otherwise}
+\phy@qtext@lega@gen@{unless}
+\phy@qtext@lega@gen@{give}
+\phy@qtext@lega@gen@{using}
+\phy@qtext@lega@gen@{unless}
+\phy@qtext@lega@gen@{assume}
+\phy@qtext@lega@gen@{since}
+\phy@qtext@lega@gen@{let}
+\phy@qtext@lega@gen@{for}
+\phy@qtext@lega@gen@{all}
+\phy@qtext@lega@gen@{even}
+\phy@qtext@lega@gen@{odd}
+\phy@qtext@lega@gen@{integer}
+\phy@qtext@lega@gen@{and}
+\phy@qtext@lega@gen@{or}
+\phy@qtext@lega@gen@{as}
+\phy@qtext@lega@gen@{in}
+%</qtext.legacy>
+%    \end{macrocode}
+%
+% \noindent\hrulefill\quad
+% \lower.5ex\hbox{Legacy modules written in \LaTeX3 syntax}^^A
+% \quad\hrulefill
+%
+%    \begin{macrocode}
+%<@@=phy>
+%    \end{macrocode}
+% \subsection{The \modu{bm-um.legacy} module}
+%    \begin{macrocode}
+%<*bm-um.legacy>
+\ProvidesExplFile{phy-bm-um.legacy.sty}{2023/10/24}{}
+  {`bm-um.legacy' module of physics3}
+\AtBeginDocument
+  {
+    \cs_if_exist:cF { symbf }
+      {
+        \PackageError { physics3 }
+          {
+            The ~ `bm-um.legacy' ~ module ~ requires ~
+            `unicode-math' ~ package
+          }
+          {
+            Have ~ you ~ used ~ `unicode-math' ~
+            in ~ the ~ preamble?
+          }
+      }
+  }
+\DeclareDocumentCommand \bm { m }
+  {
+    \mode_if_math:TF
+      {
+        \tl_if_head_eq_catcode:nNTF { #1 } A
+          { \symbfit { #1 } } { \symbf { #1 } }
+      }
+      {
+        \PackageError { physics3 }
+          {
+            The ~ \string\bm\space command ~ should ~ be ~
+            used ~ in ~ math ~ mode ~ only. \MessageBreak
+            This ~ is ~ an ~ error ~ from ~ `bm-um.legacy' ~ module
+          }
+          {
+            Check ~ if ~ any ~ `\string\bm' ~ is ~ out ~
+            of ~ math ~ mode.
+          }
+      }
+  }
+%</bm-um.legacy>
+%    \end{macrocode}
+% This part ends here.
+%    \begin{macrocode}
+%<@@=>
+%    \end{macrocode}
+% \end{implementation}
+^^A % \PrintIndex
