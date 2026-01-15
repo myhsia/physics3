@@ -20,7 +20,7 @@ Modules of `physics3` provide the following supports:
 Issues
 ------
 
-The issue tracker for `physics3` is currently located
+The issue tracker for `LXGW` is currently located
 [on GitHub](https://github.com/myhsia/physics3).
 
 Copyright and License
@@ -44,3 +44,4 @@ This work has the LPPL maintenance status `maintained'.
 
 The Current Maintainer of this work is **Mingyu Xia**.
 
+^^A % \PrintIndex
