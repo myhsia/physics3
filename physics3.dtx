@@ -84,13 +84,15 @@ The Current Maintainer of this work is **Mingyu Xia**.
   \def\verbatim@processline{\immediate\write\example@out{\the\verbatim@line}}^^A
   \verbatim@start}
 \long\def\example@end#1{\immediate\closeout\example@out\@esphack\endgroup
+  \catcode`\%14\relax
   \everymath{\displaystyle}
   \par\smallskip\noindent
   \fbox{\parbox[c][#1]{.6\linewidth}{\small\verbatiminput \example@name}}^^A
   \hfill
   \fbox{\parbox[c][#1]{.36\linewidth}
     {\centering\normalsize\input \example@name}}^^A
-  \par\smallskip}
+  \par\smallskip
+  \catcode`\%9\relax}
 \NewDocumentEnvironment{example}{m}{\example@start}
   {\example@end{#1\baselineskip}}
 \setlength \FrameSep {1pt}
@@ -287,8 +289,8 @@ $ \Biggg(\biggg(\Bigg(\bigg(
 % \cs{ab}" ( ... ) "    \cs{ab}" [ ... ] "
 % \cs{ab}"\{ ... \}" or \cs{ab} \cs{lbrace} ... \cs{rbrace}
 % \cs{ab}" < ... > " or \cs{ab} \cs{langle} ... \cs{rangle}
-% \cs{ab}" | ... | " or \cs{ab} \cs{vert}   ... \cs{vert}   or ^^A
-% \cs{ab} \cs{Vert} ... \cs{Vert}
+% \cs{ab}" | ... | " or \cs{ab} \cs{vert}   ... \cs{vert}
+% \cs{ab}"\| ... \|" or \cs{ab} \cs{Vert}   ... \cs{Vert}
 %   \end{syntax}
 %   The delimiters after \cs{ab} should not be out of the range
 %   described by the chart above.
@@ -438,7 +440,7 @@ $ \ket\Big| \psi         > $
 \begin{example}{5}
 \def\0{\frac\phi2|\psi}
 $ \braket<A> $\quad $ \braket<m|n> $
-$ \braket<m|A|n> $\\
+$ \braket<m|A|n> $\\[1ex]
 $ \braket<\0> $\quad $\braket*<\0> $
 $ \braket\Bigg<\0> $
 \end{example}
@@ -460,7 +462,7 @@ $ \braket\Bigg<\0> $
 \begin{example}{5}
 \def\0{\frac\phi2}
 $ \ketbra     | \0 >< \psi | $\quad
-$ \ketbra*    | \0 >< \psi | $\\
+$ \ketbra*    | \0 >< \psi | $\\[1ex]
 $ \ketbra\Bigg| \0 >< \psi | $\quad
 $ \ketbra| \0 >_x^y < \psi | $
 \end{example}
@@ -527,7 +529,7 @@ $ \ab|{\braket<\psi|\hat H|\psi>}| $
 \begin{example}{5}
 \def\0{\frac\phi2}
 $ \bra {\0} $\quad $ \bra* {\0}     $
-             \quad $ \bra[Big] {\0} $\\
+             \quad $ \bra[Big] {\0} $\\[1ex]
 $ \ket {\0} $\quad $ \ket* {\0}     $
              \quad $ \ket[Big] {\0} $
 \end{example}
@@ -557,7 +559,7 @@ $ \braket[big] {\0} {\psi} $
 \begin{example}{6}
 \def\0{\frac\phi2}
 $ \braket [1] {\0}             $\quad
-$ \braket*[1] {\0}             $\\
+$ \braket*[1] {\0}             $\\[1ex]
 $ \braket [3] {\0}{A}{\psi}    $\quad
 $ \braket[3,big] {\0}{A}{\psi} $\quad
 $ \braket[Big,3] {\0}{A}{\psi} $
@@ -574,7 +576,7 @@ $ \braket[Big,3] {\0}{A}{\psi} $
 \begin{example}{5}
 \def\0{\frac\phi2}
 $ \ketbra        {\0} {\psi} $\quad
-$ \ketbra*       {\0} {\psi} $\\
+$ \ketbra*       {\0} {\psi} $\\[1ex]
 $ \ketbra [Bigg] {\0} {\psi} $\quad
 $ \ketbra {\0} [_x^y] {\psi} $
 \end{example}
@@ -734,8 +736,8 @@ $
 %<*example>
 % \fi
 \begin{example}{4}
-^^A \usephysicsmodule
-^^A   [showtop = 1, showleft = 2]{xmat}
+%  \usephysicsmodule
+%    [showtop = 1, showleft = 2]{xmat}
 \[ \pxmat{A}{8}{8} \]
 \end{example}
 % \iffalse
@@ -749,8 +751,8 @@ $
 %<*example>
 % \fi
 \begin{example}{3}
-^^A \usephysicsmodule
-^^A    [showtop = 2, showleft = 3]{xmat}
+%  \usephysicsmodule
+%    [showtop = 2, showleft = 3]{xmat}
 $ \pxmat{A}{4}{4} $
 \end{example}
 % \iffalse
@@ -762,8 +764,8 @@ $ \pxmat{A}{4}{4} $
 %<*example>
 % \fi
 \begin{example}{4}
-^^A \usephysicsmodule
-^^A   [showtop = 2, showleft = 3]{xmat}
+% \usephysicsmodule
+%   [showtop = 2, showleft = 3]{xmat}
 $ \pxmat[showtop = 2, showleft = 3]
     {A}{4}{4} $
 \end{example}
@@ -843,7 +845,8 @@ $ \beval[big]{\0}_a^b $
 %   "\usephysicsmodule[order = O]{ab.legacy}"
 % \end{quote}
 % For further information of this module,
-% see \S{lega-subsec:ab-and-legacy}{physics3-legacy}.
+% see~\hyperref[doc:physics-legacy]^^A
+%   {\pkg{physics2} manual for the legacy \pkg{physics} users}.
 %
 % \subsection{The \modu{bm-um.legacy} module}
 % If you are maintaining a document with plenty of ``\cs{bm}''s or
@@ -888,13 +891,17 @@ $ \curl(x,y,z) $
 % The ``$\divsymbol$'' symbol was redefined as \cs{divsymbol}.
 %
 % \subsection{The \modu{op.legacy} module}
-% \begin{function}{
-%   \asin, \acos, \atan,
-%   \acsc, \asec, \acot,
-%   \Tr,   \tr,   \rank,
-%   \erf,  \Res,  \res,
-%   \PV,   \pv,
-%   \Re,   \Im}
+% \begin{function}
+%   {
+%     \asin,    \acos, \atan,
+%     \acsc,    \asec, \acot,
+%     \rank,    \erf,
+%     \Tr       \tr,
+%     \Res      \res,
+%     \PV       \pv,
+%     \Re       \Im,
+%     \Identity \identity
+%   }
 %   This module provides a series of commands for log-like operators,
 %   where \cs{Re} and \cs{Im} are redefined. The first four lines of commands
 %   yield what they look like in math mode.
@@ -930,7 +937,7 @@ $\asin x$ $\rank A$ $\PV f(z)$ $\pv f(z)$
 % more information.
 % 
 % \end{documentation}
-%
+% \setcounter{section}{0}
 % \begin{documentation}
 %
 % \title{\pkg{physics2} manual for the legacy \pkg{physics} users}
@@ -960,6 +967,7 @@ $\asin x$ $\rank A$ $\PV f(z)$ $\pv f(z)$
 % In this document, the modules of \pkg{physics2} will be introduced in
 % the same order as the \pkg{physics} documentation.
 % \end{abstract}
+% \label{doc:physics-legacy}
 %
 % \section{Before you start}
 %
@@ -1039,6 +1047,7 @@ $\asin x$ $\rank A$ $\PV f(z)$ $\pv f(z)$
 % automatic braces in \pkg{physics2} is \cs{ab}, a shorthand for
 % {\bfseries a}utomatic {\bfseries b}races.
 %
+% \DescribeMacro{\ab}
 % The \cs{ab} command requires the \modu{ab} module, so don't forget to write
 % "\usephysicsmodule{ab}" in the preamble after you loaded \pkg{physics2}.
 % Always remember, \emph{do not put an \cs{ab} separately in the end of a math
@@ -1047,25 +1056,22 @@ $\asin x$ $\rank A$ $\PV f(z)$ $\pv f(z)$
 %<*example>
 % \fi
 \begin{example}{3}
-\[ \ab ( \frac12 )  \quad
-   \ab [ \frac12 ]  \quad
-   \ab\{ \frac12 \} \]
+$ \ab ( \frac12 )  $ \quad
+$ \ab [ \frac12 ]  $ \quad
+$ \ab\{ \frac12 \} $
 \end{example}
 % \iffalse
 %</example>
 % \fi
 % \cs{ab} can modify a delimiter-braced subformula. But the delimiters should
 % not be out of the range described by the following chart:
-% \begin{center}
-% \begin{tabular}{c@{\hskip2em}l@{\hskip2em}c}
-% "(",\quad ")" && \\
-% "[",\quad"]" && \\
-% \cs{\{},\quad\cs{\}} &or& \cs{lbrace},\quad\cs{rbrace} \\
-% "<",\quad">" &or& \cs{langle},\quad\cs{rangle} \\
-% "|",\quad"|" &or&   \cs{vert},\quad\cs{vert} \\
-%  \cs{|},\quad\cs{|}  &or&   \cs{Vert},\quad\cs{Vert}
-% \end{tabular}
-% \end{center}
+% \begin{quote}
+% " (,    ) "\qquad        \qquad"[,   ]"\\
+% "\{,    \}"\makebox[4em][c]{or}"\lbrace,   \rbrace"\\
+% "\<,    \>"\makebox[4em][c]{or}"\langle,   \rangle"\\
+% " |,    | "\makebox[4em][c]{or}"\verb,     \vert"\\
+% "\|,    \|"\makebox[4em][c]{or}"\Verb,     \Vert"
+% \end{quote}
 % For example, "$\ab{foo}$" and "$\ab(foo]$" are illegal, but
 % "$\ab\{foo\}$" and "$\ab(foo)$" are okay; "$\ab([)$" is okay but
 % "$\ab(()$" is illegal.
@@ -1081,10 +1087,10 @@ $\asin x$ $\rank A$ $\PV f(z)$ $\pv f(z)$
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{5}
-\[ \ab\Big \| \frac12 \| \quad
-   \ab\Bigg < \frac12 >  \quad
-   \ab\Biggg| \frac12 |  \]
+\begin{example}{3}
+$ \ab\Big \| \frac12 \| $\quad
+$ \ab\Bigg < \frac12 >  $\quad
+$ \ab\Biggg| \frac12 |  $
 \end{example}
 % \iffalse
 %</example>
@@ -1102,10 +1108,10 @@ $\asin x$ $\rank A$ $\PV f(z)$ $\pv f(z)$
 % \fi
 \begin{example}{5}
 \def\0{\frac12}
-\[ \pab{\0} \quad \bab{\0}
-            \quad \Bab{\0} \]
-\[ \aab{\0} \quad \vab{\0}
-            \quad \Vab{\0} \]
+$ \pab{\0} $\quad $ \bab{\0} $
+            \quad $ \Bab{\0} $\\[1ex]
+$ \aab{\0} $\quad $ \vab{\0} $
+            \quad $ \Vab{\0} $
 \end{example}
 % \iffalse
 %</example>
@@ -1117,30 +1123,31 @@ $\asin x$ $\rank A$ $\PV f(z)$ $\pv f(z)$
 % \fi
 \begin{example}{2}
 \def\0{\frac12}
-\[ \pab[Big]{\0} \quad \bab*{\0} \]
+$ \pab[Big]{\0} \quad \bab*{\0} $
 \end{example}
 % \iffalse
 %</example>
 % \fi
 %
 % \pkg{physics} also provides the following commands:
-% \begin{Verbatim}[fontsize=\small]
-% \abs   \norm   \eval   \order      \comm   \acomm   \pb
-% \end{Verbatim}
+% \begin{quote}
+% "\abs"\quad  "\norm"\quad  "\eval"\quad "\order"\quad
+% "\comm"\quad "\acomm"\quad "\pb"
+% \end{quote}
 % \pardanger These commands are not originally supported by \pkg{physics2}, but
 % the first four commands can be used through the \modu{ab.legacy} module of
 % \pkg{physics2}:
-% \begin{Verbatim}
-% \usephysicsmodule{ab.legacy}
-% \end{Verbatim}
+% \begin{quote}
+% "\usephysicsmodule{ab.legacy}"
+% \end{quote}
 % For example,
 % \iffalse
 %<*example>
 % \fi
 \begin{example}{3}
 \def\0{\frac12}
-\[ \abs{\0} \quad \abs[big]{\0}
-            \quad \abs*{\0}    \]
+$ \abs\0 $\quad $ \abs[big]\0 $%
+          \quad $ \abs*\0 $
 \end{example}
 % \iffalse
 %</example>
@@ -1155,9 +1162,9 @@ $\asin x$ $\rank A$ $\PV f(z)$ $\pv f(z)$
 % \fi
 \begin{example}{4}
 \def\0{1+\frac12x}
-\[ \eval{\0}_a^b      \quad
-   \peval*{\0}_a^b    \quad
-   \beval[big]{\0}_a^b   \]
+$ \eval{\0}_a^b   $\quad
+$ \peval*{\0}_a^b $\quad
+$ \beval[big]{\0}_a^b $
 \end{example}
 % \iffalse
 %</example>
@@ -1216,12 +1223,12 @@ $\asin x$ $\rank A$ $\PV f(z)$ $\pv f(z)$
 %<*example>
 % \fi
 \begin{example}{6}
-^^A \usephysicsmodule{nabla.legacy}
-\[ \grad F      \quad
-   \grad(\frac G2)     \]
-\[ \div\Bigg[X]  \quad
-    \curl*\{\frac Y2\} \]
-\[ 2 \divsymbol 1      \]
+% \usephysicsmodule{nabla.legacy}
+$ \grad F            $\quad
+$ \grad(\frac G2)    $\\[1ex]
+$ \div\Bigg[X]       $\quad
+$ \curl*\{\frac Y2\} $\quad
+$ 2 \divsymbol 1 $
 \end{example}
 % \iffalse
 %</example>
@@ -1259,8 +1266,8 @@ $\asin x$ $\rank A$ $\PV f(z)$ $\pv f(z)$
 %<*example>
 % \fi
 \begin{example}{2}
-^^A \usephysicsmodule{op.legacy}
-\[ \asin^2 x \quad \rank \{ A \} \]
+% \usephysicsmodule{op.legacy}
+$ \asin^2 x $\quad $ \rank \{ A \} $
 \end{example}
 % \iffalse
 %</example>
@@ -1278,12 +1285,12 @@ $\asin x$ $\rank A$ $\PV f(z)$ $\pv f(z)$
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{4}
-^^A \usephysicsmodule{qtext.legacy}
-\[ A \qq {foo bar} B \]
-\[ A \qq*{foo bar} B \]
-\[ C \qcc D \qcc*  E \]
-\[ F \qif G \qthen H \]
+\begin{example}{5}
+% \usephysicsmodule{qtext.legacy}
+$ A \qq {foo bar} B $\\[1ex]
+$ A \qq*{foo bar} B $\\[1ex]
+$ C \qcc D \qcc*  E $\\[1ex]
+$ F \qif G \qthen H $
 \end{example}
 % \iffalse
 %</example>
@@ -1306,8 +1313,8 @@ $\asin x$ $\rank A$ $\PV f(z)$ $\pv f(z)$
 %<*example>
 % \fi
 \begin{example}{3}
-^^A \usepackage{fixdif,derivative}
-\[ \pdv{f}{x,y,z} \d x \]
+% \usepackage{fixdif, derivative}
+$ \pdv{f}{x,y,z} \d x $\\[1ex]
 Math ($\d x$) v.s.\ Text (\d x)
 \end{example}
 % \iffalse
@@ -1339,11 +1346,12 @@ Math ($\d x$) v.s.\ Text (\d x)
 % module are completely different from \cs{ab}}. Their internal structures are
 % different.
 %
+% \DescribeMacro{\bra}
 % The argument of \cs{bra} should be delimited with "<" and "|",
 % that is,
-% \begin{center}
+% \begin{quote}
 % \cs{bra} "<" \meta{subformula} "|"
-% \end{center}
+% \end{quote}
 % For example,
 % \iffalse
 %<*example>
@@ -1569,8 +1577,8 @@ Math ($\d x$) v.s.\ Text (\d x)
 \]
 \end{example}
 \begin{example}{5}
-^^A \usephysicsmodule
-^^A   [showleft=3,showtop=3]{xmat}
+% \usephysicsmodule
+%   [showleft = 3, showtop = 3]{xmat}
 \[
   \pxmat{X}{m}{n}
 \]
@@ -2712,6 +2720,9 @@ Math ($\d x$) v.s.\ Text (\d x)
 \DeclareRobustCommand\res{\mathop{\operator@font res}\nolimits}
 \DeclareRobustCommand\PV{\mathord{\@phy@oplega@PV}}
 \DeclareRobustCommand\pv{\mathop{\operator@font\@phy@oplega@pv{}}\nolimits}
+\RequirePackage{dsfont}
+\DeclareRobustCommand\Identity{\mathbb I}
+\DeclareRobustCommand\identity{\mathds 1}
 %    \end{macrocode}
 % Restore \cs{Re} and \cs{Im} in \cs{Resymbol} and \cs{Imsymbol}.
 % The \cs{AtBeginDocument}
@@ -2812,4 +2823,4 @@ Math ($\d x$) v.s.\ Text (\d x)
 %    \end{macrocode}
 % This part ends here.
 % \end{implementation}
-% \PrintIndex
+^^A % \PrintIndex
