@@ -283,7 +283,8 @@ $ \Biggg(\biggg(\Bigg(\bigg(
 %
 % This module provides the command \cs{ab}. The \cs{ab} command, as a shorthand
 % of ``automatic braces'', would specify the size of the following pair of
-% delimiters.
+% delimiters. The delimiters after \cs{ab} should not be out of the range
+% described by the following chart.
 % \begin{function}{\ab}
 %   \begin{syntax}
 % \cs{ab}" ( ... ) "    \cs{ab}" [ ... ] "
@@ -292,8 +293,6 @@ $ \Biggg(\biggg(\Bigg(\bigg(
 % \cs{ab}" | ... | " or \cs{ab} \cs{vert}   ... \cs{vert}
 % \cs{ab}"\| ... \|" or \cs{ab} \cs{Vert}   ... \cs{Vert}
 %   \end{syntax}
-%   The delimiters after \cs{ab} should not be out of the range
-%   described by the chart above.
 %   For example, it's illegal to write an ``"\ab("'' without a ``")"'';
 %   it's also illegal to write "\ab=foo=".
 % \end{function}
@@ -561,7 +560,7 @@ $ \braket[big] {\0} {\psi} $
 $ \braket [1] {\0}             $\quad
 $ \braket*[1] {\0}             $\\[1ex]
 $ \braket [3] {\0}{A}{\psi}    $\quad
-$ \braket[3,big] {\0}{A}{\psi} $\quad
+$ \braket[3,big] {\0}{A}{\psi} $\\[1ex]
 $ \braket[Big,3] {\0}{A}{\psi} $
 \end{example}
 % \iffalse
@@ -621,10 +620,9 @@ $
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{4}
+\begin{example}{3}
 $
-  \pdiagmat [ empty = {} ]
-    { a, b, c, d }
+  \pdiagmat [ empty = {} ] { a, b, c }
 $
 \end{example}
 % \iffalse
@@ -778,12 +776,10 @@ $ \pxmat[showtop = 2, showleft = 3]
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{5}
-$
-  \xmat [showleft = 1, showtop = 2,
-    format = \texttt{#1[#2][#3]}]
-    {x}{m}{n}
-$
+\begin{example}{4}
+$ \xmat [showleft = 1, showtop = 2,
+         format = \texttt{#1[#2][#3]}]
+    {x}{m}{n} $
 \end{example}
 % \iffalse
 %</example>
@@ -891,35 +887,28 @@ $ \curl(x,y,z) $
 % The ``$\divsymbol$'' symbol was redefined as \cs{divsymbol}.
 %
 % \subsection{The \modu{op.legacy} module}
+%
+% This module provides a series of commands for log-like operators.
+%
 % \begin{function}
 %   {
-%     \asin,    \acos, \atan,
-%     \acsc,    \asec, \acot,
-%     \rank,    \erf,
+%     \asin     \acos  \atan,
+%     \acsc     \asec  \acot,
+%     \rank     \erf,
 %     \Tr       \tr,
 %     \Res      \res,
 %     \PV       \pv,
 %     \Re       \Im,
 %     \Identity \identity
 %   }
-%   This module provides a series of commands for log-like operators,
-%   where \cs{Re} and \cs{Im} are redefined. The first four lines of commands
+%   \cs{Re} and \cs{Im} are redefined. The first five lines of commands
 %   yield what they look like in math mode.
 %
 %   \cs{PV} yields ``$\PV$'' as an ordinary symbol and \cs{pv} yields ``$\pv$''.
 %
 %   \cs{Re} and \cs{Im} are redefined as ``$\Re$'' and ``$\Im$''. $\Resymbol$
-%   and $\Imsymbol$ are redefined as \cs{Resymbol} and \cs{Imsymbol}, in default.
-%   For example,
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{1}
-$\asin x$ $\rank A$ $\PV f(z)$ $\pv f(z)$
-\end{example}
-% \iffalse
-%</example>
-% \fi
+%   and $\Imsymbol$ are redefined as \cs{Resymbol} and \cs{Imsymbol}, in
+%   default.
 %   \paragraph{The options of \modu{op.legacy} module}
 %   This module \emph{does not} require \pkg{amsmath}.
 %   "ReIm", a bool key with default value "true", determines whether to
@@ -929,6 +918,25 @@ $\asin x$ $\rank A$ $\PV f(z)$ $\pv f(z)$
 %     "\usephysicsmodule[ReIm = false]{op.legacy}"
 %   \end{quote}
 % \end{function}
+% For example,
+% \iffalse
+%<*example>
+% \fi
+\begingroup
+\makeatletter\def\phy@requiremodule#1{}%
+\def\PackageWarning#1#2{}%
+\catcode`\%14\relax \input phy-braket.sty \catcode`\%9\relax \makeatother
+\begin{example}{5}
+% \usephysicsmodule{braket}
+$ \asin x  $\quad $ \PV f(z) $\quad
+$ \pv f(z) $\quad $ \Re z $\\[1ex]
+$ \identity = \int
+  \d^2\ketbra\alpha\alpha/\pi = \Identity$
+\end{example}
+\endgroup
+% \iffalse
+%</example>
+% \fi
 %
 % \subsection{The \modu{qtext.legacy} module}
 % This module was written just to offer a method to maintain documents written
@@ -1388,22 +1396,20 @@ Math ($\d x$) v.s.\ Text (\d x)
 %
 % The argument of \cs{braket} should be delimited with "<" and ">",
 % that is,
-% \begin{center}
+% \begin{quote}
 % \cs{braket} "<" \meta{subformula} ">"
-% \end{center}
+% \end{quote}
 % In the \meta{subformula} argument, every ``"|"'' will be regarded as an
 % extensible vertical bar. For example,
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{3}
-\[ \braket< \phi >            \]
-\[ \braket< \phi | \psi >     \]
-\[ \braket< \phi | A | \psi > \]
-\def\0{\frac\phi2}
-\[ \braket     < \0 | \psi >  \]
-\[ \braket    < \0 | \psi >  \]
-\[ \braket< \0 | \psi >  \]
+\begin{example}{5}
+\def\0{\frac\phi2|\psi}
+$ \braket<A> $\quad $ \braket<m|n> $
+$ \braket<m|A|n> $\\[1ex]
+$ \braket<\0> $\quad $\braket*<\0> $
+$ \braket\Bigg<\0> $
 \end{example}
 % \iffalse
 %</example>
@@ -1419,15 +1425,12 @@ Math ($\d x$) v.s.\ Text (\d x)
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{4}
+\begin{example}{5}
 \def\0{\frac\phi2}
-\[ \ketbra     | \0 >< \psi | \]
-\[ \ketbra*    | \0 >< \psi | \]
-\[ \ketbra\Bigg| \0 >< \psi | \]
-\end{example}
-\begin{example}{2}
-\def\0{\frac\phi2}
-\[ \ketbra| \0 >_x^y < \psi | \]
+$ \ketbra     | \0 >< \psi | $\quad
+$ \ketbra*    | \0 >< \psi | $\\[1ex]
+$ \ketbra\Bigg| \0 >< \psi | $\quad
+$ \ketbra| \0 >_x^y < \psi | $
 \end{example}
 % \iffalse
 %</example>
@@ -2823,4 +2826,4 @@ Math ($\d x$) v.s.\ Text (\d x)
 %    \end{macrocode}
 % This part ends here.
 % \end{implementation}
-^^A % \PrintIndex
+% \PrintIndex
