@@ -96,12 +96,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
 \NewDocumentEnvironment{example}{m}{\example@start}
   {\example@end{#1\baselineskip}}
 \setlength \FrameSep {1pt}
-\def\contentsonly{\@starttoc{toc}}
-\protected\def\pardanger{\ifnum\lastnodetype=1^^A
-  \leavevmode\hbox to \z@{\hss\dbend\hskip10pt\hskip\parindent}\else
-  \ifnum\lastnodetype=11^^A
-  \leavevmode\hbox to \z@{\hss\dbend\hskip10pt}^^A
-  \fi\fi\ignorespaces}
+\protected \def \pardanger {\noindent \hbox to \z@{\hss \dbend \enspace}}
 \definecolor{moducolor}{RGB}{0,0,150}
 \providecommand \modu[1]^^A
   {\texorpdfstring{\textcolor{moducolor}{\textsf{#1}}}{“#1”}}
@@ -328,7 +323,6 @@ $ \ab*    \|\frac12\| $
 % "$\ab$", because \cs{ab} will try to absorb the following math shift
 % character ("$") as its argument.
 %
-% \pardanger
 % \begin{texnote}
 %   The \modu{ab} module uses ``document commands''
 %   module of \LaTeXe\ kernel (source file: ltcmd.dtx). This \LaTeXe\ kernel
@@ -514,10 +508,10 @@ $ \ab|{\braket<\psi|\hat H|\psi>}| $
 % \cs{ketbra}. After these commands can be a star ("*") or a
 % square-bracket-delimited size option, the size option can
 % take the following values:
-% \begin{center}
-% "big",\quad"Big",\quad"bigg",\quad"Bigg",\quad
-% "biggg"\quad or\quad"Biggg".
-% \end{center}
+% \begin{quote}
+% "big",\quad "Big",\quad "bigg",\quad "Bigg",\quad
+% "biggg"\quad or\quad "Biggg".
+% \end{quote}
 % Star stands for ``do not size the bra-ket automatically''.
 %
 % The argument(s) of these four commands are braced with "{" and "}".
@@ -600,18 +594,7 @@ $ \ketbra {\0} [_x^y] {\psi} $
 % \end{syntax}
 % where \meta{diag} is the diagonal of the diagonal matrix. The entries should
 % be separated by commas. The "empty" option is optional, with default value
-% "0". For example,
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{3}
-$
-  \diagmat { 1, \sqrt2, \sqrt[3]4 }
-$
-\end{example}
-% \iffalse
-%</example>
-% \fi
+% "0".
 % Prefixes like "p", "b", "B" have the same meaning as the "p", "b", "B"
 % in \pkg{amsmath}'s "pmatrix", "bmatrix" and "Bmatrix".
 % This module requires \pkg{amsmath}.
@@ -621,9 +604,9 @@ $
 %<*example>
 % \fi
 \begin{example}{3}
-$
-  \pdiagmat [ empty = {} ] { a, b, c }
-$
+$ \diagmat { 1, \sqrt2, \sqrt[3]4 } $\quad
+$ \pdiagmat [ empty = {} ]
+    { a, b, c } $
 \end{example}
 % \iffalse
 %</example>
@@ -662,7 +645,7 @@ $ A \doublecross B \doubledot C $
 % For example,
 % \begin{quote}
 % "\usephysicsmodule [crossopenup = .05,"\\
-% "                   dotopenup = .25] {doubleprod}"
+% "                   dotopenup   = .25] {doubleprod}"
 % \end{quote}
 % The default values of "crossopenup" and "dotopenup" are "0.02"
 % and "0.2". The value stands for the multiple of current font size.
@@ -744,18 +727,7 @@ $
 % However, when \meta{rows shown} and \meta{cols shown} are 1 greater than
 % \meta{showtop} and \meta{showleft}, for example, \meta{rows shown}$\:=4$ and
 % \meta{cols shown}$\:=4$ in last example's settings, \cs{xmat} will still add
-% the extra dots:
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{3}
-%  \usephysicsmodule
-%    [showtop = 2, showleft = 3]{xmat}
-$ \pxmat{A}{4}{4} $
-\end{example}
-% \iffalse
-%</example>
-% \fi
+% the extra dots.
 % In such situations, we need to specify "showtop" and "showleft"
 % manually. For example,
 % \iffalse
@@ -776,10 +748,12 @@ $ \pxmat[showtop = 2, showleft = 3]
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{4}
-$ \xmat [showleft = 1, showtop = 2,
+\begin{example}{5}
+$
+  \xmat [showleft = 1, showtop = 2,
          format = \texttt{#1[#2][#3]}]
-    {x}{m}{n} $
+    {x}{m}{n}
+$
 \end{example}
 % \iffalse
 %</example>
@@ -940,8 +914,7 @@ $ \identity = \int
 %
 % \subsection{The \modu{qtext.legacy} module}
 % This module was written just to offer a method to maintain documents written
-% with the legacy \pkg{physics} package. See \S\ref*{lega-subsec:qtext} of
-% \href{./physics2-legacy.pdf}{\texttt{texdoc physics2-legacy}} for
+% with the legacy \pkg{physics} package. See \S\ref{subsec:qtext} for
 % more information.
 % 
 % \end{documentation}
@@ -1182,9 +1155,9 @@ $ \beval[big]{\0}_a^b $
 %
 % By the way, you can set the ``order'' symbol in \modu{ab.legacy} through
 % the "order" option like this:
-% \begin{Verbatim}
-% \usephysicsmodule[order=O]{ab.legacy}
-% \end{Verbatim}
+% \begin{quote}
+% "\usephysicsmodule[order = O]{ab.legacy}"
+% \end{quote}
 % Then "$\order(N)$" yields $O(N)$.
 %
 % \subsection{Vector notation}
@@ -1196,14 +1169,14 @@ $ \beval[big]{\0}_a^b $
 % The \cs{vb}("*"), \cs{va}("*") and \cs{vu}("*") are not supported
 % in any module of \pkg{physics2}. But these commands can be defined by copying
 % the following lines below and pasting them in the preamble:
-% \begin{Verbatim}[fontsize=\small]
-% \makeatletter
-% \newcommand\vb{\@ifstar\boldsymbol\mathbf}
-% \newcommand\va[1]{\@ifstar{\vec{#1}}{\vec{\mathrm{#1}}}}
-% \newcommand\vu[1]{%
-%   \@ifstar{\hat{\boldsymbol{#1}}}{\hat{\mathbf{#1}}}}
-% \makeatother
-% \end{Verbatim}
+% \begin{quote}
+% "\makeatletter"\\
+% "\newcommand\vb{\@ifstar\boldsymbol\mathbf}"\\
+% "\newcommand\va[1]{\@ifstar{\vec{#1}}{\vec{\mathrm{#1}}}}"\\
+% "\newcommand\vu[1]{%"\\
+%   "\@ifstar{\hat{\boldsymbol{#1}}}{\hat{\mathbf{#1}}}}"\\
+% "\makeatother"
+% \end{quote}
 % The \cs{boldsymbol} command requires the \pkg*{amsmath} or \pkg*{bm} package.
 % If you prefer to use \pkg{bm}, you can also use the \cs{bm} command.
 % What's more, if you tried the commands above, you might find that,
@@ -1260,9 +1233,9 @@ $ 2 \divsymbol 1 $
 % abuses \pkg*{xparse}.
 %
 % It's suggested to write like this if you used the \modu{ab} module:
-% \begin{Verbatim}[fontsize=\small]
-% $ \sin^2 \ab( \frac{\alpha}{2} ) $
-% \end{Verbatim}
+% \begin{quote}
+% "$ \sin^2 \ab( \frac{\alpha}{2} ) $"
+% \end{quote}
 % Rather than take the superscript as an optional argument of the command of
 % log-like functions.
 %
@@ -1365,26 +1338,27 @@ Math ($\d x$) v.s.\ Text (\d x)
 %<*example>
 % \fi
 \begin{example}{3}
-\[ \bra < \frac \phi 2 | \]
-\[ \bra*< \frac \phi 2 | \]
-\[ \bra\Big< \phi  |     \]
+$ \bra    < \frac \phi 2 | $\quad
+$ \bra*   < \frac \phi 2 | $\quad
+$ \bra\Big< \phi         | $
 \end{example}
 % \iffalse
 %</example>
 % \fi
+% \DescribeMacro{\ket}
 % The argument of \cs{ket} should be delimited with "|" and ">",
 % that is,
-% \begin{center}
+% \begin{quote}
 % \cs{ket} "|" \meta{subformula} ">"
-% \end{center}
+% \end{quote}
 % For example,
 % \iffalse
 %<*example>
 % \fi
 \begin{example}{3}
-\[ \ket | \frac \psi 2 > \]
-\[ \ket*| \frac \psi 2 > \]
-\[ \ket\Big| \psi >      \]
+$ \ket    | \frac \psi 2 > $\quad
+$ \ket*   | \frac \psi 2 > $\quad
+$ \ket\Big| \psi         > $
 \end{example}
 % \iffalse
 %</example>
@@ -1393,7 +1367,7 @@ Math ($\d x$) v.s.\ Text (\d x)
 % If you want to write ``$>$'' and ``$<$'' for relations in the argument of
 % \cs{bra} and \cs{ket}, you can write "\mathrel{>}| and \verb|\mathrel{<}"
 % (although there is almost no such need).
-%
+% \DescribeMacro{\braket}
 % The argument of \cs{braket} should be delimited with "<" and ">",
 % that is,
 % \begin{quote}
@@ -1414,13 +1388,14 @@ $ \braket\Bigg<\0> $
 % \iffalse
 %</example>
 % \fi
+% \DescribeMacro{\ketbra}
 % The argument of \cs{ketbra} should be delimited with "|" and "|".
 % In the argument, ">" and "<" will be regarded as extensible $\rangle$
 % and $\langle$. That is,
-% \begin{center}
+% \begin{quote}
 % \cs{ketbra} "|" \meta{subformula$_1$} ">" \meta{optional}
 %   "<" \meta{subformula$_2$} "|"
-% \end{center}
+% \end{quote}
 % For example,
 % \iffalse
 %<*example>
@@ -1459,23 +1434,23 @@ $ \ketbra| \0 >_x^y < \psi | $
 % \cs{ket}, \cs{braket} and \cs{ketbra}. After these commands can be a star
 % ("*") or a square-bracket-delimited size option, the size option can
 % take the following values:
-% \begin{center}
-% "big",\quad"Big",\quad"bigg",\quad"Bigg",\quad
+% \begin{quote}
+% "big",\quad "Big",\quad "bigg",\quad "Bigg",\quad
 % "biggg"\quad or\quad"Biggg".
-% \end{center}
+% \end{quote}
 % Star stands for ``do not size the bra-ket automatically''.
 %
-% The argument(s) of these four commands are braced with "{| and \verb|}".
+% The argument(s) of these four commands are braced with "{" and "}".
 % \cs{bra} and \cs{ket} take one mandatory argument. For example,
 % \iffalse
 %<*example>
 % \fi
 \begin{example}{5}
 \def\0{\frac\phi2}
-\[ \bra {\0} \quad \bra* {\0}
-             \quad \bra[Big] {\0} \]
-\[ \ket {\0} \quad \ket* {\0}
-             \quad \ket[Big] {\0} \]
+$ \bra {\0} $\quad $ \bra* {\0}     $
+             \quad $ \bra[Big] {\0} $\\[1ex]
+$ \ket {\0} $\quad $ \ket* {\0}     $
+             \quad $ \ket[Big] {\0} $
 \end{example}
 % \iffalse
 %</example>
@@ -1486,9 +1461,9 @@ $ \ketbra| \0 >_x^y < \psi | $
 % \fi
 \begin{example}{4}
 \def\0{\frac\phi2}
-\[ \braket {\0} {\psi}   \quad
-   \braket*{\0} {\psi}   \quad
-   \braket[big] {\0} {\psi} \]
+$ \braket      {\0} {\psi} $\quad
+$ \braket*     {\0} {\psi} $\quad
+$ \braket[big] {\0} {\psi} $
 \end{example}
 % \iffalse
 %</example>
@@ -1500,14 +1475,13 @@ $ \ketbra| \0 >_x^y < \psi | $
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{7}
+\begin{example}{6}
 \def\0{\frac\phi2}
-\[ \braket [1] {\0} \quad
-   \braket*[1] {\0} \]
-\[ \braket [3] {\0}{A}{\psi}    \]
-\[ \braket[3,big] {\0}{A}{\psi}
-     \quad
-   \braket[Big,3] {\0}{A}{\psi} \]
+$ \braket [1] {\0}             $\quad
+$ \braket*[1] {\0}             $\\[1ex]
+$ \braket [3] {\0}{A}{\psi}    $\quad
+$ \braket[3,big] {\0}{A}{\psi} $\\[1ex]
+$ \braket[Big,3] {\0}{A}{\psi} $
 \end{example}
 % \iffalse
 %</example>
@@ -1520,10 +1494,11 @@ $ \ketbra| \0 >_x^y < \psi | $
 % \fi
 \begin{example}{6}
 \def\0{\frac\phi2}
-\[ \ketbra  {\0} {\psi}    \quad
-   \ketbra* {\0} {\psi}       \]
-\[ \ketbra [Bigg] {\0} {\psi} \]
-\[ \ketbra {\0} [_x^y] {\psi} \]
+$ \braket [1] {\0}             $\quad
+$ \braket*[1] {\0}             $\\[1ex]
+$ \braket [3] {\0}{A}{\psi}    $\quad
+$ \braket[3,big] {\0}{A}{\psi} $\\[1ex]
+$ \braket[Big,3] {\0}{A}{\psi} $
 \end{example}
 % \iffalse
 %</example>
@@ -1540,11 +1515,11 @@ $ \ketbra| \0 >_x^y < \psi | $
 %
 % Unfortunately, \pkg{physics2} do not support the \cs{mqty} command from
 % \pkg{physics}. If you are used to this command, you can write like this:
-% \begin{Verbatim}[fontsize=\small]
-% \newcommand\mqty[1]{\begin{matrix}#1\end{matrix}}
-% \newcommand\pmqty[1]{\begin{pmatrix}#1\end{pmatrix}}
-% $\ab(\mqty{foo})$  or  $\pmqty{foo}$
-% \end{Verbatim}
+% \begin{quote}
+% "\newcommand\mqty[1]{\begin{matrix}#1\end{matrix}}"\\
+% "\newcommand\pmqty[1]{\begin{pmatrix}#1\end{pmatrix}}"\\
+% "$\ab(\mqty{foo})$"  or  "$\pmqty{foo}$"
+% \end{quote}
 % These are equal to physics's "\mqty(foo)" (require \pkg{amsmath}).
 %
 % \pkg{physics2}'s \modu{diagmat} module provides \cs{diagmat} command
@@ -1553,15 +1528,9 @@ $ \ketbra| \0 >_x^y < \psi | $
 %<*example>
 % \fi
 \begin{example}{3}
-\[
-  \diagmat { 1, 2, 3 }
-\]
-\end{example}
-\begin{example}{4}
-\[
-  \pdiagmat [ empty = {} ]
-    { a, b, c, d }
-\]
+$ \diagmat { 1, 2, 3 } $\quad
+$ \pdiagmat [ empty = {} ]
+    { a, b, c } $
 \end{example}
 % \iffalse
 %</example>
@@ -1575,23 +1544,23 @@ $ \ketbra| \0 >_x^y < \psi | $
 %<*example>
 % \fi
 \begin{example}{3}
-\[
+$
   \xmat{a}{2}{3}
-\]
+$
 \end{example}
 \begin{example}{5}
 % \usephysicsmodule
-%   [showleft = 3, showtop = 3]{xmat}
-\[
+%   [showleft = 2, showtop = 3]{xmat}
+$
   \pxmat{X}{m}{n}
-\]
+$
 \end{example}
 \begin{example}{5}
-\[
-  \xmat [showleft=2,showtop=2,
-    format=\texttt{#1[#2][#3]}]
+$
+  \xmat [showleft = 1, showtop = 2,
+         format = \texttt{#1[#2][#3]}]
     {x}{m}{n}
-\]
+$
 \end{example}
 % \iffalse
 %</example>
@@ -1648,16 +1617,20 @@ $ \ketbra| \0 >_x^y < \psi | $
 %     \cs{phy@setkeys} \marg{module} \marg{key-val list}\\
 %     \cs{phy@processkeyopt} \marg{module}
 %   \end{quote}
-%   The position of \cs{phy@processkeyopt} in a \pkg{physics3} module is just the same
-%   as the position of \cs{ProcessOptions} in a regular \LaTeX\ package.
+%   The position of \cs{phy@processkeyopt} in a \pkg{physics3} module is just
+%   the same as the position of \cs{ProcessOptions} in a regular
+%   \LaTeX\ package.
 %    \begin{macrocode}
-\long\def\phy@define@key#1{\define@key{phy-#1}}
-\long\def\phy@setkeys#1{\setkeys{phy-#1}}
-\def\phy@processkeyopt#1{\let\reserved@a\@empty%
-\edef\reserved@a{\@ptionlist{\@currname.\@currext}}%
-\edef\reserved@a{\noexpand\phy@setkeys{#1}{\reserved@a}}%
-\reserved@a% the next line thanks to `geometry'
-\AtEndOfPackage{\let\@unprocessedoptions\relax}}
+\cs_new_nopar:Npn \phy@define@key   #1 { \define@key{phy-#1} }
+\cs_new_nopar:Npn \phy@setkeys      #1 { \setkeys{phy-#1}    }
+\cs_new:Npn       \phy@processkeyopt#1
+  {
+    \let\reserved@a\@empty
+    \edef\reserved@a{\@ptionlist{\@currname.\@currext}}%
+    \edef\reserved@a{\noexpand\phy@setkeys{#1}{\reserved@a}}%
+    \reserved@a% the next line thanks to `geometry'
+    \AtEndOfPackage{\let\@unprocessedoptions\relax}
+  }
 %    \end{macrocode}
 % \end{macro}
 % We use almost the same way to load \pkg{physics3} modules as \LaTeXe\ kernel
@@ -2081,8 +2054,10 @@ $ \ketbra| \0 >_x^y < \psi | $
 % \end{macro}
 % \begin{macro}{\phy@d@lxmb, \phy@d@lxab}
 %   \begin{quote}
-%     \cs{phy@d@lxmb} \meta{biggg or *} \meta{left delimiter} \meta{subformula} \meta{right delimiter}
-%     \cs{phy@d@lxab} \phantom{\meta{biggg or *}} \meta{left delimiter} \meta{subformula} \meta{right delimiter}
+%     \cs{phy@d@lxmb} \meta{biggg or *} \meta{left delimiter}\\
+%     "  "\meta{subformula} \meta{right delimiter}\\
+%     \cs{phy@d@lxab} \phantom{\meta{biggg or *}} \meta{left delimiter}\\
+%     "  "\meta{subformula} \meta{right delimiter}
 %   \end{quote}
 %    \begin{macrocode}
 \phy@d@l@genxm{mb}
@@ -2826,4 +2801,4 @@ $ \ketbra| \0 >_x^y < \psi | $
 %    \end{macrocode}
 % This part ends here.
 % \end{implementation}
-% \PrintIndex
+^^A % \PrintIndex
