@@ -156,8 +156,8 @@ The Current Maintainer of this work is **Mingyu Xia**.
 % \begin{abstract}
 % This is the document for \pkg{physics3} package, which defines commands for
 % typesetting math formulae faster and more simply. \pkg{physics3} is a
-% modularized package, each module provides its own function. %
-
+% modularized package, each module provides its own function.
+%
 % This document describes the \pkg{physics3} package in more detail.
 % But if you are a user of the legacy \pkg{physics} package, you can click
 % \href{./physics3-legacy.pdf}{here} to see the documentation for
@@ -478,7 +478,7 @@ $ \ketbra| \0 >_x^y < \psi | $
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{2}
+\begin{example}{1}
 $ \ab|{\braket<\psi|\hat H|\psi>}| $
 \end{example}
 % \iffalse
@@ -570,8 +570,8 @@ $ \braket[Big,3] {\0}{A}{\psi} $
 \def\0{\frac\phi2}
 $ \ketbra        {\0} {\psi} $\quad
 $ \ketbra*       {\0} {\psi} $\\[1ex]
-$ \ketbra [Bigg] {\0} {\psi} $\quad
-$ \ketbra {\0} [_x^y] {\psi} $
+$ \ketbra [bigg]{\0} {\psi} $\quad
+$ \ketbra [Big] {\0} [_x^y] {\psi} $
 \end{example}
 % \iffalse
 %</example>
@@ -834,8 +834,9 @@ $ \beval[big]{\0}_a^b $
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{1}
-$ \bm0 \bm A \bm z \bm\alpha \bm\Omega $
+\begin{example}{2}
+$ \bm0 \bm A\bm z \bm\alpha\bm\Omega $\\[1ex]
+$ \bm {0 A z \alpha \Omega}          $
 \end{example}
 % \iffalse
 %</example>
@@ -904,8 +905,8 @@ $ \curl(x,y,z) $
 % \usephysicsmodule{braket}
 $ \asin x  $\quad $ \PV f(z) $\quad
 $ \pv f(z) $\quad $ \Re z $\\[1ex]
-$ \identity = \int
-  \d^2\ketbra\alpha\alpha/\pi = \Identity$
+$ \identity = \int \d^2 \alpha
+  \ketbra\alpha\alpha/\pi = \Identity$
 \end{example}
 \endgroup
 % \iffalse
@@ -916,9 +917,10 @@ $ \identity = \int
 % This module was written just to offer a method to maintain documents written
 % with the legacy \pkg{physics} package. See \S\ref{subsec:qtext} for
 % more information.
-% 
 % \end{documentation}
+%
 % \setcounter{section}{0}
+%
 % \begin{documentation}
 %
 % \title{\pkg{physics2} manual for the legacy \pkg{physics} users}
@@ -931,15 +933,15 @@ $ \identity = \int
 % \date{Released 2026-01-17\quad \texttt{v0.1A}}
 %
 % \maketitle
-% 
+%
 % \begin{abstract}
-% This short document describes \pkg*{physics2} package for those who are
-% used to the \pkg*{physics} package. This document is only a simple reference
+% This short document describes \pkg{physics2} package for those who are
+% used to the \pkg{physics} package. This document is only a simple reference
 % manual for:
 % \begin{itemize}
 %   \item Frequent users of the legacy \pkg{physics} package;
 %   \item Those who have to maintain a document written with \pkg{physics};
-%   \item Users who failed to use \pkg*{unicode-math} with \pkg{physics}.
+%   \item Users who failed to use \pkg{unicode-math} with \pkg{physics}.
 % \end{itemize}
 % It seems no reason for any other user to read \emph{this} document instead of
 % the \href{./physics2.pdf}{package documentation} of \pkg{physics2},
@@ -966,7 +968,7 @@ $ \identity = \int
 % loading \pkg{physics} package, \pkg{physics} would overwrite the definition
 % ``silently''.
 %
-% The vector-notation part of \pkg{physics} uses \pkg*{amsmath}'s (more
+% The vector-notation part of \pkg{physics} uses \pkg{amsmath}'s (more
 % exactly, \texttt{amsbsy.sty}'s) \cs{boldsymbol} command to generate bold
 % vectors. Commands for cross/dot product are defined with \cs{boldsymbol}.
 % \cs{boldsymbol} uses \cs{mathversion}, a \LaTeXe\ kernel command that works
@@ -987,7 +989,7 @@ $ \identity = \int
 % command we mentioned in the first paragraph.
 %
 % Moreover, the code of \texttt{physics.sty} ``abuses'' the \texttt{g}-type
-% arguments of \pkg*{xparse} package. Therefore the syntax of \pkg{physics}
+% arguments of \pkg{xparse} package. Therefore the syntax of \pkg{physics}
 % package looks kind of weird.
 % See \href{https://tex.stackexchange.com/questions/470819/macros-dv-and-pdv-eat-the-subsequent-parenthesis-argument/470842#470842}
 % {here} for more.
@@ -1082,8 +1084,8 @@ $ \ab\Biggg| \frac12 |  $
 %
 % The \pkg{physics} package provides commands like \cs{pqty}, \cs{bqty}. In
 % the \modu{ab} module of \pkg{physics2}, these commands have changed to
-% \cs{pab}, \cs{bab}, etc. The following example shows all the 
-% \texttt{\textbackslash}$X$\texttt{ab} commands in \modu{ab} module:
+% \cs{pab}, \cs{bab}, etc. The following example shows all the
+% \cs{\meta{delimiter type}ab} commands in \modu{ab} module:
 % \iffalse
 %<*example>
 % \fi
@@ -1097,7 +1099,7 @@ $ \aab{\0} $\quad $ \vab{\0} $
 % \iffalse
 %</example>
 % \fi
-% \texttt{\textbackslash$X$ab} can take an optional star and an optional
+% \cs{\meta{delimiter type}ab} can take an optional star and an optional
 % \oarg{biggg} argument. For example,
 % \iffalse
 %<*example>
@@ -1113,7 +1115,9 @@ $ \pab[Big]{\0} \quad \bab*{\0} $
 % \pkg{physics} also provides the following commands:
 % \begin{quote}
 % "\abs"\quad  "\norm"\quad  "\eval"\quad "\order"\quad
+% \begingroup\color{gray}^^A
 % "\comm"\quad "\acomm"\quad "\pb"
+% \endgroup
 % \end{quote}
 % \pardanger These commands are not originally supported by \pkg{physics2}, but
 % the first four commands can be used through the \modu{ab.legacy} module of
@@ -1134,7 +1138,7 @@ $ \abs\0 $\quad $ \abs[big]\0 $%
 %</example>
 % \fi
 % Users of the legacy \pkg{physics} package should notice that the syntax of
-% \cs{eval} has been changed. The \modu{ab.legacy} module abandoned the 
+% \cs{eval} has been changed. The \modu{ab.legacy} module abandoned the
 % "\eval(foo|"-like syntax. The new \cs{eval}'s syntax is just like other
 % commands in this module. There are also two variants of \cs{eval} ---
 % \cs{peval} and \cs{beval}. For example,
@@ -1177,14 +1181,14 @@ $ \beval[big]{\0}_a^b $
 %   "\@ifstar{\hat{\boldsymbol{#1}}}{\hat{\mathbf{#1}}}}"\\
 % "\makeatother"
 % \end{quote}
-% The \cs{boldsymbol} command requires the \pkg*{amsmath} or \pkg*{bm} package.
+% The \cs{boldsymbol} command requires the \pkg{amsmath} or \pkg{bm} package.
 % If you prefer to use \pkg{bm}, you can also use the \cs{bm} command.
 % What's more, if you tried the commands above, you might find that,
 % the result of \cs{va} above is different from that of \pkg{physics}.
 % This is because, if you choose to present a vector in bold, there's almost
 % no need to put a \cs{vec} ($\vec{\mskip9mu}$) sign above it.
 %
-% However, the method above may not work well with \pkg*{unicode-math}
+% However, the method above may not work well with \pkg{unicode-math}
 % because there are so many OpenType math fonts without a bold version.
 % When using \pkg{unicode-math}, it's recommended to use \cs{symbf} and
 % \cs{symbfit} for a separate vector. For example, "$\symbf{0}$" yields
@@ -1217,7 +1221,7 @@ $ 2 \divsymbol 1 $
 % Actually, the nabla-related commands end with \cs{ab}. Thus, the subformula
 % after these commands can be delimited with "()", "[]" and "\{\}".
 %
-% The \modu{nabla.legacy} requires the \pkg*{fixdif} package at least
+% The \modu{nabla.legacy} requires the \pkg{fixdif} package at least
 % version 2.0 (file date: 2023/01/31 or after 2023/01/31).
 %
 % By the way, if you are used to writing \cs{bm} for a vector but interested in
@@ -1230,7 +1234,7 @@ $ 2 \divsymbol 1 $
 %
 % There's no plan for \pkg{physics2} to support this part of \pkg{physics}
 % completely. The syntax in this part of \pkg{physics} (such as "\tan[2](x)")
-% abuses \pkg*{xparse}.
+% abuses \pkg{xparse}.
 %
 % It's suggested to write like this if you used the \modu{ab} module:
 % \begin{quote}
@@ -1287,8 +1291,8 @@ $ F \qif G \qthen H $
 %
 % There is no plan for \pkg{physics2} to support this part of \pkg{physics}. If
 % you want to typeset the differential operators on a better sense, you can try
-% the \pkg*{fixdif} package; if you want an easy way to type derivatives, you
-% can try the \pkg*{derivative} package. These two packages can be used
+% the \pkg{fixdif} package; if you want an easy way to type derivatives, you
+% can try the \pkg{derivative} package. These two packages can be used
 % together. For example,
 % \iffalse
 %<*example>
@@ -1436,7 +1440,7 @@ $ \ketbra| \0 >_x^y < \psi | $
 % take the following values:
 % \begin{quote}
 % "big",\quad "Big",\quad "bigg",\quad "Bigg",\quad
-% "biggg"\quad or\quad"Biggg".
+% "biggg",\quad or\quad"Biggg".
 % \end{quote}
 % Star stands for ``do not size the bra-ket automatically''.
 %
@@ -1492,13 +1496,12 @@ $ \braket[Big,3] {\0}{A}{\psi} $
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{6}
+\begin{example}{5}
 \def\0{\frac\phi2}
-$ \braket [1] {\0}             $\quad
-$ \braket*[1] {\0}             $\\[1ex]
-$ \braket [3] {\0}{A}{\psi}    $\quad
-$ \braket[3,big] {\0}{A}{\psi} $\\[1ex]
-$ \braket[Big,3] {\0}{A}{\psi} $
+$ \ketbra        {\0} {\psi} $\quad
+$ \ketbra*       {\0} {\psi} $\\[1ex]
+$ \ketbra [bigg]{\0} {\psi} $\quad
+$ \ketbra [Big] {\0} [_x^y] {\psi} $
 \end{example}
 % \iffalse
 %</example>
@@ -1548,12 +1551,10 @@ $
   \xmat{a}{2}{3}
 $
 \end{example}
-\begin{example}{5}
+\begin{example}{3}
 % \usephysicsmodule
-%   [showleft = 2, showtop = 3]{xmat}
-$
-  \pxmat{X}{m}{n}
-$
+%   [showleft = 2, showtop = 1]{xmat}
+$ \pxmat{X}{m}{n} $
 \end{example}
 \begin{example}{5}
 $
@@ -1610,7 +1611,7 @@ $
 \def\phy@true{true}
 \def\phy@false{false}
 %    \end{macrocode}
-% \begin{macro}{\phy@define@key, \phy@setkeys, \phy@processkeyopt}
+% \begin{macro}{\@@_define_key:n, \@@_setkeys:n, \@@_processkeyopt:n}
 %   \begin{quote}
 %     \cs{phy@define@key} \marg{module} \marg{key}^^A
 %       \oarg{default value} \marg{code}\\
@@ -1621,9 +1622,9 @@ $
 %   the same as the position of \cs{ProcessOptions} in a regular
 %   \LaTeX\ package.
 %    \begin{macrocode}
-\cs_new_nopar:Npn \phy@define@key   #1 { \define@key{phy-#1} }
-\cs_new_nopar:Npn \phy@setkeys      #1 { \setkeys{phy-#1}    }
-\cs_new:Npn       \phy@processkeyopt#1
+\cs_new_nopar:Npn \@@_define_key:n    #1 { \define@key{phy-#1} }
+\cs_new_nopar:Npn \@@_setkeys:n       #1 { \setkeys{phy-#1}    }
+\cs_new:Npn       \@@_processkeyopt:n #1
   {
     \let\reserved@a\@empty
     \edef\reserved@a{\@ptionlist{\@currname.\@currext}}%
@@ -1631,6 +1632,9 @@ $
     \reserved@a% the next line thanks to `geometry'
     \AtEndOfPackage{\let\@unprocessedoptions\relax}
   }
+\cs_set_eq:NN \phy@define@key    \@@_define_key:n
+\cs_set_eq:NN \phy@setkeys       \@@_setkeys:n
+\cs_set_eq:NN \phy@processkeyopt \@@_processkeyopt:n
 %    \end{macrocode}
 % \end{macro}
 % We use almost the same way to load \pkg{physics3} modules as \LaTeXe\ kernel
@@ -1730,41 +1734,43 @@ $
 \DeclareRobustCommand\Bigggm{\mathrel\Biggg}
 \DeclareRobustCommand\Bigggr{\mathclose\Biggg}
 %    \end{macrocode}
-% \begin{macro}{\phy@mathvphantom}
+% \begin{macro}{\@@_mathvphantom:n}
 %   \begin{quote}
 %     \cs{phy@mathvphantom} \marg{math mode material}
 %   \end{quote}
 %   This command is just like \cs{vphantom} in \LaTeXe\ kernel but only works
 %   in math mode.
 %    \begin{macrocode}
-\def\phy@mathvphantom#1{
-  \hbox_set:Nn \l_@@_tmpa_box {}%
-  \tex_mathchoice:D
-    {
-      \hbox_set:Nn \l_tmpa_box { $\displaystyle#1$ }
-      \box_set_ht:Nn  \l_@@_tmpa_box { \box_ht:N \l_tmpa_box }
-      \box_set_dp:Nn  \l_@@_tmpa_box { \box_dp:N \l_tmpa_box }
-      \box_use_drop:N \l_@@_tmpa_box
-    }
-    {
-      \hbox_set:Nn \l_tmpa_box { $\textstyle#1$ }
-      \box_set_ht:Nn  \l_@@_tmpa_box { \box_ht:N \l_tmpa_box }
-      \box_set_dp:Nn  \l_@@_tmpa_box { \box_dp:N \l_tmpa_box }
-      \box_use_drop:N \l_@@_tmpa_box
-    }
-    {
-      \hbox_set:Nn \l_tmpa_box { $\scriptstyle#1$ }
-      \box_set_ht:Nn  \l_@@_tmpa_box { \box_ht:N \l_tmpa_box }
-      \box_set_dp:Nn  \l_@@_tmpa_box { \box_dp:N \l_tmpa_box }
-      \box_use_drop:N \l_@@_tmpa_box
-    }
-    {
-      \hbox_set:Nn \l_tmpa_box { $\scriptscriptstyle#1$ }
-      \box_set_ht:Nn  \l_@@_tmpa_box { \box_ht:N \l_tmpa_box }
-      \box_set_dp:Nn  \l_@@_tmpa_box { \box_dp:N \l_tmpa_box }
-      \box_use_drop:N \l_@@_tmpa_box
-    }%
-}
+\cs_new:Npn \@@_mathvphantom:n #1
+  {
+    \hbox_set:Nn \l_@@_tmpa_box {}%
+    \tex_mathchoice:D
+      {
+        \hbox_set:Nn \l_tmpa_box { $\displaystyle#1$ }
+        \box_set_ht:Nn  \l_@@_tmpa_box { \box_ht:N \l_tmpa_box }
+        \box_set_dp:Nn  \l_@@_tmpa_box { \box_dp:N \l_tmpa_box }
+        \box_use_drop:N \l_@@_tmpa_box
+      }
+      {
+        \hbox_set:Nn \l_tmpa_box { $\textstyle#1$ }
+        \box_set_ht:Nn  \l_@@_tmpa_box { \box_ht:N \l_tmpa_box }
+        \box_set_dp:Nn  \l_@@_tmpa_box { \box_dp:N \l_tmpa_box }
+        \box_use_drop:N \l_@@_tmpa_box
+      }
+      {
+        \hbox_set:Nn \l_tmpa_box { $\scriptstyle#1$ }
+        \box_set_ht:Nn  \l_@@_tmpa_box { \box_ht:N \l_tmpa_box }
+        \box_set_dp:Nn  \l_@@_tmpa_box { \box_dp:N \l_tmpa_box }
+        \box_use_drop:N \l_@@_tmpa_box
+      }
+      {
+        \hbox_set:Nn \l_tmpa_box { $\scriptscriptstyle#1$ }
+        \box_set_ht:Nn  \l_@@_tmpa_box { \box_ht:N \l_tmpa_box }
+        \box_set_dp:Nn  \l_@@_tmpa_box { \box_dp:N \l_tmpa_box }
+        \box_use_drop:N \l_@@_tmpa_box
+      }
+  }
+\cs_set_eq:NN \phy@mathvphantom \@@_mathvphantom:n
 %    \end{macrocode}
 % \end{macro}
 %
@@ -1772,14 +1778,12 @@ $
 %
 % Some common variables and functions for experimental \LaTeX3 syntax.
 %    \begin{macrocode}
-\ExplSyntaxOn
 \tl_new:N \l_@@_tmpa_tl
 \tl_new:N \l_@@_tmpb_tl
 %    \end{macrocode}
 % The function that can gobble one token.
 %    \begin{macrocode}
 \cs_new:Npn \_@@_gobble_i:n #1 { }
-\ExplSyntaxOff
 %</package>
 %    \end{macrocode}
 %
@@ -1992,16 +1996,7 @@ $
   {\mathopen#1\langle#2\mathclose#1\rangle\endgroup}
 %    \end{macrocode}
 % \end{macro}
-% \begin{macro}
-%   {
-%     \phy@del*,
-%     \phy@del\big,
-%     \phy@del\Big,
-%     \phy@del\bigg,
-%     \phy@del\Bigg,
-%     \phy@del\biggg,
-%     \phy@del\Biggg
-%  }
+% \begin{macro}{\phy@del}
 %   The syntax seems not important. These following lines seems only
 %   for \cs{ifcsname} to judge if the commands are defined.
 %    \begin{macrocode}
@@ -2282,7 +2277,6 @@ $
 %     \cs{phy@bk@in@\meta{n.roman}} \marg{subformula 1} \dots \marg{subformula $n$}
 %   \end{quote}
 %   \meta{n.roman} is $n$ in roman lowercase, where $n \in \{1,2,3\}$.
-% \end{macro}
 %    \begin{macrocode}
 \def\phy@bk@in@i#1{%
   \csname\@phy@bk@l\endcsname\langle{#1}%
@@ -2297,12 +2291,12 @@ $
   \csname\@phy@bk@m\endcsname\vert{#3}%
   \csname\@phy@bk@r\endcsname\rangle}
 %    \end{macrocode}
+% \end{macro}
 % \begin{macro}{\phy@bk@doopt, \phy@bk@do@pt}
 %   \begin{quote}
 %     \cs{phy@bk@doopt} \marg{clist}
 %   \end{quote}
 %   Parse the optional argument of \cs{braket}. This will add 3 entries to hash.
-% \end{macro}
 %    \begin{macrocode}
 \def\@phy@bk@do@pt#1,{\ifx#1\relax\@empty\else
   \edef\reserved@a{\zap@space#1 \@empty}%
@@ -2323,25 +2317,35 @@ $
   \expandafter\@phy@bk@do@pt\fi}
 \def\phy@bk@doopt#1{\@phy@bk@do@pt#1,\relax,}
 %    \end{macrocode}
+% \end{macro}
 % \begin{macro}{\ketbra}
 %   \begin{quote}
 %     \cs{ketbra} * [\meta{biggg}] \marg{subformula 1}\\
 %     "  "\oarg{between 1 and 2} \marg{subformula 2}
 %   \end{quote}
+%    \begin{macrocode}
+\DeclareDocumentCommand\ketbra{ s o m O{} m }
+  {%
+    \IfBooleanTF{#1}%
+      {%
+        \mathopen\vert#3\mathclose\rangle#4%
+        \mathopen\langle#5\mathclose\vert
+      }%
+      {
+        \IfValueTF{#2}%
+          {\csname#2l\endcsname\vert#3\csname#2r\endcsname\rangle#4%
+            \csname#2l\endcsname\langle#5\csname#2r\endcsname\vert}%
+          {\begingroup
+            \phy@abopen\vert
+              \mathopen{\phy@mathvphantom{#5}}#3\phy@abclose\rangle#4%
+            \phy@abopen\langle#5
+              \mathclose{\phy@mathvphantom{#3}}\phy@abclose\vert
+          \endgroup}%
+      }%
+  }
+%    \end{macrocode}
 % \end{macro}
 %    \begin{macrocode}
-\DeclareDocumentCommand\ketbra{ s o m O{} m }{%
-  \IfBooleanTF{#1}%
-    {\mathopen\vert#3\mathclose\rangle#4\mathopen\langle#5\mathclose\vert}%
-    {\IfValueTF{#2}%
-      {\csname#2l\endcsname\vert#3\csname#2r\endcsname\rangle#4%
-        \csname#2l\endcsname\langle#5\csname#2r\endcsname\vert}%
-      {\begingroup
-        \phy@abopen\vert\mathopen{\phy@mathvphantom{#5}}#3\phy@abclose\rangle#4%
-        \phy@abopen\langle#5\mathclose{\phy@mathvphantom{#3}}\phy@abclose\vert
-      \endgroup}%
-    }%
-}
 %</braket>
 %    \end{macrocode}
 % Restore the namespace.
@@ -2357,15 +2361,18 @@ $
 %    \end{macrocode}
 % Boolean options.
 %    \begin{macrocode}
-\phy@define@key{doubleprod}{crosssymbol}{\def\@phy@dbl@c{#1}}
-\phy@define@key{doubleprod}{dotsymbol}{\def\@phy@dbl@d{#1}}
-\phy@define@key{doubleprod}{crossscale}{\def\@phy@dbl@sc{#1}}
-\phy@define@key{doubleprod}{dotscale}{\def\@phy@dbl@sd{#1}}
-\phy@define@key{doubleprod}{crossopenup}{\def\@phy@dbl@oc{#1}}
-\phy@define@key{doubleprod}{dotopenup}{\def\@phy@dbl@od{#1}}
-\phy@setkeys{doubleprod}{crosssymbol=\times,dotsymbol=\ldotp,
-  crossscale=0.8,dotscale=1,crossopenup=.02,dotopenup=.2}
-\phy@processkeyopt{doubleprod}
+\@@_define_key:n { doubleprod } { crosssymbol } { \def\@phy@dbl@c{#1}  }
+\@@_define_key:n { doubleprod } { dotsymbol   } { \def\@phy@dbl@d{#1}  }
+\@@_define_key:n { doubleprod } { crossscale  } { \def\@phy@dbl@sc{#1} }
+\@@_define_key:n { doubleprod } { dotscale    } { \def\@phy@dbl@sd{#1} }
+\@@_define_key:n { doubleprod } { crossopenup } { \def\@phy@dbl@oc{#1} }
+\@@_define_key:n { doubleprod } { dotopenup   } { \def\@phy@dbl@od{#1} }
+\@@_setkeys:n    { doubleprod }
+  {
+    crosssymbol = \times, crossscale = 0.8, crossopenup = .02,
+    dotsymbol   = \ldotp, dotscale   = 1,   dotopenup   = .2
+  }
+\@@_processkeyopt:n { doubleprod }
 \def\phy@dbl@gen#1#2#3#4{%
   \DeclareRobustCommand#1{\mathbin{\vcenter{\baselineskip\z@skip%
     \lineskip#4\phy@dblcurrf@size%
@@ -2387,7 +2394,7 @@ $
 \ProvidesExplFile{phy-diagmat.sty}{2024/01/10}{}
   {`diagmat' module of physics3}
 \RequirePackage { amsmath }
-\phy@define@key { diagmat } { empty } [ 0 ]
+\@@_define_key:n { diagmat } { empty } [ 0 ]
   { \tl_gset:Nn \l_@@_mat_empty_tl { #1 } }
 %    \end{macrocode}
 % This module requires some new variables.
@@ -2398,7 +2405,7 @@ $
 \tl_new:N \l_@@_diagmat_tl
 \tl_new:N \l_@@_mat_empty_tl
 \tl_gset:Nn \l_@@_mat_empty_tl { 0 }
-\phy@processkeyopt { diagmat }
+\@@_processkeyopt:n { diagmat }
 \keys_define:nn { phy/diagmat }
   {
     empty .tl_set:N = \l_@@_mat_empty_tl ,
@@ -2410,8 +2417,8 @@ $
 %   \end{quote}
 % \end{macro}
 %    \begin{macrocode}
-\DeclareDocumentCommand \diagmat { O{} m }
-  { \_@@_diagmat_type:nnn { } { #1 } { #2 } }
+\DeclareDocumentCommand \diagmat  { O{} m }
+  { \_@@_diagmat_type:nnn {   } { #1 } { #2 } }
 \DeclareDocumentCommand \pdiagmat { O{} m }
   { \_@@_diagmat_type:nnn { p } { #1 } { #2 } }
 \DeclareDocumentCommand \bdiagmat { O{} m }
@@ -2449,8 +2456,8 @@ $
                 \tl_if_empty:NTF \l_@@_tmpa_tl
                   { \tl_gput_right:Nn \l_@@_mat_line_tl { \l_@@_mat_empty_tl } }
 %    \end{macrocode}
-% Maybe it's better to use "\expandafter\scantokens\expandafter{\l_@@_tmpa_tl}"
-% in the next line.
+% Maybe it's better to use
+% "\expandafter\scantokens\expandafter{"\cs{l_@@_tmpa_tl}"}" in the next line.
 %    \begin{macrocode}
                   { \tl_gput_right:No \l_@@_mat_line_tl { \l_@@_tmpa_tl } }
               }
@@ -2519,7 +2526,7 @@ $
 %    \end{macrocode}
 % \begin{macro}[pTF]{\_@@_if_digits_only:n}
 %   \begin{quote}
-%     \cs{_@@_if_digits_only:nTF} \marg{token list} \marg{true code} \marg{flase code}
+%     \cs{@@_if_digits_only:nTF} \marg{token list} \marg{true code} \marg{flase code}
 %   \end{quote}
 %   Use \LaTeX3 regular expression to tell if \meta{token list}
 %   (the numbers of rows or columns) contain digits only.
@@ -2533,7 +2540,7 @@ $
 %    \end{macrocode}
 % \begin{macro}{\_@@_xmat_type:nnnnn}
 %   \begin{quote}
-%     \cs{_@@_xmat_type:nnnnn} \marg{delimiter type} \marg{key-val list}\\
+%     \cs{@@_xmat_type:nnnnn} \marg{delimiter type} \marg{key-val list}\\
 %     "  "\marg{common entry} \marg{row number} \marg{column number}
 %   \end{quote}
 % \end{macro}
@@ -2633,7 +2640,7 @@ $
 \ProvidesFile{phy-ab.legacy.sty}
   [2023/10/24 `ab.legacy' module of physics3]
 %    \end{macrocode}
-% Requires \modu{ab}'s |tight| option.
+% Requires \modu{ab}'s "tight" option.
 %    \begin{macrocode}
 \phy@requiremodule{ab}
 \phy@define@key{ab.legacy}{order}[\mathcal{O}]{\def\phy@ab@ordersym{#1}}
@@ -2784,8 +2791,11 @@ $
   {
     \mode_if_math:TF
       {
-        \tl_if_head_eq_catcode:nNTF { #1 } A
-          { \symbfit { #1 } } { \symbf { #1 } }
+        \tl_map_inline:nn { #1 }
+          {
+            \tl_if_head_eq_catcode:nNTF { ##1 } A
+              { \symbfit { ##1 } } { \symbf { ##1 } }
+          }
       }
       {
         \PackageError { physics3 }
@@ -2801,4 +2811,4 @@ $
 %    \end{macrocode}
 % This part ends here.
 % \end{implementation}
-^^A % \PrintIndex
+% \PrintIndex
