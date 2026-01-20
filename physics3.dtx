@@ -163,7 +163,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
 % \pkg{physics} users before you start. If you never used \pkg{physics} package
 % before, just read \emph{this} documentation.
 % \end{abstract}
-% \label{doc:physics2-documentation}
+% \label{doc:physics3-documentation}
 %
 % \tableofcontents
 %
@@ -590,33 +590,36 @@ $ \ketbra [Big] {\0} [_x^y] {\psi} $
 % \begin{function}
 %   {\diagmat, \pdiagmat, \bdiagmat, \Bdiagmat, \vdiagmat, \Vdiagmat}
 % \begin{syntax}
-%   \cs{\meta{delimiter type}diagmat} [empty = \meta{empty entry}] \marg{diag}
+%   \cs{\meta{delimiter type}diagmat}\meta{*}
+%   "  "[align = \meta{l|c|r}, empty = \meta{empty entry}] \marg{diag}
 % \end{syntax}
 % where \meta{diag} is the diagonal of the diagonal matrix. The entries should
-% be separated by commas. The "empty" option is optional, with default value
-% "0".
-% Prefixes like "p", "b", "B" have the same meaning as the "p", "b", "B"
-% in \pkg{amsmath}'s "pmatrix", "bmatrix" and "Bmatrix".
-% This module requires \pkg{amsmath}.
+% be separated by commas. The "empty" option is optional, with default blanck.
+% Prefixes like "p", "b", "B" have the same meaning as the "p", "b", "V"
+% in \pkg{mathtools}'s "pmatrix", "bmatrix" and "Vmatrix".
+% This module requires \pkg{mathtools}.
 % \end{function}
 % For example,
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{3}
-$ \diagmat { 1, \sqrt2, \sqrt[3]4 } $\quad
-$ \pdiagmat [ empty = {} ]
-    { a, b, c } $
+\begin{example}{6}
+$ \diagmat { 1, \sqrt2, \sqrt[3]4 } $\qquad
+$ \pdiagmat [ empty = 0 ] { a, b, c } $\\[1ex]
+$ \diagmat* [ align = r ]
+    { 1, \sqrt2, \sqrt[3]4 } $\quad
+$ \bdiagmat* { 1, \sqrt2, \sqrt[3]4 } $\quad
+$ \Vdiagmat* [ empty = 0 ] { a, b, c } $
 \end{example}
 % \iffalse
 %</example>
 % \fi
 %
 % \paragraph{The options of \modu{diagmat} module}
-% You can set the default value of \cs{diagmat}'s empty entries in the module
-% option like this:
+% You can set the default value of \cs{diagmat}'s empty entries and align in
+% the module option like this:
 % \begin{quote}
-% "\usephysicsmodule[empty = {\cdot}]{diagmat}"
+% "\usephysicsmodule[empty = {\cdot}, align = r]{diagmat}"
 % \end{quote}
 %
 % \subsection{The \modu{doubleprod} module --- tensors' double product operator}
@@ -814,7 +817,7 @@ $ \beval[big]{\0}_a^b $
 % \end{quote}
 % For further information of this module,
 % see~\hyperref[doc:physics-legacy]^^A
-%   {\pkg{physics2} manual for the legacy \pkg{physics} users}.
+%   {\pkg{physics3} manual for the legacy \pkg{physics} users}.
 %
 % \subsection{The \modu{bm-um.legacy} module}
 % If you are maintaining a document with plenty of ``\cs{bm}''s or
@@ -908,7 +911,7 @@ $ \grad V$, $\div (x,y,z)$, $ \curl(x,y,z) $
 %
 % \begin{documentation}
 %
-% \title{\pkg{physics2} manual for the legacy \pkg{physics} users}
+% \title{\pkg{physics3} manual for the legacy \pkg{physics} users}
 %
 % \author{Mingyu Xia\thanks{\texttt{^^A
 %     \href{mailto:xiamingyu@westlake.edu.cn}{xiamingyu@westlake.edu.cn}^^A
@@ -920,7 +923,7 @@ $ \grad V$, $\div (x,y,z)$, $ \curl(x,y,z) $
 % \maketitle
 %
 % \begin{abstract}
-% This short document describes \pkg{physics2} package for those who are
+% This short document describes \pkg{physics3} package for those who are
 % used to the \pkg{physics} package. This document is only a simple reference
 % manual for:
 % \begin{itemize}
@@ -929,13 +932,14 @@ $ \grad V$, $\div (x,y,z)$, $ \curl(x,y,z) $
 %   \item Users who failed to use \pkg{unicode-math} with \pkg{physics}.
 % \end{itemize}
 % It seems no reason for any other user to read \emph{this} document instead of
-% the \hyperref[doc:physics2-documentation]{package documentation}
-% of \pkg{physics2}, because this document cannot describe the package
+% the \hyperref[doc:physics3-documentation]{package documentation}
+% of \pkg{physics3}, because this document cannot describe the package
 % in detail.
 %
-% In this document, the modules of \pkg{physics2} will be introduced in
+% In this document, the modules of \pkg{physics3} will be introduced in
 % the same order as the \pkg{physics} documentation.
 % \end{abstract}
+% \label{doc:physics-legacy}
 %
 % \section{Before you start}
 %
@@ -979,18 +983,18 @@ $ \grad V$, $\div (x,y,z)$, $ \curl(x,y,z) $
 % See \href{https://tex.stackexchange.com/questions/470819/macros-dv-and-pdv-eat-the-subsequent-parenthesis-argument/470842#470842}
 % {here} for more.
 %
-% \subsection{Loading \pkg{physics2}}
+% \subsection{Loading \pkg{physics3}}
 %
-% The \pkg{physics2} package includes different modules, among which every
+% The \pkg{physics3} package includes different modules, among which every
 % module focuses on one single function.
 %
-% Write the following line in the preamble to load \pkg{physics2}:
+% Write the following line in the preamble to load \pkg{physics3}:
 % \begin{quote}
-% "\usepackage{physics2}"
+% "\usepackage{physics3}"
 % \end{quote}
-% But this is not enough. \pkg{physics2} contains different modules.
-% If you want to load any module of \pkg{physics2}, write this line after
-% loading \pkg{physics2} package:
+% But this is not enough. \pkg{physics3} contains different modules.
+% If you want to load any module of \pkg{physics3}, write this line after
+% loading \pkg{physics3} package:
 % \begin{quote}
 % \cs{usephysicsmodule}\marg{module list}
 % \end{quote}
@@ -1005,19 +1009,19 @@ $ \grad V$, $\div (x,y,z)$, $ \curl(x,y,z) $
 % option ``"legacy"''.
 %
 % \pardanger Attention, if you used any font package in your document, remember
-% that \pkg{physics2} requires to be loaded \emph{after} font packages.
+% that \pkg{physics3} requires to be loaded \emph{after} font packages.
 %
 % \section{List of commands}
 %
 % \subsection{Automatic bracing}\label{subsec:ab-and-legacy}
 % As mentioned in \S\ref{subsec:physics-legacy-problems}, the \cs{qty} command
 % from \pkg{physics} would cause conflicts with \pkg{siunitx}. The command for
-% automatic braces in \pkg{physics2} is \cs{ab}, a shorthand for
+% automatic braces in \pkg{physics3} is \cs{ab}, a shorthand for
 % {\bfseries a}utomatic {\bfseries b}races.
 %
 % \DescribeMacro{\ab}
 % The \cs{ab} command requires the \modu{ab} module, so don't forget to write
-% "\usephysicsmodule{ab}" in the preamble after you loaded \pkg{physics2}.
+% "\usephysicsmodule{ab}" in the preamble after you loaded \pkg{physics3}.
 % Always remember, \emph{do not put an \cs{ab} separately in the end of a math
 % formula}. Take some examples:
 % \iffalse
@@ -1050,7 +1054,7 @@ $ \ab\{ \frac12 \} $
 %
 % Between \cs{ab} and the first delimiter can be a ``biggg'' command, that is,
 % from \cs{big} to \cs{Bigg}. Actually, you can also write \cs{biggg} and
-% \cs{Biggg} because \pkg{physics2} defines these after you load it. For
+% \cs{Biggg} because \pkg{physics3} defines these after you load it. For
 % example,
 % \iffalse
 %<*example>
@@ -1068,7 +1072,7 @@ $ \ab\Biggg| \frac12 |  $
 % needn't use the \cs{ab} command at all.
 %
 % The \pkg{physics} package provides commands like \cs{pqty}, \cs{bqty}. In
-% the \modu{ab} module of \pkg{physics2}, these commands have changed to
+% the \modu{ab} module of \pkg{physics3}, these commands have changed to
 % \cs{pab}, \cs{bab}, etc. The following example shows all the
 % \cs{\meta{delimiter type}ab} commands in \modu{ab} module:
 % \iffalse
@@ -1104,9 +1108,9 @@ $ \pab[Big]{\0} \quad \bab*{\0} $
 % "\comm"\quad "\acomm"\quad "\pb"
 % \endgroup
 % \end{quote}
-% \pardanger These commands are not originally supported by \pkg{physics2}, but
+% \pardanger These commands are not originally supported by \pkg{physics3}, but
 % the first four commands can be used through the \modu{ab.legacy} module of
-% \pkg{physics2}:
+% \pkg{physics3}:
 % \begin{quote}
 % "\usephysicsmodule{ab.legacy}"
 % \end{quote}
@@ -1151,12 +1155,12 @@ $ \beval[big]{\0}_a^b $
 %
 % \subsection{Vector notation}
 %
-% Unfortunately, there is not a plan for \pkg{physics2} to support this part
+% Unfortunately, there is not a plan for \pkg{physics3} to support this part
 % of \pkg{physics} completely, but the rest of this section will show some
 % methods to maintain the document written with \pkg{physics}.
 %
 % The \cs{vb}("*"), \cs{va}("*") and \cs{vu}("*") are not supported
-% in any module of \pkg{physics2}. But these commands can be defined by copying
+% in any module of \pkg{physics3}. But these commands can be defined by copying
 % the following lines below and pasting them in the preamble:
 % \begin{quote}
 % "\makeatletter"\\
@@ -1180,7 +1184,7 @@ $ \beval[big]{\0}_a^b $
 % $\symbf{0}$, and "$\symbfit{A}$" yields $\symbfit{A}$.
 %
 % The \cs{vdot} and \cs{cross} commands are not supported in any module
-% of \pkg{physics2}. Actually, there is no need to use a bold ``$\cdot$''
+% of \pkg{physics3}. Actually, there is no need to use a bold ``$\cdot$''
 % or ``$\times$'' for the products of two vectors. Using \cs{cdot} and
 % \cs{times} is enough.
 %
@@ -1217,7 +1221,7 @@ $ 2 \divsymbol 1 $
 %
 % \subsection{Operators}
 %
-% There's no plan for \pkg{physics2} to support this part of \pkg{physics}
+% There's no plan for \pkg{physics3} to support this part of \pkg{physics}
 % completely. The syntax in this part of \pkg{physics} (such as "\tan[2](x)")
 % abuses \pkg{xparse}.
 %
@@ -1274,7 +1278,7 @@ $ F \qif G \qthen H $
 %
 % \subsection{Derivatives}
 %
-% There is no plan for \pkg{physics2} to support this part of \pkg{physics}. If
+% There is no plan for \pkg{physics3} to support this part of \pkg{physics}. If
 % you want to typeset the differential operators on a better sense, you can try
 % the \pkg{fixdif} package; if you want an easy way to type derivatives, you
 % can try the \pkg{derivative} package. These two packages can be used
@@ -1299,7 +1303,7 @@ Math ($\d x$) v.s.\ Text (\d x)
 %
 % \subsection{Dirac bra-ket notation}
 %
-% There are two solutions to Dirac bra-ket in \pkg{physics2} ---
+% There are two solutions to Dirac bra-ket in \pkg{physics3} ---
 % \modu{ab.braket} and \modu{braket}. These two modules are \emph{not}
 % compatible and neither of them supports \pkg{physics}'s syntax completely.
 % Click \hyperlink{para:ab.braket}{\textcolor{cyan}{here}} to see the
@@ -1500,7 +1504,7 @@ $ \ketbra [Big]  {\0} [_x^y] {\psi} $
 %
 % \subsection{Matrix macros}
 %
-% Unfortunately, \pkg{physics2} do not support the \cs{mqty} command from
+% Unfortunately, \pkg{physics3} do not support the \cs{mqty} command from
 % \pkg{physics}. If you are used to this command, you can write like this:
 % \begin{quote}
 % "\newcommand\mqty[1]{\begin{matrix}#1\end{matrix}}"\\
@@ -1509,14 +1513,14 @@ $ \ketbra [Big]  {\0} [_x^y] {\psi} $
 % \end{quote}
 % These are equal to physics's "\mqty(foo)" (require \pkg{amsmath}).
 %
-% \pkg{physics2}'s \modu{diagmat} module provides \cs{diagmat} command
+% \pkg{physics3}'s \modu{diagmat} module provides \cs{diagmat} command
 % for diagonal matrices. For example,
 % \iffalse
 %<*example>
 % \fi
 \begin{example}{3}
 $ \diagmat { 1, 2, 3 } $\quad
-$ \pdiagmat [ empty = {} ]
+$ \pdiagmat* [ empty = 0, align = r ]
     { a, b, c } $
 \end{example}
 % \iffalse
@@ -1525,7 +1529,7 @@ $ \pdiagmat [ empty = {} ]
 % \cs{pdiagmat}, \cs{bdiagmat}, \cs{Bdiagmat}, \cs{vdiagmat} and \cs{Vdiagmat}
 % are also available.
 %
-% \pkg{physics2}'s \modu{xmat} module provides \cs{xmat} command
+% \pkg{physics3}'s \modu{xmat} module provides \cs{xmat} command
 % for matrices with formatted entries. For example,
 % \iffalse
 %<*example>
@@ -1775,10 +1779,6 @@ $
 %    \begin{macrocode}
 %</package>
 %    \end{macrocode}
-%
-% \noindent\hrulefill\quad
-% \lower.5ex\hbox{Modules written in \LaTeXe\ syntax}^^A
-% \quad\hrulefill
 %
 % Temporally disable the namespace.
 %    \begin{macrocode}
@@ -2389,67 +2389,72 @@ $
 %</doubleprod>
 %    \end{macrocode}
 %
-% \noindent\hrulefill\quad
-% \lower.5ex\hbox{Modules written in \LaTeX3 syntax}^^A
-% \quad\hrulefill
-%
 % \subsection{The \modu{diagmat} module}
 %    \begin{macrocode}
 %<*diagmat>
-\ProvidesExplFile{phy-diagmat.sty}{2024/01/10}{}
+\ProvidesExplFile{phy-diagmat.sty}{2024-01-10}{}
   {`diagmat' module of physics3}
-\RequirePackage { amsmath }
+\RequirePackage { mathtools }
 \@@_define_key:n { diagmat } { empty } [ 0 ]
   { \tl_gset:Nn \l_@@_mat_empty_tl { #1 } }
 %    \end{macrocode}
+% \begin{variable}
+%   {
+%     \l_@@_mat_diag_clist,
+%     \l_@@_mat_dim_int,
+%     \l_@@_mat_line_tl,
+%     \l_@@_diagmat_tl,
+%     \l_@@_mat_empty_tl,
+%     \l_@@_mat_align_tl,
+%   }
 % This module requires some new variables.
 %    \begin{macrocode}
 \clist_new:N \l_@@_mat_diag_clist
-\int_new:N \l_@@_mat_dim_int
-\tl_new:N \l_@@_mat_line_tl
-\tl_new:N \l_@@_diagmat_tl
-\tl_new:N \l_@@_mat_empty_tl
-\tl_gset:Nn \l_@@_mat_empty_tl { 0 }
+\int_new:N   \l_@@_mat_dim_int
+\tl_new:N    \l_@@_mat_line_tl
+\tl_new:N    \l_@@_diagmat_tl
+\tl_new:N    \l_@@_mat_empty_tl
+\tl_new:N    \l_@@_mat_align_tl
 \@@_processkeyopt:n { diagmat }
 \keys_define:nn { phy/diagmat }
   {
-    empty .tl_set:N = \l_@@_mat_empty_tl ,
+    empty   .tl_set:N  = \l_@@_mat_empty_tl,
+      empty .initial:n = {},
+    align   .tl_set:N  = \l_@@_mat_align_tl,
   }
 %    \end{macrocode}
+% \end{variable}
 % \begin{macro}{\diagmat, \pdiagmat, \bdiagmat, \Bdiagmat, \vdiagmat, \Vdiagmat}
 %   \begin{quote}
 %     \cs{\meta{delimiter type}diagmat} \oarg{key-val list} \marg{diagonal}
 %   \end{quote}
-% \end{macro}
 %    \begin{macrocode}
-\DeclareDocumentCommand \diagmat  { O{} m }
-  { \_@@_diagmat_type:nnn {   } { #1 } { #2 } }
-\DeclareDocumentCommand \pdiagmat { O{} m }
-  { \_@@_diagmat_type:nnn { p } { #1 } { #2 } }
-\DeclareDocumentCommand \bdiagmat { O{} m }
-  { \_@@_diagmat_type:nnn { b } { #1 } { #2 } }
-\DeclareDocumentCommand \Bdiagmat { O{} m }
-  { \_@@_diagmat_type:nnn { B } { #1 } { #2 } }
-\DeclareDocumentCommand \vdiagmat { O{} m }
-  { \_@@_diagmat_type:nnn { v } { #1 } { #2 } }
-\DeclareDocumentCommand \Vdiagmat { O{} m }
-  { \_@@_diagmat_type:nnn { V } { #1 } { #2 } }
+\clist_map_inline:nn
+  { {}, p, b, B, v, V }
+  {
+    \exp_after:wN \DeclareDocumentCommand \cs:w #1diagmat\cs_end: { s O{} m }
+      {
+        \IfBooleanTF { ##1 }
+          { \@@_diagmat_type:nnn { #1small } { ##2 } { ##3 } }
+          { \@@_diagmat_type:nnn { #1      } { ##2 } { ##3 } }
+      }
+  }
 %    \end{macrocode}
+% \end{macro}
 % \begin{macro}{\_@@_diagmat_type:nnn}
 %   \begin{quote}
 %     \cs{@@_diagmat_type:nnn} \marg{delimiter type}\\
 %     "  "\marg{key-val list} \marg{diagonal}
 %   \end{quote}
-% \end{macro}
 %    \begin{macrocode}
 \cs_new:Npn \_@@_diagmat_type:nnn #1#2#3
   {
     \group_begin:
-    \clist_set:Nn \l_@@_mat_diag_clist { #3 }
+    \clist_set:Nn \l_@@_mat_diag_clist {#3}
     \int_set:Nn \l_@@_mat_dim_int { \clist_count:N \l_@@_mat_diag_clist }
     \int_compare:nNnT { \l_@@_mat_dim_int } > { \value { MaxMatrixCols } }
       { \setcounter { MaxMatrixCols } { \l_@@_mat_dim_int } }
-    \keys_set:nn { phy/diagmat } { #2 }
+    \keys_set:nn { phy/diagmat } {#2}
     \tl_gclear:N \l_@@_diagmat_tl
     \int_step_inline:nnn { 1 } { \l_@@_mat_dim_int }
       {
@@ -2478,12 +2483,21 @@ $
         \tl_gput_right:No \l_@@_diagmat_tl { \l_@@_mat_line_tl }
         \tl_gclear:N \l_@@_mat_line_tl
       }
-    \begin { #1 matrix }
-      \tl_use:N \l_@@_diagmat_tl
-    \end { #1 matrix }
+    \tl_if_empty:NTF { \l_@@_mat_align_tl }
+      {
+        \begin { #1 matrix }
+          \tl_use:N \l_@@_diagmat_tl
+        \end { #1 matrix }
+      }
+      {
+        \begin { #1 matrix* } [ \l_@@_mat_align_tl ]
+          \tl_use:N \l_@@_diagmat_tl
+        \end { #1 matrix* }
+      }
     \group_end:
   }
 %    \end{macrocode}
+% \end{macro}
 %    \begin{macrocode}
 \file_input_stop:
 %    \end{macrocode}
@@ -2645,10 +2659,6 @@ $
 %    \end{macrocode}
 % This part ends here.
 %
-% \noindent\hrulefill\quad
-% \lower.5ex\hbox{Legacy modules written in \LaTeXe\ syntax}^^A
-% \quad\hrulefill
-%
 % \subsection{The \modu{ab.legacy} module}
 %    \begin{macrocode}
 %<*ab.legacy>
@@ -2682,10 +2692,6 @@ $
 %    \begin{macrocode}
 %</ab.legacy>
 %    \end{macrocode}
-%
-% \noindent\hrulefill\quad
-% \lower.5ex\hbox{Legacy modules written in \LaTeX3 syntax}^^A
-% \quad\hrulefill
 %
 % \subsection{The \modu{op.legacy} module}
 %    \begin{macrocode}
