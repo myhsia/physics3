@@ -693,11 +693,9 @@ $
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{4}
-$
-  \bxmat[showtop = 1, showleft = 2]
-    {X}{m}{n}
-$
+\begin{example}{2}
+$ \bxmat[showtop = 1, showleft = 2]
+    {X}{m}{n} $
 \end{example}
 % \iffalse
 %</example>
@@ -716,7 +714,7 @@ $
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{4}
+\begin{example}{3}
 %  \usephysicsmodule
 %    [showtop = 1, showleft = 2]{xmat}
 \[ \pxmat{A}{8}{8} \]
@@ -735,7 +733,7 @@ $
 % \fi
 \begin{example}{4}
 % \usephysicsmodule
-%   [showtop = 2, showleft = 3]{xmat}
+%   [showtop = 1, showleft = 2]{xmat}
 $ \pxmat[showtop = 2, showleft = 3]
     {A}{4}{4} $
 \end{example}
@@ -750,8 +748,8 @@ $ \pxmat[showtop = 2, showleft = 3]
 % \fi
 \begin{example}{5}
 $
-  \xmat [showleft = 1, showtop = 2,
-         format = \texttt{#1[#2][#3]}]
+  \xmat[showtop = 2, showleft = 1,
+        format = \texttt{#1[#2][#3]}]
     {x}{m}{n}
 $
 \end{example}
@@ -906,7 +904,7 @@ $ \curl(x,y,z) $
 $ \asin x  $\quad $ \PV f(z) $\quad
 $ \pv f(z) $\quad $ \Re z $\\[1ex]
 $ \identity = \int \d^2 \alpha
-  \ketbra\alpha\alpha/\pi = \Identity$
+  \ketbra\alpha\alpha/\pi = \Identity $
 \end{example}
 \endgroup
 % \iffalse
@@ -1222,7 +1220,7 @@ $ 2 \divsymbol 1 $
 % after these commands can be delimited with "()", "[]" and "\{\}".
 %
 % The \modu{nabla.legacy} requires the \pkg{fixdif} package at least
-% version 2.0 (file date: 2023/01/31 or after 2023/01/31).
+% version 2.0 (file date on or after 2023/01/31).
 %
 % By the way, if you are used to writing \cs{bm} for a vector but interested in
 % \pkg{unicode-math}, the \modu{bm-um.legacy} module would be a passable
@@ -1310,7 +1308,6 @@ Math ($\d x$) v.s.\ Text (\d x)
 %   {\textsf{fixdif}} and
 % \href{http://mirrors.ctan.org/macros/latex/contrib/derivative/derivative.pdf}
 %   {\textsf{derivative}}.
-%
 % \pkg{fixdif}'s commands behave better in superscripts and subscripts.
 %
 % \subsection{Dirac bra-ket notation}
@@ -1481,9 +1478,9 @@ $ \braket[big] {\0} {\psi} $
 % \fi
 \begin{example}{6}
 \def\0{\frac\phi2}
-$ \braket [1] {\0}             $\quad
-$ \braket*[1] {\0}             $\\[1ex]
-$ \braket [3] {\0}{A}{\psi}    $\quad
+$ \braket [1]    {\0}          $\quad
+$ \braket*[1]    {\0}          $\\[1ex]
+$ \braket [3]    {\0}{A}{\psi} $\quad
 $ \braket[3,big] {\0}{A}{\psi} $\\[1ex]
 $ \braket[Big,3] {\0}{A}{\psi} $
 \end{example}
@@ -1500,8 +1497,8 @@ $ \braket[Big,3] {\0}{A}{\psi} $
 \def\0{\frac\phi2}
 $ \ketbra        {\0} {\psi} $\quad
 $ \ketbra*       {\0} {\psi} $\\[1ex]
-$ \ketbra [bigg]{\0} {\psi} $\quad
-$ \ketbra [Big] {\0} [_x^y] {\psi} $
+$ \ketbra [bigg] {\0} {\psi} $\quad
+$ \ketbra [Big]  {\0} [_x^y] {\psi} $
 \end{example}
 % \iffalse
 %</example>
@@ -2723,13 +2720,18 @@ $
 \fi
 %</op.legacy>
 %    \end{macrocode}
+%
+% \noindent\hrulefill\quad
+% \lower.5ex\hbox{Legacy modules written in \LaTeX3 syntax}^^A
+% \quad\hrulefill
+%
 % \subsection{The \modu{qtext.legacy} module}
 % This module is written for the compatibility with the bad commands provided by
 % \pkg{physics} only. The commands in this module should NEVER be used!
 %    \begin{macrocode}
 %<*qtext.legacy>
-\ProvidesFile{phy-qtext.legacy.sty}
-  [2023/10/24 `qtext.legacy' module of physics3.sty]
+\ProvidesExplFile{phy-qtext.legacy.sty}{2023-10-24}{}
+  {`qtext.legacy' module of physics3.sty}
 \RequirePackage{amstext}
 \def\phy@qtext@#1#2{#1\text{#2}\quad}
 \DeclareRobustCommand\qqtext{\@ifstar{\phy@qtext@{}}{\phy@qtext@\quad}}
@@ -2737,35 +2739,19 @@ $
 \DeclareRobustCommand\qcomma{,\quad}
 \DeclareRobustCommand\qc{\qcomma}
 \DeclareRobustCommand\qcc{\@ifstar{\phy@qtext@{}{c.c}}{\phy@qtext@\quad{c.c}}}
-\def\phy@qtext@lega@gen@#1{%
-  \expandafter\DeclareRobustCommand\csname q#1\endcsname%
-    {\@ifstar{\phy@qtext@{}{#1}}{\phy@qtext@\quad{#1}}}}
-\phy@qtext@lega@gen@{if}
-\phy@qtext@lega@gen@{then}
-\phy@qtext@lega@gen@{else}
-\phy@qtext@lega@gen@{otherwise}
-\phy@qtext@lega@gen@{unless}
-\phy@qtext@lega@gen@{give}
-\phy@qtext@lega@gen@{using}
-\phy@qtext@lega@gen@{unless}
-\phy@qtext@lega@gen@{assume}
-\phy@qtext@lega@gen@{since}
-\phy@qtext@lega@gen@{let}
-\phy@qtext@lega@gen@{for}
-\phy@qtext@lega@gen@{all}
-\phy@qtext@lega@gen@{even}
-\phy@qtext@lega@gen@{odd}
-\phy@qtext@lega@gen@{integer}
-\phy@qtext@lega@gen@{and}
-\phy@qtext@lega@gen@{or}
-\phy@qtext@lega@gen@{as}
-\phy@qtext@lega@gen@{in}
+\clist_map_inline:nn
+  {
+    if,       then,   else,   otherwise,  unless,
+    give,     using,  unless, assume,     since,
+    let,      for,    all,    even,       odd,
+    integer,  and,    or,     as,         in
+  }
+  {
+    \exp_after:wN \DeclareRobustCommand \cs:w q#1\cs_end:
+      { \@ifstar{ \phy@qtext@ {} {#1} } { \phy@qtext@ \quad {#1} } }
+  }
 %</qtext.legacy>
 %    \end{macrocode}
-%
-% \noindent\hrulefill\quad
-% \lower.5ex\hbox{Legacy modules written in \LaTeX3 syntax}^^A
-% \quad\hrulefill
 %
 % \subsection{The \modu{bm-um.legacy} module}
 %    \begin{macrocode}
