@@ -36,7 +36,7 @@ Modules of `physics3` provide the following supports:
 Issues
 ------
 
-The issue tracker for `LXGW` is currently located
+The issue tracker for `physics3` is currently located
 [on GitHub](https://github.com/myhsia/physics3).
 
 Copyright and License
@@ -73,8 +73,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
 \usepackage{physics3, fixdif, derivative}
 \usephysicsmodule{ab, ab.braket, diagmat, doubleprod}
 \usephysicsmodule[showtop = 1, showleft = 2]{xmat}
-\usephysicsmodule{ab.legacy, nabla.legacy, op.legacy,
-                  qtext.legacy, bm-um.legacy}
+\usephysicsmodule{ab.legacy, op.legacy, qtext.legacy, bm-um.legacy}
 \makeatletter
 \newwrite\example@out
 \def\example@name{\jobname.example.aux}
@@ -118,14 +117,14 @@ The Current Maintainer of this work is **Mingyu Xia**.
   \ht\@tempboxb=\ht\@tempboxa
   \box\@tempboxa\leftarrow\box\@tempboxb
 }}
-\protected\long\def\macroifelse#1#2#3{\par
+\protected \long \def \macroifelse#1#2#3{\par
   \textbf{if} #1 \textbf{then}\par
   \begingroup\advance\leftskip1em#2\par\endgroup
   \textbf{else}\par
   \begingroup\advance\leftskip1em#3\par\endgroup
   \textbf{endif}\par
 }
-\protected\def\macrocr{\par}
+\protected \def \macrocr{\par}
 \newdimen\ttwd
 \protected\def\updatettwd{^^A
   \setbox\@tempboxa\hbox{\normalsize\ttfamily x}
@@ -840,28 +839,12 @@ $ \bm {0 A z \alpha \Omega}          $
 %</example>
 % \fi
 %
-% \subsection{The \modu{nabla.legacy} module}
-% This module provides some commands related to nabla ($\nabla$). Notice that
-% this module requires the \pkg{fixdif} package with file date 2023/01/31 at
-% minimum.
-%
-% This module defines \cs{grad} and \cs{curl} and redefines \cs{div}.
-% For example,
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{2}
-$ \grad V$, $\div (x,y,z)$,
-$ \curl(x,y,z) $
-\end{example}
-% \iffalse
-%</example>
-% \fi
-% The ``$\divsymbol$'' symbol was redefined as \cs{divsymbol}.
-%
 % \subsection{The \modu{op.legacy} module}
 %
-% This module provides a series of commands for log-like operators.
+% This module provides a series of commands for log-like operators and some
+% commands related to nabla ($\nabla$).
+% Notice that this module requires the \pkg{fixdif} package with file date
+% 2023/01/31 at minimum.
 %
 % \begin{function}
 %   {
@@ -872,7 +855,8 @@ $ \curl(x,y,z) $
 %     \Res      \res,
 %     \PV       \pv,
 %     \Re       \Im,
-%     \Identity \identity
+%     \Identity \identity,
+%     \grad,    \curl, \div
 %   }
 %   \cs{Re} and \cs{Im} are redefined. The first five lines of commands
 %   yield what they look like in math mode.
@@ -899,17 +883,19 @@ $ \curl(x,y,z) $
 \makeatletter\def\phy@requiremodule#1{}%
 \def\PackageWarning#1#2{}%
 \catcode`\%14\relax \input phy-braket.sty \catcode`\%9\relax \makeatother
-\begin{example}{5}
+\begin{example}{6}
 % \usephysicsmodule{braket}
 $ \asin x  $\quad $ \PV f(z) $\quad
 $ \pv f(z) $\quad $ \Re z $\\[1ex]
-$ \identity = \int \d^2 \alpha
-  \ketbra\alpha\alpha/\pi = \Identity $
+$ \Identity = \identity = \int \d^2 \alpha
+  \ketbra\alpha\alpha/\pi $\\[1ex]
+$ \grad V$, $\div (x,y,z)$, $ \curl(x,y,z) $
 \end{example}
 \endgroup
 % \iffalse
 %</example>
 % \fi
+% The ``$\divsymbol$'' symbol was redefined as \cs{divsymbol}.
 %
 % \subsection{The \modu{qtext.legacy} module}
 % This module was written just to offer a method to maintain documents written
@@ -1197,7 +1183,7 @@ $ \beval[big]{\0}_a^b $
 % or ``$\times$'' for the products of two vectors. Using \cs{cdot} and
 % \cs{times} is enough.
 %
-% The commands related to ``$\nabla$'' are supported through \modu{nabla.legacy}
+% The commands related to ``$\nabla$'' are supported through \modu{op.legacy}
 % module. These commands are \cs{grad}, \cs{div} and \cs{curl}. These commands
 % should not be put in the end of a math formula either (just like \cs{ab}).
 % Notice that the former \cs{div} command for a ``$\divsymbol$'' (if there
@@ -1206,7 +1192,7 @@ $ \beval[big]{\0}_a^b $
 %<*example>
 % \fi
 \begin{example}{6}
-% \usephysicsmodule{nabla.legacy}
+% \usephysicsmodule{op.legacy}
 $ \grad F            $\quad
 $ \grad(\frac G2)    $\\[1ex]
 $ \div\Bigg[X]       $\quad
@@ -1219,7 +1205,7 @@ $ 2 \divsymbol 1 $
 % Actually, the nabla-related commands end with \cs{ab}. Thus, the subformula
 % after these commands can be delimited with "()", "[]" and "\{\}".
 %
-% The \modu{nabla.legacy} requires the \pkg{fixdif} package at least
+% The \modu{op.legacy} requires the \pkg{fixdif} package at least
 % version 2.0 (file date on or after 2023/01/31).
 %
 % By the way, if you are used to writing \cs{bm} for a vector but interested in
@@ -1781,6 +1767,11 @@ $
 % The function that can gobble one token.
 %    \begin{macrocode}
 \cs_new:Npn \_@@_gobble_i:n #1 { }
+%    \end{macrocode}
+%    \begin{macrocode}
+\file_input_stop:
+%    \end{macrocode}
+%    \begin{macrocode}
 %</package>
 %    \end{macrocode}
 %
@@ -2098,6 +2089,9 @@ $
 \phy@d@l@geny\Vab\Vert\Vert
 %    \end{macrocode}
 %    \begin{macrocode}
+\protect \endinput
+%    \end{macrocode}
+%    \begin{macrocode}
 %</ab>
 %    \end{macrocode}
 % \end{macro}
@@ -2197,6 +2191,11 @@ $
 \phy@d@l@genxm{kb.m}
 \phy@d@l@genxa{kb.a}
 \DeclareRobustCommand\ketbra{\phy@d@lx{kb.m}{kb.a}}
+%    \end{macrocode}
+%    \begin{macrocode}
+\protect \endinput
+%    \end{macrocode}
+%    \begin{macrocode}
 %</ab.braket>
 %    \end{macrocode}
 % \subsection{The \modu{braket} module}
@@ -2343,6 +2342,9 @@ $
 %    \end{macrocode}
 % \end{macro}
 %    \begin{macrocode}
+\protect \endinput
+%    \end{macrocode}
+%    \begin{macrocode}
 %</braket>
 %    \end{macrocode}
 % Restore the namespace.
@@ -2378,6 +2380,11 @@ $
 \def\phy@dblcurrf@size{\dimexpr\f@size pt\relax}
 \phy@dbl@gen\doublecross\@phy@dbl@sc\@phy@dbl@c\@phy@dbl@oc
 \phy@dbl@gen\doubledot\@phy@dbl@sd\@phy@dbl@d\@phy@dbl@od
+%    \end{macrocode}
+%    \begin{macrocode}
+\file_input_stop:
+%    \end{macrocode}
+%    \begin{macrocode}
 %</doubleprod>
 %    \end{macrocode}
 %
@@ -2475,6 +2482,11 @@ $
     \end { #1 matrix }
     \group_end:
   }
+%    \end{macrocode}
+%    \begin{macrocode}
+\file_input_stop:
+%    \end{macrocode}
+%    \begin{macrocode}
 %</diagmat>
 %    \end{macrocode}
 % \subsection{The \modu{xmat} module}
@@ -2623,6 +2635,11 @@ $
     \end { #1 matrix }
     \group_end:
   }
+%    \end{macrocode}
+%    \begin{macrocode}
+\file_input_stop:
+%    \end{macrocode}
+%    \begin{macrocode}
 %</xmat>
 %    \end{macrocode}
 % This part ends here.
@@ -2657,49 +2674,34 @@ $
 \phy@d@l@geny\eval.\vert
 \phy@d@l@geny\peval(\vert
 \phy@d@l@geny\beval[\vert
+%    \end{macrocode}
+%    \begin{macrocode}
+\protect \endinput
+%    \end{macrocode}
+%    \begin{macrocode}
 %</ab.legacy>
 %    \end{macrocode}
-% \subsection{The \modu{nabla.legacy} module}
-%    \begin{macrocode}
-%<*nabla.legacy>
-\ProvidesFile{phy-nabla.legacy.sty}
-  [2023/10/24 `nabla.legacy' module of physics3]
-\phy@requiremodule{ab}
-%    \end{macrocode}
-% Requires \pkg{fixdif} version 2.$x$.
-%    \begin{macrocode}
-\RequirePackage{fixdif}[2023/01/31]
-\letdif\phy@nl@nabla{nabla}
-\AtBeginDocument{\ifcsname div\endcsname\let\divsymbol\div\fi
-  \DeclareRobustCommand\grad{\phy@nl@nabla\ab}%
-  \DeclareRobustCommand\div{\phy@nl@nabla\cdot\ab}%
-  \DeclareRobustCommand\curl{\phy@nl@nabla\times\ab}%
-  \DeclareRobustCommand\laplacian{\phy@nl@nabla^2\ab}%
-}
-%</nabla.legacy>
-%    \end{macrocode}
+%
+% \noindent\hrulefill\quad
+% \lower.5ex\hbox{Legacy modules written in \LaTeX3 syntax}^^A
+% \quad\hrulefill
+%
 % \subsection{The \modu{op.legacy} module}
 %    \begin{macrocode}
 %<*op.legacy>
-\ProvidesFile{phy-op.legacy.sty}
-  [2023/10/24 `op.legacy' module of physics3]
+\ProvidesExplFile{phy-op.legacy.sty}{2023-10-24}{}
+  {`op.legacy' module of physics3}
 \phy@define@key{op.lega}{ReIm}[true]{\def\phy@reserveda{#1}}
 \phy@define@key{op.lega}{PV}{\def\@phy@oplega@PV{#1}}
 \phy@define@key{op.lega}{pv}{\def\@phy@oplega@pv{#1}}
 \phy@setkeys{op.lega}{PV=\mathcal{P},pv={p.v.},ReIm=true}
 \phy@processkeyopt{ab}
-\DeclareRobustCommand\asin{\mathop{\operator@font asin}\nolimits}
-\DeclareRobustCommand\acos{\mathop{\operator@font acos}\nolimits}
-\DeclareRobustCommand\atan{\mathop{\operator@font atan}\nolimits}
-\DeclareRobustCommand\acsc{\mathop{\operator@font acsc}\nolimits}
-\DeclareRobustCommand\asec{\mathop{\operator@font asec}\nolimits}
-\DeclareRobustCommand\acot{\mathop{\operator@font acot}\nolimits}
-\DeclareRobustCommand\Tr{\mathop{\operator@font Tr}\nolimits}
-\DeclareRobustCommand\tr{\mathop{\operator@font tr}\nolimits}
-\DeclareRobustCommand\rank{\mathop{\operator@font rank}\nolimits}
-\DeclareRobustCommand\erf{\mathop{\operator@font erf}\nolimits}
-\DeclareRobustCommand\Res{\mathop{\operator@font Res}\nolimits}
-\DeclareRobustCommand\res{\mathop{\operator@font res}\nolimits}
+\clist_map_inline:nn
+  { asin, acos, atan, acsc, asec, acot, Tr, tr, rank, erf, Res, res }
+  {
+    \exp_after:wN \DeclareRobustCommand \cs:w #1\cs_end:
+      { \mathop { \operator@font #1 } \nolimits }
+  }
 \DeclareRobustCommand\PV{\mathord{\@phy@oplega@PV}}
 \DeclareRobustCommand\pv{\mathop{\operator@font\@phy@oplega@pv{}}\nolimits}
 \RequirePackage{dsfont}
@@ -2718,12 +2720,27 @@ $
   \DeclareRobustCommand\Im{\mathop{\operator@font Im}\nolimits}%
 }
 \fi
+%    \end{macrocode}
+% Requires \pkg{fixdif} version 2.$x$.
+%    \begin{macrocode}
+\RequirePackage{fixdif}[2023/01/31]
+\letdif\phy@nl@nabla{nabla}
+%    \end{macrocode}
+%    \begin{macrocode}
+\phy@requiremodule{ab}
+\AtBeginDocument{\ifcsname div\endcsname\let\divsymbol\div\fi
+  \DeclareRobustCommand\grad{\phy@nl@nabla\ab}%
+  \DeclareRobustCommand\div{\phy@nl@nabla\cdot\ab}%
+  \DeclareRobustCommand\curl{\phy@nl@nabla\times\ab}%
+  \DeclareRobustCommand\laplacian{\phy@nl@nabla^2\ab}%
+}
+%    \end{macrocode}
+%    \begin{macrocode}
+\file_input_stop:
+%    \end{macrocode}
+%    \begin{macrocode}
 %</op.legacy>
 %    \end{macrocode}
-%
-% \noindent\hrulefill\quad
-% \lower.5ex\hbox{Legacy modules written in \LaTeX3 syntax}^^A
-% \quad\hrulefill
 %
 % \subsection{The \modu{qtext.legacy} module}
 % This module is written for the compatibility with the bad commands provided by
@@ -2750,6 +2767,11 @@ $
     \exp_after:wN \DeclareRobustCommand \cs:w q#1\cs_end:
       { \@ifstar{ \phy@qtext@ {} {#1} } { \phy@qtext@ \quad {#1} } }
   }
+%    \end{macrocode}
+%    \begin{macrocode}
+\file_input_stop:
+%    \end{macrocode}
+%    \begin{macrocode}
 %</qtext.legacy>
 %    \end{macrocode}
 %
@@ -2793,6 +2815,11 @@ $
           { Check ~ if ~ any ~ `\string\bm' ~ is ~ out ~ of ~ math ~ mode. }
       }
   }
+%    \end{macrocode}
+%    \begin{macrocode}
+\file_input_stop:
+%    \end{macrocode}
+%    \begin{macrocode}
 %</bm-um.legacy>
 %    \end{macrocode}
 % This part ends here.
