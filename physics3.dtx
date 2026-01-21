@@ -141,7 +141,10 @@ The Current Maintainer of this work is **Mingyu Xia**.
 %
 % \begin{documentation}
 %
-% \title{The \pkg{physics3} package}
+% \title{The \pkg{physics3} package\thanks{^^A
+%   \url{https://github.com/myhsia/physics3},
+%   \url{https://ctan.org/pkg/physics3}}
+% }
 %
 % \author{Mingyu Xia\thanks{\texttt{^^A
 %     \href{mailto:xiamingyu@westlake.edu.cn}{xiamingyu@westlake.edu.cn}^^A
@@ -486,6 +489,28 @@ $ \ab|{\braket<\psi|\hat H|\psi>}| $
 % \fi
 % Just add the braces.
 %
+% For convince, commands for typesetting inner/outerproduct and expectation
+% value are provided in this module.
+% \begin{function}{\innerproduct, \outerproduct, \expval}
+%   \begin{syntax}
+%     \cs{innerproduct} \marg{basis}
+%     \cs{outerproduct} \marg{basis}
+%     \cs{expval} \oarg{basis} \marg{operator}
+%   \end{syntax}
+% \end{function}
+% For example,
+% \iffalse
+%<*example>
+% \fi
+\begin{example}{3}
+$ \innerproduct \alpha $\quad
+$ \outerproduct \alpha $\quad\\[1ex]
+$ \expval{\hat A} = \expval[\psi]{\hat A} $
+\end{example}
+% \iffalse
+%</example>
+% \fi
+%
 % Next, the \modu{braket} module will be introduced. Please notice that
 % \modu{braket} is conflict with \modu{ab.braket}, they cannot be used together.
 %
@@ -495,8 +520,8 @@ $ \ab|{\braket<\psi|\hat H|\psi>}| $
 %<*example>
 % \fi
 \begingroup
-\makeatletter\def\phy@requiremodule#1{}%
-\def\PackageWarning#1#2{}%
+\makeatletter\def\phy@requiremodule#1{}^^A
+\def\PackageWarning#1#2{}^^A
 \catcode`\%14\relax \input phy-braket.sty \catcode`\%9\relax \makeatother
 % \iffalse
 %</example>
@@ -580,6 +605,27 @@ $ \ketbra [Big] {\0} [_x^y] {\psi} $
 %<*example>
 % \fi
 \endgroup
+% \iffalse
+%</example>
+% \fi
+% For convince, commands for typesetting inner/outerproduct and expectation
+% value are also provided in this module.
+% \begin{function}{\innerproduct, \outerproduct, \expval}
+%   \begin{syntax}
+%     \cs{innerproduct} \marg{basis}
+%     \cs{outerproduct} \marg{basis}
+%     \cs{expval} \oarg{basis} \marg{operator}
+%   \end{syntax}
+% \end{function}
+% For example,
+% \iffalse
+%<*example>
+% \fi
+\begin{example}{3}
+$ \innerproduct \alpha $\quad
+$ \outerproduct \alpha $\quad\\[1ex]
+$ \expval{\hat A} = \expval[\psi]{\hat A} $
+\end{example}
 % \iffalse
 %</example>
 % \fi
@@ -884,8 +930,8 @@ $ \bm {0 A z \alpha \Omega}          $
 %<*example>
 % \fi
 \begingroup
-\makeatletter\def\phy@requiremodule#1{}%
-\def\PackageWarning#1#2{}%
+\makeatletter\def\phy@requiremodule#1{}^^A
+\def\PackageWarning#1#2{}^^A
 \catcode`\%14\relax \input phy-braket.sty \catcode`\%9\relax \makeatother
 \begin{example}{6}
 % \usephysicsmodule{braket}
@@ -2189,16 +2235,18 @@ $
 \phy@AB@gen{kb.a}|{r||}{\phy@@ab@kb#1\phy@@end}
 \phy@d@l@genxm{kb.m}
 \phy@d@l@genxa{kb.a}
-\DeclareRobustCommand\ketbra{\phy@d@lx{kb.m}{kb.a}}
+\DeclareRobustCommand \ketbra {\phy@d@lx{kb.m}{kb.a}}
 %    \end{macrocode}
-% Define some high-level commands for inner product, outer product of basis in
-% Hilbert space and expectation value of operator.
+% \begin{macro}{\innerproduct, \outerproduct, \expval}
+% Define some high-level commands for inner product, outer product of basis
+% and expectation value.
 %    \begin{macrocode}
 \DeclareDocumentCommand \innerproduct { m } { \braket<#1|#1>  }
 \DeclareDocumentCommand \outerproduct { m } { \ketbra|#1><#1| }
 \DeclareDocumentCommand \expval { o m }
   { \IfNoValueTF {#1} { \braket<#2> } { \braket<#1|#2|#1> } }
 %    \end{macrocode}
+% \end{macro}
 %    \begin{macrocode}
 \protect \endinput
 %    \end{macrocode}
@@ -2256,24 +2304,25 @@ $
 %   \end{quote}
 % \end{macro}
 %    \begin{macrocode}
-\DeclareDocumentCommand\braket{ s O{} }{%
-  \IfBooleanTF{#1}%
-    {%
-      \gdef\@phy@bk@argnum{ii}%
-      \phy@bk@doopt{#2}%
-      \gdef\@phy@bk@l{mathopen}%
-      \gdef\@phy@bk@m{mathord}%
-      \gdef\@phy@bk@r{mathclose}%
-    }%
-    {%
-      \gdef\@phy@bk@argnum{ii}%
-      \gdef\@phy@bk@l{phy@abopen}%
-      \gdef\@phy@bk@m{middle}%
-      \gdef\@phy@bk@r{phy@abclose}%
-      \phy@bk@doopt{#2}%
-    }%
-  \csname phy@bk@in@\@phy@bk@argnum\endcsname%
-}
+\DeclareDocumentCommand\braket{ s O{} }
+  {%
+    \IfBooleanTF{#1}%
+      {%
+        \gdef\@phy@bk@argnum{ii}%
+        \phy@bk@doopt{#2}%
+        \gdef\@phy@bk@l{mathopen}%
+        \gdef\@phy@bk@m{mathord}%
+        \gdef\@phy@bk@r{mathclose}%
+      }%
+      {%
+        \gdef\@phy@bk@argnum{ii}%
+        \gdef\@phy@bk@l{phy@abopen}%
+        \gdef\@phy@bk@m{middle}%
+        \gdef\@phy@bk@r{phy@abclose}%
+        \phy@bk@doopt{#2}%
+      }%
+    \csname phy@bk@in@\@phy@bk@argnum\endcsname
+  }
 %    \end{macrocode}
 % \begin{macro}{\phy@bk@in@i, \phy@bk@in@ii, \phy@bk@in@iii}
 %   \begin{quote}
@@ -2348,8 +2397,8 @@ $
   }
 %    \end{macrocode}
 % \end{macro}
-% Define some high-level commands for inner product, outer product of basis in
-% Hilbert space and expectation value of operator.
+% Define some high-level commands for inner product, outer product of basis
+% and expectation value.
 %    \begin{macrocode}
 \DeclareDocumentCommand \innerproduct { m } { \braket{#1}{#1} }
 \DeclareDocumentCommand \outerproduct { m } { \ketbra{#1}{#1} }
