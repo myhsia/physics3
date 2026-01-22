@@ -412,7 +412,7 @@ $ \pab[Big]{\0} $\quad $ \bab*{\0} $
 % This two modules both provides seven commands
 % \begin{quote}
 %   \cs{bra}, \cs{ket}, \cs{braket}, \cs{ketbra},
-%   \cs{innerproduct}, \cs{outerproduct}, and~\cs{expval}
+%   \cs{bknorm},        \cs{kbproj}, \cs{expval}
 % \end{quote}
 % After these commands can be a star ("*") or a ``biggg''
 % command. These commands share similar syntaxes like \cs{ab}'s syntax. But,
@@ -527,11 +527,11 @@ $ \ab|{\braket<\psi|\hat H|\psi>}| $
 % Just add the braces.
 %
 % For convince, commands for typesetting inner/outerproduct and expectation
-% value are provided in this module.
-% \begin{function}{\bknorm, \kbprojector, \expval}
+% value are provided in both modules.
+% \begin{function}{\bknorm, \kbproj, \expval}
 %   \begin{syntax}
-%     \cs{innerproduct} \meta{*} \oarg{size} \marg{basis}
-%     \cs{outerproduct} \meta{*} \oarg{size} \marg{basis}
+%     \cs{bknorm} \meta{*} \oarg{size} \marg{basis}
+%     \cs{kbproj} \meta{*} \oarg{size} \marg{basis}
 %     \cs{expval} \meta{*} \oarg{basis, size} \marg{operator}
 %   \end{syntax}
 % \end{function}
@@ -542,12 +542,12 @@ $ \ab|{\braket<\psi|\hat H|\psi>}| $
 \begin{example}{12}
 \def \0{\frac\alpha2}
 \edef\1{\uparrow,\downarrow}
-$ \bknorm           \0 $\quad
-$ \bknorm*          \0 $\quad
-$ \bknorm[big]      \0 $\\[2ex]
-$ \kbprojector      \0 $\quad
-$ \kbprojector*     \0 $\quad
-$ \kbprojector[big] \0 $\\[2ex]
+$ \bknorm      \0 $\quad
+$ \bknorm*     \0 $\quad
+$ \bknorm[big] \0 $\\[2ex]
+$ \kbproj      \0 $\quad
+$ \kbproj*     \0 $\quad
+$ \kbproj[big] \0 $\\[2ex]
 $ \expval \0 $\quad $ \expval*\0 $\quad
 $ \expval [big]     {\hat A} $\quad
 $ \expval [\psi, Big]\0 $\\[2ex]
@@ -652,37 +652,6 @@ $ \ketbra [Big]  {\0} [_x^y] {\psi} $
 %<*example>
 % \fi
 \endgroup
-% \iffalse
-%</example>
-% \fi
-% For convince, commands for typesetting inner/outerproduct and expectation
-% value are also provided in this module.
-% \begin{function}{\bknorm, \kbprojector, \expval}
-%   \begin{syntax}
-%     \cs{innerproduct} \meta{*} \oarg{size} \marg{basis}
-%     \cs{outerproduct} \meta{*} \oarg{size} \marg{basis}
-%     \cs{expval} \meta{*} \oarg{basis, size} \marg{operator}
-%   \end{syntax}
-% \end{function}
-% For example,
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{12}
-\def \0{\frac\alpha2}
-\edef\1{\uparrow,\downarrow}
-$ \bknorm           \0 $\quad
-$ \bknorm*          \0 $\quad
-$ \bknorm[big]      \0 $\\[2ex]
-$ \kbprojector      \0 $\quad
-$ \kbprojector*     \0 $\quad
-$ \kbprojector[big] \0 $\\[2ex]
-$ \expval \0 $\quad $ \expval*\0 $\quad
-$ \expval [big]     {\hat A} $\quad
-$ \expval [\psi, Big]\0 $\\[2ex]
-$ \expval [\1, Big] {\hat A} $\quad
-$ \expval*[\1]      {\hat A} $
-\end{example}
 % \iffalse
 %</example>
 % \fi
@@ -2303,7 +2272,7 @@ $
 \DeclareRobustCommand \ketbra {\phx@d@lx{kb.m}{kb.a}}
 %    \end{macrocode}
 % \end{macro}
-% \begin{macro}{\bknorm, \kbprojector, \expval}
+% \begin{macro}{\bknorm, \kbproj, \expval}
 % Define some high-level commands for inner product, outer product of basis
 % and expectation value.
 %    \begin{macrocode}
@@ -2317,7 +2286,7 @@ $
           {\phx@d@lx{bk.m}{bk.a}<#3|#3>}%
       }%
   }
-\DeclareDocumentCommand \kbprojector { s o m }
+\DeclareDocumentCommand \kbproj { s o m }
   {%
     \IfBooleanTF{#1}
       {%
@@ -2544,7 +2513,7 @@ $
   }
 %    \end{macrocode}
 % \end{macro}
-% \begin{macro}{\bknorm, \kbprojector, \expval}
+% \begin{macro}{\bknorm, \kbproj, \expval}
 % Define some high-level commands for inner product, outer product of basis
 % and expectation value.
 %    \begin{macrocode}
@@ -2571,7 +2540,7 @@ $
       }%
     \phx@bk@in@ii {#3} {#3}%
   }
-\DeclareDocumentCommand \kbprojector { s o m }
+\DeclareDocumentCommand \kbproj { s o m }
   {%
     \IfBooleanTF{#1}
       {%
