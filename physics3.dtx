@@ -2,11 +2,34 @@
 %
 % File: physics3.dtx
 % -----------------------------------------------------------------------
+%   Copyright (C) 2026      by Mingyu Xia     <myhsia@outlook.com>      *
+%                                                                       *
+%   Copyright (C) 2022-2024 by Tingxuan Zhang <alphaztx@163.com>        *
 % -----------------------------------------------------------------------
+%   This work may be distributed and/or modified under the conditions   *
+%   of the LaTeX Project Public License (LPPL), either version 1.3c of  *
+%   this license or (at your option) any later version.                 *
+%   The latest version of this license is in                            *
+%                                                                       *
+%       http://www.latex-project.org/lppl.txt                           *
+%                                                                       *
+%   and version 1.3c or later is part of all distributions of LaTeX     *
+%   version 2008 or later.                                              *
+%                                                                       *
+%   This work has the LPPL maintenance status `maintained'.             *
+%                                                                       *
+%   The Current Maintainer of this work is Mingyu Xia.                  *
 % -----------------------------------------------------------------------
-%   This work consists of the files
+%   This work consists of the files physics3.dtx,                       *
+%                                   physics3.ins,                       *
+%                 the derived files phy-*.sty,                          *
+%           the documentation files physics3.pdf,                       *
 %                               and README.md.                          *
 % -----------------------------------------------------------------------
+%                                                                       *
+%   Any modification of this file should ensure that the copyright and  *
+%   license information is placed in the derived files.                 *
+%                                                                       *
 % -----------------------------------------------------------------------
 %
 %<*internal>
@@ -15,7 +38,9 @@
 %
 %<*readme>
 [![CTAN Version](https://img.shields.io/ctan/v/physics3)](https://ctan.org/pkg/physics3)
+[![GitHub Release](https://img.shields.io/github/v/release/myhsia/physics3)](https://github.com/myhsia/physics3/releases/latest)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/myhsia/physics3)](https://github.com/myhsia/physics3/commits)
+[![Actions Status](https://github.com/myhsia/physics3/actions/workflows/main.yaml/badge.svg?branch=main)](https://github.com/myhsia/physics3/actions)
 [![GitHub Repo stars](https://img.shields.io/github/stars/myhsia/physics3)](https://github.com/myhsia/physics3)
 
 The `physics3` Package
@@ -42,9 +67,9 @@ The issue tracker for `physics3` is currently located
 Copyright and License
 ---------------------
 
-  Copyright (C) 2026      by Mingyu Xia     <myhsia@outlook.com>
+Copyright (C) 2026      by Mingyu Xia     \<myhsia@outlook.com\>
 
-  Copyright (C) 2022-2024 by Tingxuan Zhang <alphaztx@163.com>
+Copyright (C) 2022-2024 by Tingxuan Zhang \<alphaztx@163.com\>
 
 This work may be distributed and/or modified under the conditions
 of the LaTeX Project Public License (LPPL), either version 1.3c of
@@ -74,6 +99,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
 \usephysicsmodule{ab, ab.braket, diagmat, doubleprod}
 \usephysicsmodule[showtop = 1, showleft = 2]{xmat}
 \usephysicsmodule{ab.legacy, op.legacy, qtext.legacy, bm-um.legacy}
+\setcounter{tocdepth}{2}
 \makeatletter
 \newwrite\example@out
 \def\example@name{\jobname.example.aux}
@@ -926,7 +952,7 @@ $ \bm {0 A z \alpha \Omega}          $
 %     \PV,      \pv,
 %     \Re,      \Im,
 %     \Identity,\identity,
-%     \grad,    \curl, \div,
+%     \grad,    \curl, \div, \laplacian,
 %     \upe,     \iu
 %   }
 %   \cs{Re} and \cs{Im} are redefined. The first five lines of commands
@@ -3007,6 +3033,7 @@ $
 \letdif\phy@nl@nabla{nabla}
 %    \end{macrocode}
 % \begin{macro}{\grad, \div, \curl, \laplacian}
+%   $\nabla$-related operators.
 %    \begin{macrocode}
 \phy@requiremodule{ab}
 \AtBeginDocument

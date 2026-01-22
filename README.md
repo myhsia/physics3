@@ -1,5 +1,7 @@
 [![CTAN Version](https://img.shields.io/ctan/v/physics3)](https://ctan.org/pkg/physics3)
+[![GitHub Release](https://img.shields.io/github/v/release/myhsia/physics3)](https://github.com/myhsia/physics3/releases/latest)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/myhsia/physics3)](https://github.com/myhsia/physics3/commits)
+[![Actions Status](https://github.com/myhsia/physics3/actions/workflows/main.yaml/badge.svg?branch=main)](https://github.com/myhsia/physics3/actions)
 [![GitHub Repo stars](https://img.shields.io/github/stars/myhsia/physics3)](https://github.com/myhsia/physics3)
 
 The `physics3` Package
@@ -26,9 +28,9 @@ The issue tracker for `physics3` is currently located
 Copyright and License
 ---------------------
 
-  Copyright (C) 2026      by Mingyu Xia     <myhsia@outlook.com>
+Copyright (C) 2026      by Mingyu Xia     \<myhsia@outlook.com\>
 
-  Copyright (C) 2022-2024 by Tingxuan Zhang <alphaztx@163.com>
+Copyright (C) 2022-2024 by Tingxuan Zhang \<alphaztx@163.com\>
 
 This work may be distributed and/or modified under the conditions
 of the LaTeX Project Public License (LPPL), either version 1.3c of
