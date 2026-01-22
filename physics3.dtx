@@ -100,10 +100,11 @@ The Current Maintainer of this work is **Mingyu Xia**.
 %</internal>
 %
 %<*driver>
-\documentclass[11pt, letterpaper, kernel, cs-break]{l3doc}
-\usepackage[warnings-off={mathtools-colon, mathtools-overbracket}]{unicode-math}
+\documentclass[11pt, letterpaper, cs-break = true]{l3doc}
 \usepackage[mono = false]{libertine}
-\usepackage{xcolor, physics3, fixdif, derivative}
+\usepackage{mathtools, fixdif, derivative, xcolor}
+\usepackage[warnings-off={mathtools-colon, mathtools-overbracket}]{unicode-math}
+\usepackage{physics3}
 \usephysicsmodule{ab, ab.braket, diagmat, doubleprod, operator}
 \usephysicsmodule[showtop = 1, showleft = 2]{xmat}
 \usephysicsmodule{ab.legacy, qtext.legacy, bm-um.legacy}
@@ -897,8 +898,8 @@ $ \asin x  $\quad $ \PV f(z) $\quad
 $ \pv f(z) $\quad $ \Re z $\\[1ex]
 $ \Identity = \identity = \int \d^2 \alpha
   \ketbra\alpha\alpha/\pi $\\[1ex]
-$ \grad V$, $\div (x,y,z)$,
-$ \curl(x,y,z) $\\[1ex] $ \upe^{\iu\pi} = -1$
+$ \upe^{\iu\pi} = -1$\\[1ex]
+$ \grad V$, $\div (x,y,z)$, $ \curl(x,y,z) $
 \end{example}
 \endgroup
 % \iffalse
@@ -970,8 +971,8 @@ $ \beval[big]{\0}_a^b $
 %<*example>
 % \fi
 \begin{example}{2}
-$ \bm0 \bm A\bm z \bm\alpha\bm\Omega $\\[1ex]
-$ \bm {0 A z \alpha \Omega}          $
+$ \bm {0 A z \alpha \Omega}   $\\[1ex]
+$ \bm0 \bm A\bm z \bm\alpha\bm\Omega $
 \end{example}
 % \iffalse
 %</example>
@@ -1918,11 +1919,10 @@ $
 % \[ \macrodef{ab}{\cs{phx@d@lx} \texttt{\{mb\}} \texttt{\{ab\}}} \]
 % where \texttt{ab} is the branch name of "\ab()", and \texttt{mb} is the branch
 % name of "\ab\big()" and "\ab*()". Then let's see the syntax of \cs{phx@d@lx}.
-% \[
-%   \hbox{\ttfamily
-%   \cs{phx@d@lx} \marg{biggg or star branch name}
-%                 \marg{automatic branch name} \{\#3\}}
-% \]
+% \begin{quote}
+%   \cs{phx@d@lx} \marg{biggg or star branch name}\\
+%     \marg{automatic branch name} "{#3}"
+% \end{quote}
 % Here exists an \texttt{\#3}. \texttt{\#3} is one token immediately following
 % \cs{ab}, which can be \{\,a biggg command or a star\,\} or a ``\texttt{(}'',
 % under our assumption.
@@ -1951,12 +1951,12 @@ $
 % \end{align*}
 % Then we meet two new commands --- \cs{phx@d@lxmb} and \cs{phx@d@lxab}. Syntax
 % is as follows.
-% \begin{align*}
-%   &\hbox{\ttfamily\cs{phx@d@lxmb} \meta{biggg or *}
-%     \meta{left delimiter} \meta{subformula} \meta{right delimiter}}\\
-%   &\hbox{\ttfamily\cs{phx@d@lxab} \phantom{\meta{biggg or *}}
-%     \meta{left delimiter} \meta{subformula} \meta{right delimiter}}
-% \end{align*}
+% \begin{quote}
+%   \cs{phx@d@lxmb} \meta{biggg or *}            \meta{left delimiter}\\
+%   "   "\meta{subformula} \meta{right delimiter} \\
+%    \cs{phx@d@lxab} \phantom{\meta{biggg or *}} \meta{left delimiter}\\
+%   "   "\meta{subformula} \meta{right delimiter}
+% \end{quote}
 % Notice that \texttt{ab} and \texttt{mb} in the above commands are names of
 % \cs{ab}'s two branches --- they are like namespaces. \cs{phx@d@lxmb} and
 % \cs{phx@d@lxab} are defined by the following two lines:
@@ -2802,13 +2802,13 @@ $
 %   }
 % This module requires some new variables.
 %    \begin{macrocode}
-\bool_new:N   \l_@@_xmat_extra_vdots_bool
-\bool_new:N   \l_@@_xmat_extra_cdots_bool
-\int_new:N    \l_@@_xmat_showtop_int
-\int_new:N    \l_@@_xmat_showleft_int
-\tl_new:N     \l_@@_xmat_tl
-\int_gset:Nn  \l_@@_xmat_showtop_int  { \value { MaxMatrixCols } - 2 }
-\int_gset:Nn  \l_@@_xmat_showleft_int { \value { MaxMatrixCols } - 2 }
+\bool_new:N  \l_@@_xmat_extra_vdots_bool
+\bool_new:N  \l_@@_xmat_extra_cdots_bool
+\int_new:N   \l_@@_xmat_showtop_int
+\int_new:N   \l_@@_xmat_showleft_int
+\tl_new:N    \l_@@_xmat_tl
+\int_gset:Nn \l_@@_xmat_showtop_int  { \value { MaxMatrixCols } - 2 }
+\int_gset:Nn \l_@@_xmat_showleft_int { \value { MaxMatrixCols } - 2 }
 %    \end{macrocode}
 % \end{variable}
 %    \begin{macrocode}
@@ -3030,7 +3030,7 @@ $
 % Requires \modu{ab}'s "tight" option.
 %    \begin{macrocode}
 \phx@requiremodule{ab}
-\phx@define@key{ab.legacy}{order}{\mathcal{O}}{\def\phx@ab@ordersym{#1}}
+\phx@define@key{ab.legacy}{order}{\mathcal O}{\def\phx@ab@ordersym{#1}}
 \phx@setkeys{ab.legacy}{}{order}
 \phx@processkeyopt{ab.legacy}
 \phx@d@l@geny\abs\vert\vert
@@ -3119,13 +3119,8 @@ $
           }
       }
       {
-        \PackageError { physics3 }
-          {
-            The ~ \string\bm\space command ~ should ~ be ~
-            used ~ in ~ math ~ mode ~ only. \MessageBreak
-            This ~ is ~ an ~ error ~ from ~ `bm-um.legacy' ~ module
-          }
-          { Check ~ if ~ any ~ `\string\bm' ~ is ~ out ~ of ~ math ~ mode. }
+        \msg_error:nn { physics3 }
+          { The ~ \string\bm\space command ~ requires ~ math ~ mode. }
       }
   }
 %    \end{macrocode}
@@ -3137,4 +3132,4 @@ $
 %    \end{macrocode}
 % This part ends here.
 % \end{implementation}
-% \PrintIndex
+^^A % \PrintIndex
