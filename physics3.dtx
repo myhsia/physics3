@@ -22,7 +22,7 @@
 % -----------------------------------------------------------------------
 %   This work consists of the files physics3.dtx,                       *
 %                                   physics3.ins,                       *
-%                 the derived files phy-*.sty,                          *
+%                 the derived files phx-*.sty,                          *
 %           the documentation files physics3.pdf,                       *
 %                               and README.md.                          *
 % -----------------------------------------------------------------------
@@ -556,9 +556,9 @@ $ \expval*[\1]      {\hat A} $
 %<*example>
 % \fi
 \begingroup
-\makeatletter\def\phy@requiremodule#1{}^^A
+\makeatletter\def\phx@requiremodule#1{}^^A
 \def\PackageWarning#1#2{}^^A
-\catcode`\%14\relax \input phy-braket.sty \catcode`\%9\relax \makeatother
+\catcode`\%14\relax \input phx-braket.sty \catcode`\%9\relax \makeatother
 % \iffalse
 %</example>
 % \fi
@@ -976,9 +976,9 @@ $ \bm {0 A z \alpha \Omega}          $
 %<*example>
 % \fi
 \begingroup
-\makeatletter\def\phy@requiremodule#1{}^^A
+\makeatletter\def\phx@requiremodule#1{}^^A
 \def\PackageWarning#1#2{}^^A
-\catcode`\%14\relax \input phy-braket.sty \catcode`\%9\relax \makeatother
+\catcode`\%14\relax \input phx-braket.sty \catcode`\%9\relax \makeatother
 \begin{example}{7}
 % \usephysicsmodule{braket}
 $ \asin x  $\quad $ \PV f(z) $\quad
@@ -1507,9 +1507,9 @@ $ \ketbra| \0 >_x^y < \psi | $
 %<*example>
 % \fi
 \begingroup
-\makeatletter\def\phy@requiremodule#1{}%
+\makeatletter\def\phx@requiremodule#1{}%
 \def\PackageWarning#1#2{}%
-\catcode`\%14\relax \input phy-braket.sty \catcode`\%9\relax \makeatother
+\catcode`\%14\relax \input phx-braket.sty \catcode`\%9\relax \makeatother
 % \iffalse
 %</example>
 % \fi
@@ -1661,7 +1661,7 @@ $
 %    \end{macrocode}
 % We use "phy" as the namespace for \pkg{physics3} modules.
 %    \begin{macrocode}
-%<@@=phy>
+%<@@=phx>
 %    \end{macrocode}
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
@@ -1673,9 +1673,9 @@ $
 %
 % \begin{variable}{\l_@@_tmpa_box}
 %   \begin{quote}
-%     \cs{phy@temp}\meta{register type}\meta{a or b}
+%     \cs{phx@temp}\meta{register type}\meta{a or b}
 %   \end{quote}
-%   Some \LaTeXe\ variables starting with ``"\phy@temp"''.
+%   Some \LaTeXe\ variables starting with ``"\phx@temp"''.
 %   These variables can be shared by any module of \pkg{physics3}.
 %    \begin{macrocode}
 \box_new:N \l_@@_tmpa_box
@@ -1688,61 +1688,61 @@ $
 % process options of modules.
 %    \begin{macrocode}
 \RequirePackage{keyval}
-\def\phy@true{true}
-\def\phy@false{false}
+\def\phx@true{true}
+\def\phx@false{false}
 %    \end{macrocode}
 % \begin{macro}{\@@_define_key:n, \@@_setkeys:n, \@@_processkeyopt:n}
 %   \begin{quote}
-%     \cs{phy@define@key} \marg{module} \marg{key}^^A
+%     \cs{phx@define@key} \marg{module} \marg{key}^^A
 %       \oarg{default value} \marg{code}\\
-%     \cs{phy@setkeys} \marg{module} \marg{key-val list}\\
-%     \cs{phy@processkeyopt} \marg{module}
+%     \cs{phx@setkeys} \marg{module} \marg{key-val list}\\
+%     \cs{phx@processkeyopt} \marg{module}
 %   \end{quote}
-%   The position of \cs{phy@processkeyopt} in a \pkg{physics3} module is just
+%   The position of \cs{phx@processkeyopt} in a \pkg{physics3} module is just
 %   the same as the position of \cs{ProcessOptions} in a regular
 %   \LaTeX\ package.
 %    \begin{macrocode}
-\cs_new_nopar:Npn \@@_define_key:n    #1 { \define@key{phy-#1} }
-\cs_new_nopar:Npn \@@_setkeys:n       #1 { \setkeys{phy-#1}    }
+\cs_new_nopar:Npn \@@_define_key:n    #1 { \define@key{phx-#1} }
+\cs_new_nopar:Npn \@@_setkeys:n       #1 { \setkeys{phx-#1}    }
 \cs_new:Npn       \@@_processkeyopt:n #1
   {
     \let\reserved@a\@empty
     \edef\reserved@a{\@ptionlist{\@currname.\@currext}}%
-    \edef\reserved@a{\noexpand\phy@setkeys{#1}{\reserved@a}}%
+    \edef\reserved@a{\noexpand\phx@setkeys{#1}{\reserved@a}}%
     \reserved@a% the next line thanks to `geometry'
     \AtEndOfPackage{\let\@unprocessedoptions\relax}
   }
-\cs_set_eq:NN \phy@define@key    \@@_define_key:n
-\cs_set_eq:NN \phy@setkeys       \@@_setkeys:n
-\cs_set_eq:NN \phy@processkeyopt \@@_processkeyopt:n
+\cs_set_eq:NN \phx@define@key    \@@_define_key:n
+\cs_set_eq:NN \phx@setkeys       \@@_setkeys:n
+\cs_set_eq:NN \phx@processkeyopt \@@_processkeyopt:n
 %    \end{macrocode}
 % \end{macro}
 % We use almost the same way to load \pkg{physics3} modules as \LaTeXe\ kernel
 % does. We use a lot of kernel commands in \LaTeXe.
-% \begin{macro}{\usephysicsmodule, \phy@requiremodule}
+% \begin{macro}{\usephysicsmodule, \phx@requiremodule}
 %   \begin{quote}
 %     \cs{usephysicsmodule} \oarg{key-val options}^^A
 %       \marg{module} \oarg{key-val options}\\
-%     \cs{phy@requiremodule} \oarg{key-val options}^^A
+%     \cs{phx@requiremodule} \oarg{key-val options}^^A
 %       \marg{module} \oarg{key-val options}
 %   \end{quote}
-%   \cs{usephysicsmodule} is a user command, and \cs{phy@requiremodule} is a
+%   \cs{usephysicsmodule} is a user command, and \cs{phx@requiremodule} is a
 %   developer command.
 %    \begin{macrocode}
-\def\usephysicsmodule{\phy@FWoptions\@pkgextension}
-\let\phy@requiremodule\usephysicsmodule
+\def\usephysicsmodule{\phx@FWoptions\@pkgextension}
+\let\phx@requiremodule\usephysicsmodule
 \@onlypreamble\usephysicsmodule
-\def\phy@FWoptions#1{\@ifnextchar[%]
-  {\phy@FW@ptions#1}{\phy@FW@ptions#1[]}}
-\@onlypreamble\phy@FWoptions
-\def\phy@FW@ptions#1[#2]#3{\@ifnextchar[%]
-  {\phy@FW@pti@ns#1[{#2}]#3}{\phy@FW@pti@ns#1[{#2}]#3[]}}
-\@onlypreamble\phy@FW@ptions
-\def\phy@FW@pti@ns#1[#2]#3[#4]{%
+\def\phx@FWoptions#1{\@ifnextchar[%]
+  {\phx@FW@ptions#1}{\phx@FW@ptions#1[]}}
+\@onlypreamble\phx@FWoptions
+\def\phx@FW@ptions#1[#2]#3{\@ifnextchar[%]
+  {\phx@FW@pti@ns#1[{#2}]#3}{\phx@FW@pti@ns#1[{#2}]#3[]}}
+\@onlypreamble\phx@FW@ptions
+\def\phx@FW@pti@ns#1[#2]#3[#4]{%
   \def\reserved@b##1,{%
   \ifx\@nnil##1\relax\else
     \ifx\@nnil##1\@nnil\else
-      \noexpand\@onefilewithoptions{phy-##1}[{\unexpanded{#2}}][{#4}]%
+      \noexpand\@onefilewithoptions{phx-##1}[{\unexpanded{#2}}][{#4}]%
       \noexpand\@pkgextension
     \fi
     \expandafter\reserved@b
@@ -1750,7 +1750,7 @@ $
   \edef\reserved@a{\zap@space#3~\@empty}%
   \edef\reserved@a{\expandafter\reserved@b\reserved@a,\@nnil,}%
   \reserved@a}
-\@onlypreamble\phy@FW@pti@ns
+\@onlypreamble\phx@FW@pti@ns
 %    \end{macrocode}
 % \end{macro}
 %
@@ -1814,7 +1814,7 @@ $
 %    \end{macrocode}
 % \begin{macro}{\@@_mathvphantom:n}
 %   \begin{quote}
-%     \cs{phy@mathvphantom} \marg{math mode material}
+%     \cs{phx@mathvphantom} \marg{math mode material}
 %   \end{quote}
 %   This command is just like \cs{vphantom} in \LaTeXe\ kernel but only works
 %   in math mode.
@@ -1848,7 +1848,7 @@ $
         \box_use_drop:N \l_@@_tmpa_box
       }
   }
-\cs_set_eq:NN \phy@mathvphantom \@@_mathvphantom:n
+\cs_set_eq:NN \phx@mathvphantom \@@_mathvphantom:n
 %    \end{macrocode}
 % \end{macro}
 %
@@ -1888,34 +1888,34 @@ $
 % \endgroup
 %    \begin{macrocode}
 %<*ab>
-\ProvidesFile{phy-ab.sty}
+\ProvidesFile{phx-ab.sty}
   [2023/10/24 `ab' (autobraces) module of physics3]
 %    \end{macrocode}
-% If you don't know when to use \cs{phy@define@key}, \cs{phy@setkeys} and
-% \cs{phy@processkeyopt} in a module, see ahead. In \modu{ab}, the |tightbraces|
+% If you don't know when to use \cs{phx@define@key}, \cs{phx@setkeys} and
+% \cs{phx@processkeyopt} in a module, see ahead. In \modu{ab}, the |tightbraces|
 % option can control if the automatically-sized braces are tight or not. Do you
 % remember \cs{delopen} and \cs{delclose}?
 %    \begin{macrocode}
-\phy@define@key{ab}{tightbraces}[true]{\def\@phy@abtight{#1}}
-\phy@setkeys{ab}{tightbraces=true}
-\phy@processkeyopt{ab}
+\phx@define@key{ab}{tightbraces}[true]{\def\@phx@abtight{#1}}
+\phx@setkeys{ab}{tightbraces=true}
+\phx@processkeyopt{ab}
 %    \end{macrocode}
 %
-% \begin{macro}{\phy@abopen, \phy@abclose}
+% \begin{macro}{\phx@abopen, \phx@abclose}
 %   \begin{quote}
-%     \cs{phy@abopen} \meta{left delimiter}\\
-%     \cs{phy@abclose} \meta{right delimiter}
+%     \cs{phx@abopen} \meta{left delimiter}\\
+%     \cs{phx@abclose} \meta{right delimiter}
 %   \end{quote}
 %   They are defined either \{\cs{delopen}, \cs{delclose}\} or
 %   \{\cs{left}, \cs{right}\}. If a module requires \modu{ab},
 %   these two commands are likely to be used.
 %    \begin{macrocode}
-\ifx\@phy@abtight\phy@true
-  \let\phy@abopen\delopen
-  \let\phy@abclose\delclose
+\ifx\@phx@abtight\phx@true
+  \let\phx@abopen\delopen
+  \let\phx@abclose\delclose
 \else
-  \let\phy@abopen\left
-  \let\phy@abclose\right
+  \let\phx@abopen\left
+  \let\phx@abclose\right
 \fi
 %    \end{macrocode}
 % \end{macro}
@@ -1926,29 +1926,29 @@ $
 % After \cs{ab} should be a pair of delimiters; take \texttt{()} as an example.
 % Between \cs{ab} and ``\texttt{(}'' can be a biggg command or star, or even
 % nothing. \cs{ab} is defined as follows:
-% \[ \macrodef{ab}{\cs{phy@d@lx} \texttt{\{mb\}} \texttt{\{ab\}}} \]
+% \[ \macrodef{ab}{\cs{phx@d@lx} \texttt{\{mb\}} \texttt{\{ab\}}} \]
 % where \texttt{ab} is the branch name of "\ab()", and \texttt{mb} is the branch
-% name of "\ab\big()" and "\ab*()". Then let's see the syntax of \cs{phy@d@lx}.
+% name of "\ab\big()" and "\ab*()". Then let's see the syntax of \cs{phx@d@lx}.
 % \[
 %   \hbox{\ttfamily
-%   \cs{phy@d@lx} \marg{biggg or star branch name}
+%   \cs{phx@d@lx} \marg{biggg or star branch name}
 %                 \marg{automatic branch name} \{\#3\}}
 % \]
 % Here exists an \texttt{\#3}. \texttt{\#3} is one token immediately following
 % \cs{ab}, which can be \{\,a biggg command or a star\,\} or a ``\texttt{(}'',
 % under our assumption.
 %
-% \cs{phy@d@lx} is defined as follows:
+% \cs{phx@d@lx} is defined as follows:
 % \[
-%   \macrodef {phy@d@lx} [
+%   \macrodef {phx@d@lx} [
 %     \#1: biggg or star branch name, \meta{mb};
 %     \#2: automatic branch name, \meta{ab};
 %     \#3, the token after \cs{ab} ]
 %     {%
 %       \macroifelse {\#3 == biggg or \#3 == star
-%         ($\Leftrightarrow$ csname \{phy@del\cs{string}\#3\} is defined)}
-%         {let \meta{next cs} = csname \{phy@d@lx\meta{mb}\}}
-%         {let \meta{next cs} = csname \{phy@d@lx\meta{ab}\}}
+%         ($\Leftrightarrow$ csname \{phx@del\cs{string}\#3\} is defined)}
+%         {let \meta{next cs} = csname \{phx@d@lx\meta{mb}\}}
+%         {let \meta{next cs} = csname \{phx@d@lx\meta{ab}\}}
 %       \meta{next cs} \#3
 %     }
 % \]
@@ -1956,61 +1956,61 @@ $
 % false when \#3 is ``"("''. Accordingly, in math mode,
 % \begin{align*}
 %   \hbox{\cs{ab} \cs{big} "("}           & \quad \to \quad
-%   \hbox{\cs{phy@d@lxmb} \cs{big} "("}   \\
+%   \hbox{\cs{phx@d@lxmb} \cs{big} "("}   \\
 %   \hbox{\cs{ab} \phantom{\cs{big}} "("} & \quad \to \quad
-%   \hbox{\cs{phy@d@lxab} \phantom{\cs{big}} "("}
+%   \hbox{\cs{phx@d@lxab} \phantom{\cs{big}} "("}
 % \end{align*}
-% Then we meet two new commands --- \cs{phy@d@lxmb} and \cs{phy@d@lxab}. Syntax
+% Then we meet two new commands --- \cs{phx@d@lxmb} and \cs{phx@d@lxab}. Syntax
 % is as follows.
 % \begin{align*}
-%   &\hbox{\ttfamily\cs{phy@d@lxmb} \meta{biggg or *}
+%   &\hbox{\ttfamily\cs{phx@d@lxmb} \meta{biggg or *}
 %     \meta{left delimiter} \meta{subformula} \meta{right delimiter}}\\
-%   &\hbox{\ttfamily\cs{phy@d@lxab} \phantom{\meta{biggg or *}}
+%   &\hbox{\ttfamily\cs{phx@d@lxab} \phantom{\meta{biggg or *}}
 %     \meta{left delimiter} \meta{subformula} \meta{right delimiter}}
 % \end{align*}
 % Notice that \texttt{ab} and \texttt{mb} in the above commands are names of
-% \cs{ab}'s two branches --- they are like namespaces. \cs{phy@d@lxmb} and
-% \cs{phy@d@lxab} are defined by the following two lines:
+% \cs{ab}'s two branches --- they are like namespaces. \cs{phx@d@lxmb} and
+% \cs{phx@d@lxab} are defined by the following two lines:
 % \begin{quote}
-%   "\phy@d@l@genxm{mb}"
-%   "\phy@d@l@genxa{ab}"
+%   "\phx@d@l@genxm{mb}"
+%   "\phx@d@l@genxa{ab}"
 % \end{quote}
-% \cs{phy@d@l@genxm} and \cs{phy@d@l@genxa} are defined as follows:
+% \cs{phx@d@l@genxm} and \cs{phx@d@l@genxa} are defined as follows:
 % \begin{align*}
-%   & \macrodef {phy@d@l@genxm} [\#1: biggg or star branch name, \meta{mb}]
+%   & \macrodef {phx@d@l@genxm} [\#1: biggg or star branch name, \meta{mb}]
 %     {%
-%       \macrodef [12\ttwd] {phy@d@lx\meta{mb}}
+%       \macrodef [12\ttwd] {phx@d@lx\meta{mb}}
 %         [\#\#1: biggg or star; \#\#2: left delimiter]
 %         {%
 %           \cs{begingroup}
 %           \macroifelse {\#\#1 == star}
 %             {\meta{temp} $\gets$ \cs{relax}}
 %             {\meta{temp} $\gets$ \#\#1}
-%           csname \{phy@\meta{mb}@\cs{string}\#\#2\} \meta{temp} \#\#2 \macrocr
+%           csname \{phx@\meta{mb}@\cs{string}\#\#2\} \meta{temp} \#\#2 \macrocr
 %           \% requires an \cs{endgroup} after the right delimiter
 %         }
 %     } \\[1ex]
-%     & \macrodef {phy@d@l@genxa} [\#1: automatic branch name, \meta{ab}]
+%     & \macrodef {phx@d@l@genxa} [\#1: automatic branch name, \meta{ab}]
 %     {%
-%       \macrodef [12\ttwd] {phy@d@lx\meta{ab}} [\#\#1: left delimiter]
+%       \macrodef [12\ttwd] {phx@d@lx\meta{ab}} [\#\#1: left delimiter]
 %         {%
-%           csname \{phy@\meta{ab}@\cs{string}\#\#1\} \#\#1
+%           csname \{phx@\meta{ab}@\cs{string}\#\#1\} \#\#1
 %         }
 %     }
 % \end{align*}
 % So we can get
 % \begin{align*}
 %   \hbox{\ttfamily\cs{ab} \cs{big} (}&\quad\to\quad
-%   \hbox{\cs{begingroup} csname \{phy@mb@(\} \cs{big}\hskip2\ttwd\ \texttt(}\\
+%   \hbox{\cs{begingroup} csname \{phx@mb@(\} \cs{big}\hskip2\ttwd\ \texttt(}\\
 %   \hbox{\ttfamily\cs{ab} *\phantom{big} (}&\quad\to\quad
-%   \hbox{\cs{begingroup} csname \{phy@mb@(\} \cs{relax} \texttt(}\\
+%   \hbox{\cs{begingroup} csname \{phx@mb@(\} \cs{relax} \texttt(}\\
 %   \hbox{\ttfamily\cs{ab} \phantom{\cs{big}} (}&\quad\to\quad
-%   \hbox{\hskip11\ttwd\ csname \{phy@ab@(\} \texttt(}
+%   \hbox{\hskip11\ttwd\ csname \{phx@ab@(\} \texttt(}
 % \end{align*}
-% The csnames above (\cs{phy@mb@(} and \cs{phy@ab@(}) are generated
-% with \cs{phy@AB@gen}.
+% The csnames above (\cs{phx@mb@(} and \cs{phx@ab@(}) are generated
+% with \cs{phx@AB@gen}.
 % \begin{quote}
-%   \cs{phy@AB@gen} \marg{branch name} \meta{left delimiter}\\
+%   \cs{phx@AB@gen} \marg{branch name} \meta{left delimiter}\\
 %   "  "\marg{arg spec} \marg{definition}
 % \end{quote}
 % If \meta{branch name} is \texttt{mb}, \marg{arg spec} should be "mr()",
@@ -2021,139 +2021,139 @@ $
 % The ``"("'' in the example above must not be replaced by a subformula braced
 % by a pair of "{}".
 % \end{texnote}
-% \begin{macro}{\phy@AB@gen}
+% \begin{macro}{\phx@AB@gen}
 %   \begin{quote}
-%     \cs{phy@AB@gen} \marg{branch name} \meta{left delimiter}\\
+%     \cs{phx@AB@gen} \marg{branch name} \meta{left delimiter}\\
 %     "  "\marg{arg spec} \marg{definition}
 %   \end{quote}
 %    \begin{macrocode}
-\def\phy@AB@gen#1#2{\expandafter
-  \DeclareDocumentCommand\csname phy@#1@\string#2\endcsname}
-    \phy@AB@gen{ab}({r()}%
-      {\phy@abopen(#1\phy@abclose)}
-    \phy@AB@gen{ab}[{r[]}%
-      {\phy@abopen[#1\phy@abclose]}
-    \phy@AB@gen{ab}\{{r\{\}}%
-      {\phy@abopen\{#1\phy@abclose\}}
-    \phy@AB@gen{ab}|{r||}%
-      {\phy@abopen|#1\phy@abclose|}
-    \phy@AB@gen{ab}\|{r\|\|}%
-      {\phy@abopen\|#1\phy@abclose\|}
-    \phy@AB@gen{ab}<{r<>}%
-      {\phy@abopen<#1\phy@abclose>}
-    \phy@AB@gen{ab}\lbrace{r\lbrace\rbrace}%
-      {\phy@abopen\lbrace#1\phy@abclose\rbrace}
-    \phy@AB@gen{ab}\vert{r\vert\vert}%
-      {\phy@abopen\vert#1\phy@abclose\vert}
-    \phy@AB@gen{ab}\Vert{r\Vert\Vert}%
-      {\phy@abopen\Vert#1\phy@abclose\Vert}
-    \phy@AB@gen{ab}\langle{r\langle\rangle}%
-      {\phy@abopen\langle#1\phy@abclose\rangle}
+\def\phx@AB@gen#1#2{\expandafter
+  \DeclareDocumentCommand\csname phx@#1@\string#2\endcsname}
+    \phx@AB@gen{ab}({r()}%
+      {\phx@abopen(#1\phx@abclose)}
+    \phx@AB@gen{ab}[{r[]}%
+      {\phx@abopen[#1\phx@abclose]}
+    \phx@AB@gen{ab}\{{r\{\}}%
+      {\phx@abopen\{#1\phx@abclose\}}
+    \phx@AB@gen{ab}|{r||}%
+      {\phx@abopen|#1\phx@abclose|}
+    \phx@AB@gen{ab}\|{r\|\|}%
+      {\phx@abopen\|#1\phx@abclose\|}
+    \phx@AB@gen{ab}<{r<>}%
+      {\phx@abopen<#1\phx@abclose>}
+    \phx@AB@gen{ab}\lbrace{r\lbrace\rbrace}%
+      {\phx@abopen\lbrace#1\phx@abclose\rbrace}
+    \phx@AB@gen{ab}\vert{r\vert\vert}%
+      {\phx@abopen\vert#1\phx@abclose\vert}
+    \phx@AB@gen{ab}\Vert{r\Vert\Vert}%
+      {\phx@abopen\Vert#1\phx@abclose\Vert}
+    \phx@AB@gen{ab}\langle{r\langle\rangle}%
+      {\phx@abopen\langle#1\phx@abclose\rangle}
 %    \end{macrocode}
 % \cs{endgroup}'s in the end of the following definitions are corresponding to
-% \cs{begingroup}'s in the definition of \cs{phy@d@l@genxm}.
+% \cs{begingroup}'s in the definition of \cs{phx@d@l@genxm}.
 %    \begin{macrocode}
-\phy@AB@gen{mb}({mr()}%
+\phx@AB@gen{mb}({mr()}%
   {\mathopen#1(#2\mathclose#1)\endgroup}
-\phy@AB@gen{mb}[{mr[]}%
+\phx@AB@gen{mb}[{mr[]}%
   {\mathopen#1[#2\mathclose#1]\endgroup}
-\phy@AB@gen{mb}\{{mr\{\}}%
+\phx@AB@gen{mb}\{{mr\{\}}%
   {\mathopen#1\lbrace#2\mathclose#1\rbrace\endgroup}
-\phy@AB@gen{mb}|{mr||}%
+\phx@AB@gen{mb}|{mr||}%
   {\mathopen#1\vert#2\mathclose#1\vert\endgroup}
-\phy@AB@gen{mb}\|{mr\|\|}%
+\phx@AB@gen{mb}\|{mr\|\|}%
   {\mathopen#1\Vert#2\mathclose#1\Vert\endgroup}
-\phy@AB@gen{mb}<{mr<>}%
+\phx@AB@gen{mb}<{mr<>}%
   {\mathopen#1\langle#2\mathclose#1\rangle\endgroup}
-\phy@AB@gen{mb}\lbrace{mr\lbrace\rbrace}%
+\phx@AB@gen{mb}\lbrace{mr\lbrace\rbrace}%
   {\mathopen#1\lbrace#2\mathclose#1\rbrace\endgroup}
-\phy@AB@gen{mb}\vert{mr\vert\vert}%
+\phx@AB@gen{mb}\vert{mr\vert\vert}%
   {\mathopen#1\vert#2\mathclose#1\vert\endgroup}
-\phy@AB@gen{mb}\Vert{mr\Vert\Vert}%
+\phx@AB@gen{mb}\Vert{mr\Vert\Vert}%
   {\mathopen#1\Vert#2\mathclose#1\Vert\endgroup}
-\phy@AB@gen{mb}\langle{mr\langle\rangle}%
+\phx@AB@gen{mb}\langle{mr\langle\rangle}%
   {\mathopen#1\langle#2\mathclose#1\rangle\endgroup}
 %    \end{macrocode}
 % \end{macro}
-% \begin{macro}{\phy@del}
+% \begin{macro}{\phx@del}
 %   The syntax seems not important. These following lines seems only
 %   for \cs{ifcsname} to judge if the commands are defined.
 %    \begin{macrocode}
-\def\phy@del#1#2#3{\phy@abopen#1#3\phy@abclose#2}
-\expandafter\def\csname phy@del\string*\endcsname
+\def\phx@del#1#2#3{\phx@abopen#1#3\phx@abclose#2}
+\expandafter\def\csname phx@del\string*\endcsname
   #1#2#3{\mathopen#1#3\mathclose#2}
-\expandafter\def\csname phy@del\string\big\endcsname
+\expandafter\def\csname phx@del\string\big\endcsname
   #1#2#3{\bigl#1#3\bigr#2}
-\expandafter\def\csname phy@del\string\Big\endcsname
+\expandafter\def\csname phx@del\string\Big\endcsname
   #1#2#3{\Bigl#1#3\Bigr#2}
-\expandafter\def\csname phy@del\string\bigg\endcsname
+\expandafter\def\csname phx@del\string\bigg\endcsname
   #1#2#3{\biggl#1#3\biggr#2}
-\expandafter\def\csname phy@del\string\Bigg\endcsname
+\expandafter\def\csname phx@del\string\Bigg\endcsname
   #1#2#3{\Biggl#1#3\Biggr#2}
-\expandafter\def\csname phy@del\string\biggg\endcsname
+\expandafter\def\csname phx@del\string\biggg\endcsname
   #1#2#3{\bigggl#1#3\bigggr#2}
-\expandafter\def\csname phy@del\string\Biggg\endcsname
+\expandafter\def\csname phx@del\string\Biggg\endcsname
   #1#2#3{\Bigggl#1#3\Bigggr#2}
 %    \end{macrocode}
 % \end{macro}
-% \begin{macro}{\phy@d@lx}
+% \begin{macro}{\phx@d@lx}
 %   \begin{quote}
-%     \cs{phy@d@lx} \marg{biggg or star branch name} \marg{automatic branch name} "{#3}"
+%     \cs{phx@d@lx} \marg{biggg or star branch name} \marg{automatic branch name} "{#3}"
 %   \end{quote}
 %    \begin{macrocode}
-\def\phy@d@lx#1#2#3{%
-  \ifcsname phy@del\string#3\endcsname
+\def\phx@d@lx#1#2#3{%
+  \ifcsname phx@del\string#3\endcsname
     \def\reserved@a{#1}% #3 is star or \biggg
   \else
     \def\reserved@a{#2}% #3 is delimiter
   \fi
-  \csname phy@d@lx\reserved@a\endcsname#3}
+  \csname phx@d@lx\reserved@a\endcsname#3}
 %    \end{macrocode}
 % \end{macro}
-% \begin{macro}{\phy@d@l@genxm, \phy@d@l@genxa}
+% \begin{macro}{\phx@d@l@genxm, \phx@d@l@genxa}
 %   \begin{quote}
-%     \cs{phy@d@l@genxm} \marg{biggg or star branch name}\\
-%     \cs{phy@d@l@genxa} \marg{automatic branch name}
+%     \cs{phx@d@l@genxm} \marg{biggg or star branch name}\\
+%     \cs{phx@d@l@genxa} \marg{automatic branch name}
 %   \end{quote}
 %    \begin{macrocode}
-\def\phy@d@l@genxm#1{%
-  \expandafter\def\csname phy@d@lx#1\endcsname##1##2{%
-    \begingroup % \endgroup is at the end of #4 of \phy@AB@gen
-    \ifx##1*\let\phy@tempa=\relax\else\let\phy@tempa=##1\fi
-    \csname phy@#1@\string##2\endcsname\phy@tempa##2}}
-\def\phy@d@l@genxa#1{%
-  \expandafter\def\csname phy@d@lx#1\endcsname##1{%
-    \csname phy@#1@\string##1\endcsname##1}}
+\def\phx@d@l@genxm#1{%
+  \expandafter\def\csname phx@d@lx#1\endcsname##1##2{%
+    \begingroup % \endgroup is at the end of #4 of \phx@AB@gen
+    \ifx##1*\let\phx@tempa=\relax\else\let\phx@tempa=##1\fi
+    \csname phx@#1@\string##2\endcsname\phx@tempa##2}}
+\def\phx@d@l@genxa#1{%
+  \expandafter\def\csname phx@d@lx#1\endcsname##1{%
+    \csname phx@#1@\string##1\endcsname##1}}
 %    \end{macrocode}
 % \end{macro}
-% \begin{macro}{\phy@d@lxmb, \phy@d@lxab}
+% \begin{macro}{\phx@d@lxmb, \phx@d@lxab}
 %   \begin{quote}
-%     \cs{phy@d@lxmb} \meta{biggg or *} \meta{left delimiter}\\
+%     \cs{phx@d@lxmb} \meta{biggg or *} \meta{left delimiter}\\
 %     "  "\meta{subformula} \meta{right delimiter}\\
-%     \cs{phy@d@lxab} \phantom{\meta{biggg or *}} \meta{left delimiter}\\
+%     \cs{phx@d@lxab} \phantom{\meta{biggg or *}} \meta{left delimiter}\\
 %     "  "\meta{subformula} \meta{right delimiter}
 %   \end{quote}
 %    \begin{macrocode}
-\phy@d@l@genxm{mb}
-\phy@d@l@genxa{ab}
+\phx@d@l@genxm{mb}
+\phx@d@l@genxa{ab}
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\ab}
 %   The users' command \cs{ab}.
 %    \begin{macrocode}
-\DeclareRobustCommand\ab{\phy@d@lx{mb}{ab}}
+\DeclareRobustCommand\ab{\phx@d@lx{mb}{ab}}
 %    \end{macrocode}
 % \end{macro}
 % \subsubsection{\cs{pab}-like commands}
 % This is so simple. No need to comment a lot.
 %
-% \begin{macro}{\phy@d@l@geny}
+% \begin{macro}{\phx@d@l@geny}
 %   \begin{quote}
-%     \cs{phy@d@l@geny} \meta{command} \meta{left delimiter} \meta{right delimiter}
+%     \cs{phx@d@l@geny} \meta{command} \meta{left delimiter} \meta{right delimiter}
 %   \end{quote}
 %   This command used to define commands like \cs{pab}.
 %    \begin{macrocode}
-\def\phy@d@l@geny#1#2#3{%
+\def\phx@d@l@geny#1#2#3{%
 %    \end{macrocode}
 % \begin{multicols}{3}
 % \begin{arguments}
@@ -2168,16 +2168,16 @@ $
       {#2##3#3}%
       {\IfValueTF{##2}%
         {\csname##2l\endcsname#2##3\csname##2r\endcsname#3}%
-        {\phy@abopen#2##3\phy@abclose#3}%
+        {\phx@abopen#2##3\phx@abclose#3}%
       }%
   }%
 }
-\phy@d@l@geny\pab()
-\phy@d@l@geny\bab[]
-\phy@d@l@geny\Bab\lbrace\rbrace
-\phy@d@l@geny\vab\vert\vert
-\phy@d@l@geny\aab\langle\rangle
-\phy@d@l@geny\Vab\Vert\Vert
+\phx@d@l@geny\pab()
+\phx@d@l@geny\bab[]
+\phx@d@l@geny\Bab\lbrace\rbrace
+\phx@d@l@geny\vab\vert\vert
+\phx@d@l@geny\aab\langle\rangle
+\phx@d@l@geny\Vab\Vert\Vert
 %    \end{macrocode}
 %    \begin{macrocode}
 \protect \endinput
@@ -2191,14 +2191,14 @@ $
 %
 %    \begin{macrocode}
 %<*ab.braket>
-\ProvidesFile{phy-ab.braket.sty}
+\ProvidesFile{phx-ab.braket.sty}
   [2023/10/24 `ab.braket' module of physics3]
 %    \end{macrocode}
-% This module requires \cs{phy@abopen} and \cs{phy@abclose} from \modu{ab}.
+% This module requires \cs{phx@abopen} and \cs{phx@abclose} from \modu{ab}.
 % This module may have conflict with \modu{braket}.
 %    \begin{macrocode}
-\phy@requiremodule{ab}
-\ifdefined\phy@bra@@
+\phx@requiremodule{ab}
+\ifdefined\phx@bra@@
   \PackageWarning{physics3}{You cannot load `ab.braket' and `braket'
     modules together.\MessageBreak Only `ab.braket' module works now.}
 \fi
@@ -2209,11 +2209,11 @@ $
 %   \end{quote}
 % \end{macro}
 %    \begin{macrocode}
-\phy@AB@gen{br.m}<{mr<|}{\mathopen#1\langle#2\mathclose#1\vert\endgroup}
-\phy@AB@gen{br.a}<{r<|}{\phy@abopen\langle#1\phy@abclose\vert}
-\phy@d@l@genxm{br.m}
-\phy@d@l@genxa{br.a}
-\DeclareRobustCommand\bra{\phy@d@lx{br.m}{br.a}}
+\phx@AB@gen{br.m}<{mr<|}{\mathopen#1\langle#2\mathclose#1\vert\endgroup}
+\phx@AB@gen{br.a}<{r<|}{\phx@abopen\langle#1\phx@abclose\vert}
+\phx@d@l@genxm{br.m}
+\phx@d@l@genxa{br.a}
+\DeclareRobustCommand\bra{\phx@d@lx{br.m}{br.a}}
 %    \end{macrocode}
 % \begin{macro}{\ket}
 %   \begin{quote}
@@ -2221,11 +2221,11 @@ $
 %   \end{quote}
 % \end{macro}
 %    \begin{macrocode}
-\phy@AB@gen{kt.m}|{mr|>}{\mathopen#1\vert#2\mathclose#1\rangle\endgroup}
-\phy@AB@gen{kt.a}|{r|>}{\phy@abopen\vert#1\phy@abclose\rangle}
-\phy@d@l@genxm{kt.m}
-\phy@d@l@genxa{kt.a}
-\DeclareRobustCommand\ket{\phy@d@lx{kt.m}{kt.a}}
+\phx@AB@gen{kt.m}|{mr|>}{\mathopen#1\vert#2\mathclose#1\rangle\endgroup}
+\phx@AB@gen{kt.a}|{r|>}{\phx@abopen\vert#1\phx@abclose\rangle}
+\phx@d@l@genxm{kt.m}
+\phx@d@l@genxa{kt.a}
+\DeclareRobustCommand\ket{\phx@d@lx{kt.m}{kt.a}}
 %    \end{macrocode}
 % \begin{macro}{\braket}
 %   \begin{quote}
@@ -2234,21 +2234,21 @@ $
 %    \begin{macrocode}
 \begingroup
 \catcode`\|=\active
-\gdef\phy@@mb@bk#1#2{\begingroup
+\gdef\phx@@mb@bk#1#2{\begingroup
   \mathcode`\|="8000\def|{\egroup#1\vert\bgroup}%
   \def\<{\mathrel{<}}\def\>{\mathrel{>}}%
   \mathopen#1\langle\bgroup#2\egroup\mathclose#1\rangle\endgroup}
-\gdef\phy@@ab@bk#1{\begingroup
-  \mathcode`\|="8000\def|{\egroup\phy@abb@bkv\bgroup}%
+\gdef\phx@@ab@bk#1{\begingroup
+  \mathcode`\|="8000\def|{\egroup\phx@abb@bkv\bgroup}%
   \def\<{\mathrel{<}}\def\>{\mathrel{>}}%
-  \phy@abopen\langle\bgroup#1\egroup\phy@abclose\rangle\endgroup}
+  \phx@abopen\langle\bgroup#1\egroup\phx@abclose\rangle\endgroup}
 \endgroup
-\def\phy@abb@bkv{\middle\vert}
-\phy@AB@gen{bk.m}<{mr<>}{\phy@@mb@bk#1{#2}\endgroup}
-\phy@AB@gen{bk.a}<{r<>}{\phy@@ab@bk{#1}}
-\phy@d@l@genxm{bk.m}
-\phy@d@l@genxa{bk.a}
-\DeclareRobustCommand \braket {\phy@d@lx{bk.m}{bk.a}}
+\def\phx@abb@bkv{\middle\vert}
+\phx@AB@gen{bk.m}<{mr<>}{\phx@@mb@bk#1{#2}\endgroup}
+\phx@AB@gen{bk.a}<{r<>}{\phx@@ab@bk{#1}}
+\phx@d@l@genxm{bk.m}
+\phx@d@l@genxa{bk.a}
+\DeclareRobustCommand \braket {\phx@d@lx{bk.m}{bk.a}}
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\ketbra}
@@ -2259,28 +2259,28 @@ $
 \begingroup
 \catcode`\<=\active
 \catcode`\>=\active
-\gdef\phy@@mb@kb#1#2{\begingroup
+\gdef\phx@@mb@kb#1#2{\begingroup
   \mathcode`\<="8000 \mathcode`\>="8000%
   \def<{#1\langle}\def>{#1\rangle}%
-  \def\<{\phy@abb@l}\def\>{\phy@abb@r}%
+  \def\<{\phx@abb@l}\def\>{\phx@abb@r}%
   \mathopen#1\vert#2\mathclose#1\vert\endgroup}
 \endgroup
-\gdef\phy@@ab@kb#1>#2<#3\phy@@end{\begingroup
-  \def\<{\phy@abb@l}\def\>{\phy@abb@r}%
-  \phy@abopen\vert\mathopen{\phy@mathvphantom{#3}}#1\phy@abclose\rangle#2%
-  \phy@abopen\langle#3\mathclose{\phy@mathvphantom{#1}}\phy@abclose\vert
+\gdef\phx@@ab@kb#1>#2<#3\phx@@end{\begingroup
+  \def\<{\phx@abb@l}\def\>{\phx@abb@r}%
+  \phx@abopen\vert\mathopen{\phx@mathvphantom{#3}}#1\phx@abclose\rangle#2%
+  \phx@abopen\langle#3\mathclose{\phx@mathvphantom{#1}}\phx@abclose\vert
 \endgroup}
 \AtBeginDocument{\ifcsname symbf\endcsname
-  \def\phy@abb@l{\Umathchar 3 \symoperators "003C }%
-  \def\phy@abb@r{\Umathchar 3 \symoperators "003E }%
+  \def\phx@abb@l{\Umathchar 3 \symoperators "003C }%
+  \def\phx@abb@r{\Umathchar 3 \symoperators "003E }%
 \fi}
-\def\phy@abb@l{\mathchar"313C }
-\def\phy@abb@r{\mathchar"313E }
-\phy@AB@gen{kb.m}|{mr||}{\phy@@mb@kb#1{#2}\endgroup}
-\phy@AB@gen{kb.a}|{r||}{\phy@@ab@kb#1\phy@@end}
-\phy@d@l@genxm{kb.m}
-\phy@d@l@genxa{kb.a}
-\DeclareRobustCommand \ketbra {\phy@d@lx{kb.m}{kb.a}}
+\def\phx@abb@l{\mathchar"313C }
+\def\phx@abb@r{\mathchar"313E }
+\phx@AB@gen{kb.m}|{mr||}{\phx@@mb@kb#1{#2}\endgroup}
+\phx@AB@gen{kb.a}|{r||}{\phx@@ab@kb#1\phx@@end}
+\phx@d@l@genxm{kb.m}
+\phx@d@l@genxa{kb.a}
+\DeclareRobustCommand \ketbra {\phx@d@lx{kb.m}{kb.a}}
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\innerproduct, \outerproduct, \expval}
@@ -2292,9 +2292,9 @@ $
     \IfBooleanTF{#1} {\mathopen\langle#3\vert #3\mathclose\rangle}
       {%
         \IfValueTF{#2}
-          {\expanded{\noexpand\phy@d@lx{bk.m}{bk.a}%
+          {\expanded{\noexpand\phx@d@lx{bk.m}{bk.a}%
             \expandafter\noexpand\csname #2\endcsname}<#3|#3>}
-          {\phy@d@lx{bk.m}{bk.a}<#3|#3>}%
+          {\phx@d@lx{bk.m}{bk.a}<#3|#3>}%
       }%
   }
 \DeclareDocumentCommand \outerproduct { s o m }
@@ -2306,18 +2306,18 @@ $
       }
       {%
         \IfValueTF{#2}
-          {\expanded{\noexpand\phy@d@lx{kb.m}{kb.a}%
+          {\expanded{\noexpand\phx@d@lx{kb.m}{kb.a}%
             \expandafter\noexpand\csname #2\endcsname}|#3><#3|}
-          {\phy@d@lx{kb.m}{kb.a}|#3><#3|}%
+          {\phx@d@lx{kb.m}{kb.a}|#3><#3|}%
       }%
   }
 %    \end{macrocode}
 % Parsing the optional argument of \cs{expval}.
 %    \begin{macrocode}
-\def\@phy@ev@do@pt#1,{\ifx#1\relax\@empty\else
+\def\@phx@ev@do@pt#1,{\ifx#1\relax\@empty\else
   \edef\reserved@a{\zap@space#1 \@empty}%
   \ifx\reserved@a\@empty\else
-    \ifcsname phy@del\expandafter\expandafter\expandafter
+    \ifcsname phx@del\expandafter\expandafter\expandafter
     \expandafter\expandafter\expandafter\expandafter
     \expandafter\expandafter\expandafter\expandafter
     \expandafter\expandafter\expandafter\expandafter \string
@@ -2325,51 +2325,51 @@ $
     \expandafter\expandafter\expandafter \csname
     \expandafter\expandafter\expandafter \detokenize
     \expandafter{\reserved@a}\endcsname \endcsname
-      \xdef\@phy@ev{\reserved@a}%
+      \xdef\@phx@ev{\reserved@a}%
     \else
-      \xdef\@phy@ev@basis{%
+      \xdef\@phx@ev@basis{%
         \reserved@a}%
     \fi
   \fi
-  \expandafter\@phy@ev@do@pt\fi}
-\def\phy@ev@doopt#1{%
-  \edef\@phy@ev{\@empty}\edef\@phy@ev@basis{\@empty}\@phy@ev@do@pt#1,\relax,}
+  \expandafter\@phx@ev@do@pt\fi}
+\def\phx@ev@doopt#1{%
+  \edef\@phx@ev{\@empty}\edef\@phx@ev@basis{\@empty}\@phx@ev@do@pt#1,\relax,}
 \DeclareDocumentCommand \expval { s o m }
   {%
-    \phy@ev@doopt{#2}%
+    \phx@ev@doopt{#2}%
     \IfValueTF {#2}
       {%
-        \ifx\@phy@ev\@empty
-          \ifx \@phy@ev@basis\@empty \else
+        \ifx\@phx@ev\@empty
+          \ifx \@phx@ev@basis\@empty \else
           \IfBooleanTF{#1}
-            {\phy@d@lx{bk.m}{bk.a}*<\@phy@ev@basis|#3|\@phy@ev@basis>}
-            {\phy@d@lx{bk.m}{bk.a}<\@phy@ev@basis |#3|\@phy@ev@basis>}%
+            {\phx@d@lx{bk.m}{bk.a}*<\@phx@ev@basis|#3|\@phx@ev@basis>}
+            {\phx@d@lx{bk.m}{bk.a}<\@phx@ev@basis |#3|\@phx@ev@basis>}%
           \fi
         \else
-          \ifx\@phy@ev@basis\@empty
-            \IfBooleanTF{#1} {\phy@d@lx{bk.m}{bk.a}*<#3>}
+          \ifx\@phx@ev@basis\@empty
+            \IfBooleanTF{#1} {\phx@d@lx{bk.m}{bk.a}*<#3>}
               {%
                 \expanded{%
-                  \noexpand \phy@d@lx{bk.m}{bk.a}\expandafter \noexpand
-                  \csname \@phy@ev\endcsname}<#3>%
+                  \noexpand \phx@d@lx{bk.m}{bk.a}\expandafter \noexpand
+                  \csname \@phx@ev\endcsname}<#3>%
               }%
           \else
             \IfBooleanTF{#1}
               {%
-                \phy@d@lx{bk.m}{bk.a}*<\@phy@ev@basis|#3|\@phy@ev@basis>%
+                \phx@d@lx{bk.m}{bk.a}*<\@phx@ev@basis|#3|\@phx@ev@basis>%
               }
               {%
                 \expanded{%
-                  \noexpand \phy@d@lx{bk.m}{bk.a}\expandafter
-                  \noexpand \csname \@phy@ev\endcsname}%
-                <\@phy@ev@basis|#3|\@phy@ev@basis>%
+                  \noexpand \phx@d@lx{bk.m}{bk.a}\expandafter
+                  \noexpand \csname \@phx@ev\endcsname}%
+                <\@phx@ev@basis|#3|\@phx@ev@basis>%
               }%
           \fi
         \fi
       }
       {%
         \IfBooleanTF{#1}
-          {\phy@d@lx{bk.m}{bk.a}*<#3>} {\phy@d@lx{bk.m}{bk.a}<#3>}%
+          {\phx@d@lx{bk.m}{bk.a}*<#3>} {\phx@d@lx{bk.m}{bk.a}<#3>}%
       }%
   }
 %    \end{macrocode}
@@ -2383,14 +2383,14 @@ $
 % \subsection{The \modu{braket} module}
 %    \begin{macrocode}
 %<*braket>
-\ProvidesFile{phy-braket.sty}
+\ProvidesFile{phx-braket.sty}
   [2023/10/24 `braket' module of physics3]
 %    \end{macrocode}
-% This module requires \cs{phy@abopen} and \cs{phy@abclose} from \modu{ab}.
+% This module requires \cs{phx@abopen} and \cs{phx@abclose} from \modu{ab}.
 % This module may have conflict with \modu{ab.braket}.
 %    \begin{macrocode}
-\phy@requiremodule{ab}
-\ifdefined\phy@abb@bkv
+\phx@requiremodule{ab}
+\ifdefined\phx@abb@bkv
   \PackageWarning{physics3}{You cannot load `ab.braket' and `braket'
     modules together.\MessageBreak Only `braket' module works now.}
 \fi
@@ -2405,7 +2405,7 @@ $
     {\mathopen\langle#3\mathclose\vert}
     {\IfValueTF{#2}
       {\csname#2l\endcsname\langle#3\csname#2r\endcsname\vert}
-      {\phy@abopen\langle#3\phy@abclose\vert}%
+      {\phx@abopen\langle#3\phx@abclose\vert}%
     }%
 }
 %    \end{macrocode}
@@ -2420,7 +2420,7 @@ $
     {\mathopen\vert#3\mathclose\rangle}
     {\IfValueTF{#2}
       {\csname#2l\endcsname\vert#3\csname#2r\endcsname\rangle}
-      {\phy@abopen\vert#3\phy@abclose\rangle}%
+      {\phx@abopen\vert#3\phx@abclose\rangle}%
     }%
 }
 %    \end{macrocode}
@@ -2434,67 +2434,67 @@ $
   {%
     \IfBooleanTF{#1}
       {%
-        \gdef\@phy@bk@argnum{ii}%
-        \phy@bk@doopt{#2}%
-        \gdef\@phy@bk@l{mathopen}%
-        \gdef\@phy@bk@m{mathord}%
-        \gdef\@phy@bk@r{mathclose}%
+        \gdef\@phx@bk@argnum{ii}%
+        \phx@bk@doopt{#2}%
+        \gdef\@phx@bk@l{mathopen}%
+        \gdef\@phx@bk@m{mathord}%
+        \gdef\@phx@bk@r{mathclose}%
       }
       {%
-        \gdef\@phy@bk@argnum{ii}%
-        \gdef\@phy@bk@l{phy@abopen}%
-        \gdef\@phy@bk@m{middle}%
-        \gdef\@phy@bk@r{phy@abclose}%
-        \phy@bk@doopt{#2}%
+        \gdef\@phx@bk@argnum{ii}%
+        \gdef\@phx@bk@l{phx@abopen}%
+        \gdef\@phx@bk@m{middle}%
+        \gdef\@phx@bk@r{phx@abclose}%
+        \phx@bk@doopt{#2}%
       }%
-    \csname phy@bk@in@\@phy@bk@argnum\endcsname
+    \csname phx@bk@in@\@phx@bk@argnum\endcsname
   }
 %    \end{macrocode}
 % \end{macro}
-% \begin{macro}{\phy@bk@in@i, \phy@bk@in@ii, \phy@bk@in@iii}
+% \begin{macro}{\phx@bk@in@i, \phx@bk@in@ii, \phx@bk@in@iii}
 %   \begin{quote}
-%     \cs{phy@bk@in@\meta{n.roman}} \marg{subformula 1} \dots \marg{subformula $n$}
+%     \cs{phx@bk@in@\meta{n.roman}} \marg{subformula 1} \dots \marg{subformula $n$}
 %   \end{quote}
 %   \meta{n.roman} is $n$ in roman lowercase, where $n \in \{1,2,3\}$.
 %    \begin{macrocode}
-\def\phy@bk@in@i#1{%
-  \csname\@phy@bk@l\endcsname\langle{#1}%
-  \csname\@phy@bk@r\endcsname\rangle}
-\def\phy@bk@in@ii#1#2{%
-  \csname\@phy@bk@l\endcsname\langle{#1}%
-  \csname\@phy@bk@m\endcsname\vert{#2}%
-  \csname\@phy@bk@r\endcsname\rangle}
-\def\phy@bk@in@iii#1#2#3{%
-  \csname\@phy@bk@l\endcsname\langle{#1}%
-  \csname\@phy@bk@m\endcsname\vert{#2}%
-  \csname\@phy@bk@m\endcsname\vert{#3}%
-  \csname\@phy@bk@r\endcsname\rangle}
+\def\phx@bk@in@i#1{%
+  \csname\@phx@bk@l\endcsname\langle{#1}%
+  \csname\@phx@bk@r\endcsname\rangle}
+\def\phx@bk@in@ii#1#2{%
+  \csname\@phx@bk@l\endcsname\langle{#1}%
+  \csname\@phx@bk@m\endcsname\vert{#2}%
+  \csname\@phx@bk@r\endcsname\rangle}
+\def\phx@bk@in@iii#1#2#3{%
+  \csname\@phx@bk@l\endcsname\langle{#1}%
+  \csname\@phx@bk@m\endcsname\vert{#2}%
+  \csname\@phx@bk@m\endcsname\vert{#3}%
+  \csname\@phx@bk@r\endcsname\rangle}
 %    \end{macrocode}
 % \end{macro}
-% \begin{macro}{\phy@bk@doopt, \phy@bk@do@pt}
+% \begin{macro}{\phx@bk@doopt, \phx@bk@do@pt}
 %   \begin{quote}
-%     \cs{phy@bk@doopt} \marg{clist}
+%     \cs{phx@bk@doopt} \marg{clist}
 %   \end{quote}
 %   Parse the optional argument of \cs{braket}. This will add 3 entries to hash.
 %    \begin{macrocode}
-\def\@phy@bk@do@pt#1,{\ifx#1\relax\@empty\else
+\def\@phx@bk@do@pt#1,{\ifx#1\relax\@empty\else
   \edef\reserved@a{\zap@space#1 \@empty}%
   \ifx\reserved@a\@empty\else
-    \ifcsname phy@del\expandafter\string\csname\reserved@a\endcsname\endcsname
-      \xdef\@phy@bk@l{\reserved@a l}%
-      \xdef\@phy@bk@m{\reserved@a}% but not m (m stands for \mathrel)
-      \xdef\@phy@bk@r{\reserved@a r}%
+    \ifcsname phx@del\expandafter\string\csname\reserved@a\endcsname\endcsname
+      \xdef\@phx@bk@l{\reserved@a l}%
+      \xdef\@phx@bk@m{\reserved@a}% but not m (m stands for \mathrel)
+      \xdef\@phx@bk@r{\reserved@a r}%
     \else
       \ifnum\reserved@a>3%
         \PackageError{physics3}{\string\braket\space can only take 3
           mandatory arguments at most}{Check if you had written a number
           more than 3 in the [optional] argument.}%
       \fi
-      \xdef\@phy@bk@argnum{\romannumeral\reserved@a}%
+      \xdef\@phx@bk@argnum{\romannumeral\reserved@a}%
     \fi
   \fi
-  \expandafter\@phy@bk@do@pt\fi}
-\def\phy@bk@doopt#1{\@phy@bk@do@pt#1,\relax,}
+  \expandafter\@phx@bk@do@pt\fi}
+\def\phx@bk@doopt#1{\@phx@bk@do@pt#1,\relax,}
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\ketbra}
@@ -2515,10 +2515,10 @@ $
           {\csname#2l\endcsname\vert#3\csname#2r\endcsname\rangle#4%
             \csname#2l\endcsname\langle#5\csname#2r\endcsname\vert}
           {\begingroup
-            \phy@abopen\vert
-              \mathopen{\phy@mathvphantom{#5}}#3\phy@abclose\rangle#4%
-            \phy@abopen\langle#5
-              \mathclose{\phy@mathvphantom{#3}}\phy@abclose\vert
+            \phx@abopen\vert
+              \mathopen{\phx@mathvphantom{#5}}#3\phx@abclose\rangle#4%
+            \phx@abopen\langle#5
+              \mathclose{\phx@mathvphantom{#3}}\phx@abclose\vert
           \endgroup}%
       }%
   }
@@ -2532,24 +2532,24 @@ $
   {%
     \IfBooleanTF{#1}
       {%
-        \gdef\@phy@bk@l{mathopen}%
-        \gdef\@phy@bk@m{mathord}%
-        \gdef\@phy@bk@r{mathclose}%
+        \gdef\@phx@bk@l{mathopen}%
+        \gdef\@phx@bk@m{mathord}%
+        \gdef\@phx@bk@r{mathclose}%
       }
       {%
-        \gdef\@phy@bk@l{phy@abopen}%
-        \gdef\@phy@bk@m{middle}%
-        \gdef\@phy@bk@r{phy@abclose}%
+        \gdef\@phx@bk@l{phx@abopen}%
+        \gdef\@phx@bk@m{middle}%
+        \gdef\@phx@bk@r{phx@abclose}%
         \IfValueT{#2}
           {%
-            \ifcsname phy@del\expandafter\string\csname#2\endcsname\endcsname
-              \xdef\@phy@bk@l{#2l}%
-              \xdef\@phy@bk@m{#2}%
-              \xdef\@phy@bk@r{#2r}%
+            \ifcsname phx@del\expandafter\string\csname#2\endcsname\endcsname
+              \xdef\@phx@bk@l{#2l}%
+              \xdef\@phx@bk@m{#2}%
+              \xdef\@phx@bk@r{#2r}%
             \fi
           }%
       }%
-    \phy@bk@in@ii {#3} {#3}%
+    \phx@bk@in@ii {#3} {#3}%
   }
 \DeclareDocumentCommand \outerproduct { s o m }
   {%
@@ -2563,17 +2563,17 @@ $
           {\csname#2l\endcsname\vert#3\csname#2r\endcsname\rangle
             \csname#2l\endcsname\langle#3\csname#2r\endcsname\vert}
           {\begingroup
-            \phy@abopen\vert
-              \mathopen{\phy@mathvphantom{#3}}#3\phy@abclose\rangle
-            \phy@abopen\langle#3
-              \mathclose{\phy@mathvphantom{#3}}\phy@abclose\vert
+            \phx@abopen\vert
+              \mathopen{\phx@mathvphantom{#3}}#3\phx@abclose\rangle
+            \phx@abopen\langle#3
+              \mathclose{\phx@mathvphantom{#3}}\phx@abclose\vert
           \endgroup}%
       }%
   }
-\def\@phy@ev@do@pt#1,{\ifx#1\relax\@empty\else
+\def\@phx@ev@do@pt#1,{\ifx#1\relax\@empty\else
   \edef\reserved@a{\zap@space#1 \@empty}%
   \ifx\reserved@a\@empty\else
-    \ifcsname phy@del\expandafter\expandafter\expandafter
+    \ifcsname phx@del\expandafter\expandafter\expandafter
     \expandafter\expandafter\expandafter\expandafter
     \expandafter\expandafter\expandafter\expandafter
     \expandafter\expandafter\expandafter\expandafter \string
@@ -2581,38 +2581,38 @@ $
     \expandafter\expandafter\expandafter \csname
     \expandafter\expandafter\expandafter \detokenize
     \expandafter{\reserved@a}\endcsname \endcsname
-      \xdef\@phy@ev{\reserved@a}%
+      \xdef\@phx@ev{\reserved@a}%
     \else
-      \xdef\@phy@ev@basis{%
+      \xdef\@phx@ev@basis{%
         \reserved@a}%
     \fi
   \fi
-  \expandafter\@phy@ev@do@pt\fi}
-\def\phy@ev@doopt#1{%
-  \edef\@phy@ev{\@empty}\edef\@phy@ev@basis{\@empty}\@phy@ev@do@pt#1,\relax,}
+  \expandafter\@phx@ev@do@pt\fi}
+\def\phx@ev@doopt#1{%
+  \edef\@phx@ev{\@empty}\edef\@phx@ev@basis{\@empty}\@phx@ev@do@pt#1,\relax,}
 \DeclareDocumentCommand \expval { s O{} m }
   {
-    \phy@ev@doopt{#2}%
+    \phx@ev@doopt{#2}%
     \IfBooleanTF{#1}
       {%
-        \gdef\@phy@bk@l{mathopen}%
-        \gdef\@phy@bk@m{mathord}%
-        \gdef\@phy@bk@r{mathclose}%
+        \gdef\@phx@bk@l{mathopen}%
+        \gdef\@phx@bk@m{mathord}%
+        \gdef\@phx@bk@r{mathclose}%
       }
       {%
-        \gdef\@phy@bk@l{phy@abopen}%
-        \gdef\@phy@bk@m{middle}%
-        \gdef\@phy@bk@r{phy@abclose}%
-        \ifx \@phy@ev\@empty \else
-          \xdef\@phy@bk@l{\@phy@ev l}%
-          \xdef\@phy@bk@m{\@phy@ev}%
-          \xdef\@phy@bk@r{\@phy@ev r}%
+        \gdef\@phx@bk@l{phx@abopen}%
+        \gdef\@phx@bk@m{middle}%
+        \gdef\@phx@bk@r{phx@abclose}%
+        \ifx \@phx@ev\@empty \else
+          \xdef\@phx@bk@l{\@phx@ev l}%
+          \xdef\@phx@bk@m{\@phx@ev}%
+          \xdef\@phx@bk@r{\@phx@ev r}%
         \fi
       }%
-      \ifx \@phy@ev@basis\@empty
-        \phy@bk@in@i {#3}%
+      \ifx \@phx@ev@basis\@empty
+        \phx@bk@in@i {#3}%
       \else
-        \phy@bk@in@iii {\@phy@ev@basis} {#3} {\@phy@ev@basis}%
+        \phx@bk@in@iii {\@phx@ev@basis} {#3} {\@phx@ev@basis}%
       \fi
   }
 %    \end{macrocode}
@@ -2625,37 +2625,37 @@ $
 %    \end{macrocode}
 % Restore the namespace.
 %    \begin{macrocode}
-%<@@=phy>
+%<@@=phx>
 %    \end{macrocode}
 % \subsection{The \modu{doubleprod} module}
 %
 %    \begin{macrocode}
 %<*doubleprod>
-\ProvidesExplFile{phy-doubleprod.sty}{2023-10-24}{}
+\ProvidesExplFile{phx-doubleprod.sty}{2023-10-24}{}
   {`doubleprod' (vertically stacked binary operators) module of physics3}
 %    \end{macrocode}
 % Boolean options.
 %    \begin{macrocode}
-\@@_define_key:n { doubleprod } { crosssymbol } { \def\@phy@dbl@c{#1}  }
-\@@_define_key:n { doubleprod } { dotsymbol   } { \def\@phy@dbl@d{#1}  }
-\@@_define_key:n { doubleprod } { crossscale  } { \def\@phy@dbl@sc{#1} }
-\@@_define_key:n { doubleprod } { dotscale    } { \def\@phy@dbl@sd{#1} }
-\@@_define_key:n { doubleprod } { crossopenup } { \def\@phy@dbl@oc{#1} }
-\@@_define_key:n { doubleprod } { dotopenup   } { \def\@phy@dbl@od{#1} }
+\@@_define_key:n { doubleprod } { crosssymbol } { \def\@phx@dbl@c{#1}  }
+\@@_define_key:n { doubleprod } { dotsymbol   } { \def\@phx@dbl@d{#1}  }
+\@@_define_key:n { doubleprod } { crossscale  } { \def\@phx@dbl@sc{#1} }
+\@@_define_key:n { doubleprod } { dotscale    } { \def\@phx@dbl@sd{#1} }
+\@@_define_key:n { doubleprod } { crossopenup } { \def\@phx@dbl@oc{#1} }
+\@@_define_key:n { doubleprod } { dotopenup   } { \def\@phx@dbl@od{#1} }
 \@@_setkeys:n    { doubleprod }
   {
     crosssymbol = \times, crossscale = 0.8, crossopenup = .02,
     dotsymbol   = \ldotp, dotscale   = 1,   dotopenup   = .2
   }
 \@@_processkeyopt:n { doubleprod }
-\def\phy@dbl@gen#1#2#3#4{%
+\def\phx@dbl@gen#1#2#3#4{%
   \DeclareRobustCommand#1{\mathbin{\vcenter{\baselineskip\z@skip%
-    \lineskip#4\phy@dblcurrf@size%
-    \hbox_set:Nn \l_tmpa_box {\fontsize{#2\phy@dblcurrf@size}\z@$#3$}
+    \lineskip#4\phx@dblcurrf@size%
+    \hbox_set:Nn \l_tmpa_box {\fontsize{#2\phx@dblcurrf@size}\z@$#3$}
     \box_use:N \l_tmpa_box \box_use_drop:N \l_tmpa_box}}}}
-\def\phy@dblcurrf@size{\dimexpr\f@size pt\relax}
-\phy@dbl@gen\doublecross\@phy@dbl@sc\@phy@dbl@c\@phy@dbl@oc
-\phy@dbl@gen\doubledot\@phy@dbl@sd\@phy@dbl@d\@phy@dbl@od
+\def\phx@dblcurrf@size{\dimexpr\f@size pt\relax}
+\phx@dbl@gen\doublecross\@phx@dbl@sc\@phx@dbl@c\@phx@dbl@oc
+\phx@dbl@gen\doubledot\@phx@dbl@sd\@phx@dbl@d\@phx@dbl@od
 %    \end{macrocode}
 %    \begin{macrocode}
 \file_input_stop:
@@ -2667,7 +2667,7 @@ $
 % \subsection{The \modu{diagmat} module}
 %    \begin{macrocode}
 %<*diagmat>
-\ProvidesExplFile{phy-diagmat.sty}{2024-01-10}{}
+\ProvidesExplFile{phx-diagmat.sty}{2024-01-10}{}
   {`diagmat' module of physics3}
 %    \end{macrocode}
 % This module requires \pkg{mathtools} and \pkg{xpatch}.
@@ -2794,12 +2794,12 @@ $
 % \subsection{The \modu{xmat} module}
 %    \begin{macrocode}
 %<*xmat>
-\ProvidesExplFile{phy-xmat.sty}{2023/10/24}{}
+\ProvidesExplFile{phx-xmat.sty}{2023/10/24}{}
   {`xmat' module of physics3}
 \RequirePackage { mathtools }
-\phy@define@key { xmat } { showtop }
+\phx@define@key { xmat } { showtop }
   { \int_gset:Nn \l_@@_xmat_showtop_int { #1 } }
-\phy@define@key { xmat } { showleft }
+\phx@define@key { xmat } { showleft }
   { \int_gset:Nn \l_@@_xmat_showleft_int { #1 } }
 %    \end{macrocode}
 % This module requires some new variables.
@@ -2815,7 +2815,7 @@ $
   {
     #1 \c_math_subscript_token { #2 #3 }
   }
-\phy@processkeyopt { xmat }
+\phx@processkeyopt { xmat }
 \DeclareDocumentCommand \xmat { O{} m m m }
  { \_@@_xmat_type:nnnnn { } { #1 } { #2 } { #3 } { #4 } }
 \DeclareDocumentCommand \pxmat { O{} m m m }
@@ -2949,29 +2949,29 @@ $
 % \subsection{The \modu{ab.legacy} module}
 %    \begin{macrocode}
 %<*ab.legacy>
-\ProvidesFile{phy-ab.legacy.sty}
+\ProvidesFile{phx-ab.legacy.sty}
   [2023/10/24 `ab.legacy' module of physics3]
 %    \end{macrocode}
 % Requires \modu{ab}'s "tight" option.
 %    \begin{macrocode}
-\phy@requiremodule{ab}
-\phy@define@key{ab.legacy}{order}[\mathcal{O}]{\def\phy@ab@ordersym{#1}}
-\phy@setkeys{ab.legacy}{order}
-\phy@processkeyopt{ab.legacy}
-\phy@d@l@geny\abs\vert\vert
-\phy@d@l@geny\norm\Vert\Vert
+\phx@requiremodule{ab}
+\phx@define@key{ab.legacy}{order}[\mathcal{O}]{\def\phx@ab@ordersym{#1}}
+\phx@setkeys{ab.legacy}{order}
+\phx@processkeyopt{ab.legacy}
+\phx@d@l@geny\abs\vert\vert
+\phx@d@l@geny\norm\Vert\Vert
 \DeclareDocumentCommand\order{som}{%
-  \phy@ab@ordersym
+  \phx@ab@ordersym
   \IfBooleanTF{#1}
     {(#3)}
     {\IfValueTF{#2}
       {\csname#2l\endcsname(#3\csname#2r\endcsname)}
-      {\phy@abopen(#3\phy@abclose)}%
+      {\phx@abopen(#3\phx@abclose)}%
     }%
 }
-\phy@d@l@geny\eval.\vert
-\phy@d@l@geny\peval(\vert
-\phy@d@l@geny\beval[\vert
+\phx@d@l@geny\eval.\vert
+\phx@d@l@geny\peval(\vert
+\phx@d@l@geny\beval[\vert
 %    \end{macrocode}
 %    \begin{macrocode}
 \protect \endinput
@@ -2983,13 +2983,13 @@ $
 % \subsection{The \modu{op.legacy} module}
 %    \begin{macrocode}
 %<*op.legacy>
-\ProvidesExplFile{phy-op.legacy.sty}{2023-10-24}{}
+\ProvidesExplFile{phx-op.legacy.sty}{2023-10-24}{}
   {`op.legacy' module of physics3}
-\phy@define@key{op.lega}{ReIm}[true]{\def\phy@reserveda{#1}}
-\phy@define@key{op.lega}{PV}{\def\@phy@oplega@PV{#1}}
-\phy@define@key{op.lega}{pv}{\def\@phy@oplega@pv{#1}}
-\phy@setkeys{op.lega}{PV=\mathcal{P},pv={p.v.},ReIm=true}
-\phy@processkeyopt{ab}
+\phx@define@key{op.lega}{ReIm}[true]{\def\phx@reserveda{#1}}
+\phx@define@key{op.lega}{PV}{\def\@phx@oplega@PV{#1}}
+\phx@define@key{op.lega}{pv}{\def\@phx@oplega@pv{#1}}
+\phx@setkeys{op.lega}{PV=\mathcal{P},pv={p.v.},ReIm=true}
+\phx@processkeyopt{ab}
 %    \end{macrocode}
 % \begin{macro}
 %   {
@@ -3004,8 +3004,8 @@ $
   \exp_after:wN \DeclareRobustCommand \cs:w #1\cs_end:
   { \mathop { \operator@font #1 } \nolimits }
   }
-  \DeclareRobustCommand\PV  {\mathord{\@phy@oplega@PV}}
-  \DeclareRobustCommand\pv  {\mathop{\operator@font\@phy@oplega@pv{}}\nolimits}
+  \DeclareRobustCommand\PV  {\mathord{\@phx@oplega@PV}}
+  \DeclareRobustCommand\pv  {\mathop{\operator@font\@phx@oplega@pv{}}\nolimits}
   \DeclareRobustCommand\upe {\mathrm e}
   \DeclareRobustCommand\iu  {\mathrm i\mkern1mu}
   \RequirePackage{dsfont}
@@ -3017,7 +3017,7 @@ $
 % The \cs{AtBeginDocument}
 % hook is used for the compatibility of \pkg{unicode-math}.
 %    \begin{macrocode}
-\ifx \phy@reserveda \phy@true
+\ifx \phx@reserveda \phx@true
   \AtBeginDocument
     {
       \let\Resymbol\Re
@@ -3030,19 +3030,19 @@ $
 % Requires \pkg{fixdif} version 2.$x$.
 %    \begin{macrocode}
 \RequirePackage{fixdif}[2023/01/31]
-\letdif\phy@nl@nabla{nabla}
+\letdif\phx@nl@nabla{nabla}
 %    \end{macrocode}
 % \begin{macro}{\grad, \div, \curl, \laplacian}
 %   $\nabla$-related operators.
 %    \begin{macrocode}
-\phy@requiremodule{ab}
+\phx@requiremodule{ab}
 \AtBeginDocument
   {
     \ifcsname div\endcsname\let\divsymbol\div\fi
-    \DeclareRobustCommand \grad     {\phy@nl@nabla\ab}
-    \DeclareRobustCommand \div      {\phy@nl@nabla\cdot\ab}
-    \DeclareRobustCommand \curl     {\phy@nl@nabla\times\ab}
-    \DeclareRobustCommand \laplacian{\phy@nl@nabla^2\ab}
+    \DeclareRobustCommand \grad     {\phx@nl@nabla\ab}
+    \DeclareRobustCommand \div      {\phx@nl@nabla\cdot\ab}
+    \DeclareRobustCommand \curl     {\phx@nl@nabla\times\ab}
+    \DeclareRobustCommand \laplacian{\phx@nl@nabla^2\ab}
   }
 %    \end{macrocode}
 % \end{macro}
@@ -3058,15 +3058,15 @@ $
 % \pkg{physics} only. The commands in this module should NEVER be used!
 %    \begin{macrocode}
 %<*qtext.legacy>
-\ProvidesExplFile{phy-qtext.legacy.sty}{2023-10-24}{}
+\ProvidesExplFile{phx-qtext.legacy.sty}{2023-10-24}{}
   {`qtext.legacy' module of physics3.sty}
 \RequirePackage{amstext}
-\def\phy@qtext@#1#2{#1\text{#2}\quad}
-\DeclareRobustCommand\qqtext{\@ifstar{\phy@qtext@{}}{\phy@qtext@\quad}}
+\def\phx@qtext@#1#2{#1\text{#2}\quad}
+\DeclareRobustCommand\qqtext{\@ifstar{\phx@qtext@{}}{\phx@qtext@\quad}}
 \DeclareRobustCommand\qq{\qqtext}
 \DeclareRobustCommand\qcomma{,\quad}
 \DeclareRobustCommand\qc{\qcomma}
-\DeclareRobustCommand\qcc{\@ifstar{\phy@qtext@{}{c.c}}{\phy@qtext@\quad{c.c}}}
+\DeclareRobustCommand\qcc{\@ifstar{\phx@qtext@{}{c.c}}{\phx@qtext@\quad{c.c}}}
 \clist_map_inline:nn
   {
     if,       then,   else,   otherwise,  unless,
@@ -3076,7 +3076,7 @@ $
   }
   {
     \exp_after:wN \DeclareRobustCommand \cs:w q#1\cs_end:
-      { \@ifstar{ \phy@qtext@ {} {#1} } { \phy@qtext@ \quad {#1} } }
+      { \@ifstar{ \phx@qtext@ {} {#1} } { \phx@qtext@ \quad {#1} } }
   }
 %    \end{macrocode}
 %    \begin{macrocode}
@@ -3089,7 +3089,7 @@ $
 % \subsection{The \modu{bm-um.legacy} module}
 %    \begin{macrocode}
 %<*bm-um.legacy>
-\ProvidesExplFile{phy-bm-um.legacy.sty}{2023-10-24}{}
+\ProvidesExplFile{phx-bm-um.legacy.sty}{2023-10-24}{}
   {`bm-um.legacy' module of physics3}
 \AtBeginDocument
   {
