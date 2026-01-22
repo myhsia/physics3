@@ -435,10 +435,10 @@ $ \ket\Big| \psi         > $
 % \fi
 \begin{example}{5}
 \def\0{\frac\phi2|\psi}
-$ \braket<A> $\quad $ \braket<m|n> $
-\quad $ \braket<m|A|n> $\\[1ex]
-$ \braket<\0> $\quad $\braket*<\0> $
-\quad $ \braket\Bigg<\0> $
+$ \braket<A> $\quad $ \braket<m|n> $\quad
+$ \braket<m|A|n> $\\[1ex]
+$ \braket<\0> $\quad $\braket*<\0> $\quad
+$ \braket\Bigg<\0> $
 \end{example}
 % \iffalse
 %</example>
@@ -493,19 +493,29 @@ $ \ab|{\braket<\psi|\hat H|\psi>}| $
 % value are provided in this module.
 % \begin{function}{\innerproduct, \outerproduct, \expval}
 %   \begin{syntax}
-%     \cs{innerproduct} \marg{basis}
-%     \cs{outerproduct} \marg{basis}
-%     \cs{expval} \oarg{basis} \marg{operator}
+%     \cs{innerproduct} \meta{*} \oarg{size} \marg{basis}
+%     \cs{outerproduct} \meta{*} \oarg{size} \marg{basis}
+%     \cs{expval} \meta{*} \oarg{basis, size} \marg{operator}
 %   \end{syntax}
 % \end{function}
 % For example,
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{3}
-$ \innerproduct \alpha $\quad
-$ \outerproduct \alpha $\quad\\[1ex]
-$ \expval{\hat A} = \expval[\psi]{\hat A} $
+\begin{example}{12}
+\def \0{\frac\alpha2}
+\edef\1{\uparrow,\downarrow}
+$ \innerproduct     \0 $\quad
+$ \innerproduct*    \0 $\quad
+$ \innerproduct[big]\0 $\\[2ex]
+$ \outerproduct     \0 $\quad
+$ \outerproduct*    \0 $\quad
+$ \outerproduct[big]\0 $\\[2ex]
+$ \expval \0 $\quad $ \expval*\0 $\quad
+$ \expval [big]     {\hat A} $\quad
+$ \expval [\psi, Big]\0 $\\[2ex]
+$ \expval [\1, Big] {\hat A} $\quad
+$ \expval*[\1]      {\hat A} $
 \end{example}
 % \iffalse
 %</example>
@@ -576,10 +586,10 @@ $ \braket[big] {\0} {\psi} $
 % \fi
 \begin{example}{6}
 \def\0{\frac\phi2}
-$ \braket [1] {\0}             $\quad
-$ \braket*[1] {\0}             $\\[1ex]
-$ \braket [3] {\0}{A}{\psi}    $\quad
-$ \braket[3,big] {\0}{A}{\psi} $\\[1ex]
+$ \braket [1]    {\0}          $\quad
+$ \braket*[1]    {\0}          $\quad
+$ \braket [3]    {\0}{A}{\psi} $\\[1ex]
+$ \braket[3,big] {\0}{A}{\psi} $\quad
 $ \braket[Big,3] {\0}{A}{\psi} $
 \end{example}
 % \iffalse
@@ -595,8 +605,8 @@ $ \braket[Big,3] {\0}{A}{\psi} $
 \def\0{\frac\phi2}
 $ \ketbra        {\0} {\psi} $\quad
 $ \ketbra*       {\0} {\psi} $\\[1ex]
-$ \ketbra [bigg]{\0} {\psi} $\quad
-$ \ketbra [Big] {\0} [_x^y] {\psi} $
+$ \ketbra [bigg] {\0} {\psi} $\quad
+$ \ketbra [Big]  {\0} [_x^y] {\psi} $
 \end{example}
 % \iffalse
 %</example>
@@ -612,19 +622,29 @@ $ \ketbra [Big] {\0} [_x^y] {\psi} $
 % value are also provided in this module.
 % \begin{function}{\innerproduct, \outerproduct, \expval}
 %   \begin{syntax}
-%     \cs{innerproduct} \marg{basis}
-%     \cs{outerproduct} \marg{basis}
-%     \cs{expval} \oarg{basis} \marg{operator}
+%     \cs{innerproduct} \meta{*} \oarg{size} \marg{basis}
+%     \cs{outerproduct} \meta{*} \oarg{size} \marg{basis}
+%     \cs{expval} \meta{*} \oarg{basis, size} \marg{operator}
 %   \end{syntax}
 % \end{function}
 % For example,
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{3}
-$ \innerproduct \alpha $\quad
-$ \outerproduct \alpha $\quad\\[1ex]
-$ \expval{\hat A} = \expval[\psi]{\hat A} $
+\begin{example}{12}
+\def \0{\frac\alpha2}
+\edef\1{\uparrow,\downarrow}
+$ \innerproduct     \0 $\quad
+$ \innerproduct*    \0 $\quad
+$ \innerproduct[big]\0 $\\[2ex]
+$ \outerproduct     \0 $\quad
+$ \outerproduct*    \0 $\quad
+$ \outerproduct[big]\0 $\\[2ex]
+$ \expval \0 $\quad $ \expval*\0 $\quad
+$ \expval [big]     {\hat A} $\quad
+$ \expval [\psi, Big]\0 $\\[2ex]
+$ \expval [\1, Big] {\hat A} $\quad
+$ \expval*[\1]      {\hat A} $
 \end{example}
 % \iffalse
 %</example>
@@ -898,15 +918,16 @@ $ \bm {0 A z \alpha \Omega}          $
 %
 % \begin{function}
 %   {
-%     \asin     \acos  \atan,
-%     \acsc     \asec  \acot,
-%     \rank     \erf,
-%     \Tr       \tr,
-%     \Res      \res,
-%     \PV       \pv,
-%     \Re       \Im,
-%     \Identity \identity,
-%     \grad,    \curl, \div
+%     \asin,    \acos, \atan,
+%     \acsc,    \asec, \acot,
+%     \rank,    \erf,
+%     \Tr,      \tr,
+%     \Res,     \res,
+%     \PV,      \pv,
+%     \Re,      \Im,
+%     \Identity,\identity,
+%     \grad,    \curl, \div,
+%     \upe,     \iu
 %   }
 %   \cs{Re} and \cs{Im} are redefined. The first five lines of commands
 %   yield what they look like in math mode.
@@ -924,7 +945,6 @@ $ \bm {0 A z \alpha \Omega}          $
 %   \begin{quote}
 %     "\usephysicsmodule[ReIm = false]{op.legacy}"
 %   \end{quote}
-% \end{function}
 % For example,
 % \iffalse
 %<*example>
@@ -933,19 +953,21 @@ $ \bm {0 A z \alpha \Omega}          $
 \makeatletter\def\phy@requiremodule#1{}^^A
 \def\PackageWarning#1#2{}^^A
 \catcode`\%14\relax \input phy-braket.sty \catcode`\%9\relax \makeatother
-\begin{example}{6}
+\begin{example}{7}
 % \usephysicsmodule{braket}
 $ \asin x  $\quad $ \PV f(z) $\quad
 $ \pv f(z) $\quad $ \Re z $\\[1ex]
 $ \Identity = \identity = \int \d^2 \alpha
   \ketbra\alpha\alpha/\pi $\\[1ex]
-$ \grad V$, $\div (x,y,z)$, $ \curl(x,y,z) $
+$ \grad V$, $\div (x,y,z)$,
+$ \curl(x,y,z) $\\[1ex] $ \upe^{\iu\pi} = -1$
 \end{example}
 \endgroup
 % \iffalse
 %</example>
 % \fi
 % The ``$\divsymbol$'' symbol was redefined as \cs{divsymbol}.
+% \end{function}
 %
 % \subsection{The \modu{qtext.legacy} module}
 % This module was written just to offer a method to maintain documents written
@@ -1124,9 +1146,9 @@ $ \ab\Biggg| \frac12 |  $
 % \fi
 \begin{example}{5}
 \def\0{\frac12}
-$ \pab{\0} $\quad $ \bab{\0} $
+$ \pab{\0} $\quad $ \bab{\0} $%
             \quad $ \Bab{\0} $\\[1ex]
-$ \aab{\0} $\quad $ \vab{\0} $
+$ \aab{\0} $\quad $ \vab{\0} $%
             \quad $ \Vab{\0} $
 \end{example}
 % \iffalse
@@ -1483,9 +1505,9 @@ $ \ketbra| \0 >_x^y < \psi | $
 % \fi
 \begin{example}{5}
 \def\0{\frac\phi2}
-$ \bra {\0} $\quad $ \bra* {\0}     $
+$ \bra {\0} $\quad $ \bra* {\0}     $%
              \quad $ \bra[Big] {\0} $\\[1ex]
-$ \ket {\0} $\quad $ \ket* {\0}     $
+$ \ket {\0} $\quad $ \ket* {\0}     $%
              \quad $ \ket[Big] {\0} $
 \end{example}
 % \iffalse
@@ -1514,9 +1536,9 @@ $ \braket[big] {\0} {\psi} $
 \begin{example}{6}
 \def\0{\frac\phi2}
 $ \braket [1]    {\0}          $\quad
-$ \braket*[1]    {\0}          $\\[1ex]
-$ \braket [3]    {\0}{A}{\psi} $\quad
-$ \braket[3,big] {\0}{A}{\psi} $\\[1ex]
+$ \braket*[1]    {\0}          $\quad
+$ \braket [3]    {\0}{A}{\psi} $\\[1ex]
+$ \braket[3,big] {\0}{A}{\psi} $\quad
 $ \braket[Big,3] {\0}{A}{\psi} $
 \end{example}
 % \iffalse
@@ -1690,7 +1712,6 @@ $
 \def\phy@FW@ptions#1[#2]#3{\@ifnextchar[%]
   {\phy@FW@pti@ns#1[{#2}]#3}{\phy@FW@pti@ns#1[{#2}]#3[]}}
 \@onlypreamble\phy@FW@ptions
-\ExplSyntaxOff
 \def\phy@FW@pti@ns#1[#2]#3[#4]{%
   \def\reserved@b##1,{%
   \ifx\@nnil##1\relax\else
@@ -1700,10 +1721,9 @@ $
     \fi
     \expandafter\reserved@b
   \fi}%
-\edef\reserved@a{\zap@space#3 \@empty}%
-\edef\reserved@a{\expandafter\reserved@b\reserved@a,\@nnil,}%
-\reserved@a}
-\ExplSyntaxOn
+  \edef\reserved@a{\zap@space#3~\@empty}%
+  \edef\reserved@a{\expandafter\reserved@b\reserved@a,\@nnil,}%
+  \reserved@a}
 \@onlypreamble\phy@FW@pti@ns
 %    \end{macrocode}
 % \end{macro}
@@ -2052,7 +2072,7 @@ $
 % \end{macro}
 % \begin{macro}{\phy@d@lx}
 %   \begin{quote}
-%     \cs{phy@d@lx} \marg{biggg or star branch name} \marg{automatic branch name} \{\#3\}
+%     \cs{phy@d@lx} \marg{biggg or star branch name} \marg{automatic branch name} "{#3}"
 %   \end{quote}
 %    \begin{macrocode}
 \def\phy@d@lx#1#2#3{%
@@ -2185,7 +2205,6 @@ $
 %   \begin{quote}
 %     \cs{braket} \char`\<\ \meta{subformula 1} \char`\|\ \meta{subformula 2} {\color{gray}\textrm{[}\char`\|\ \meta{subformula 3} \textrm{\dots]}} \char`\>
 %   \end{quote}
-% \end{macro}
 %    \begin{macrocode}
 \begingroup
 \catcode`\|=\active
@@ -2203,13 +2222,13 @@ $
 \phy@AB@gen{bk.a}<{r<>}{\phy@@ab@bk{#1}}
 \phy@d@l@genxm{bk.m}
 \phy@d@l@genxa{bk.a}
-\DeclareRobustCommand\braket{\phy@d@lx{bk.m}{bk.a}}
+\DeclareRobustCommand \braket {\phy@d@lx{bk.m}{bk.a}}
 %    \end{macrocode}
+% \end{macro}
 % \begin{macro}{\ketbra}
 %   \begin{quote}
 %     \cs{braket} \char`\|\ \meta{subformula 1} \char`\>\ \meta{subformula 2} \char`\<\ \meta{subformula 3} \char`\|
 %   \end{quote}
-% \end{macro}
 %    \begin{macrocode}
 \begingroup
 \catcode`\<=\active
@@ -2237,14 +2256,96 @@ $
 \phy@d@l@genxa{kb.a}
 \DeclareRobustCommand \ketbra {\phy@d@lx{kb.m}{kb.a}}
 %    \end{macrocode}
+% \end{macro}
 % \begin{macro}{\innerproduct, \outerproduct, \expval}
 % Define some high-level commands for inner product, outer product of basis
 % and expectation value.
 %    \begin{macrocode}
-\DeclareDocumentCommand \innerproduct { m } { \braket<#1|#1>  }
-\DeclareDocumentCommand \outerproduct { m } { \ketbra|#1><#1| }
-\DeclareDocumentCommand \expval { o m }
-  { \IfNoValueTF {#1} { \braket<#2> } { \braket<#1|#2|#1> } }
+\DeclareDocumentCommand \innerproduct { s o m }
+  {%
+    \IfBooleanTF{#1} {\mathopen\langle#3\vert #3\mathclose\rangle}
+      {%
+        \IfValueTF{#2}
+          {\expanded{\noexpand\phy@d@lx{bk.m}{bk.a}%
+            \expandafter\noexpand\csname #2\endcsname}<#3|#3>}
+          {\phy@d@lx{bk.m}{bk.a}<#3|#3>}%
+      }%
+  }
+\DeclareDocumentCommand \outerproduct { s o m }
+  {%
+    \IfBooleanTF{#1}
+      {%
+        \mathopen\vert#3\mathclose\rangle
+        \mathopen\langle#3\mathclose\vert
+      }
+      {%
+        \IfValueTF{#2}
+          {\expanded{\noexpand\phy@d@lx{kb.m}{kb.a}%
+            \expandafter\noexpand\csname #2\endcsname}|#3><#3|}
+          {\phy@d@lx{kb.m}{kb.a}|#3><#3|}%
+      }%
+  }
+%    \end{macrocode}
+% Parsing the optional argument of \cs{expval}.
+%    \begin{macrocode}
+\def\@phy@ev@do@pt#1,{\ifx#1\relax\@empty\else
+  \edef\reserved@a{\zap@space#1 \@empty}%
+  \ifx\reserved@a\@empty\else
+    \ifcsname phy@del\expandafter\expandafter\expandafter
+    \expandafter\expandafter\expandafter\expandafter
+    \expandafter\expandafter\expandafter\expandafter
+    \expandafter\expandafter\expandafter\expandafter \string
+    \expandafter\expandafter\expandafter\expandafter
+    \expandafter\expandafter\expandafter \csname
+    \expandafter\expandafter\expandafter \detokenize
+    \expandafter{\reserved@a}\endcsname \endcsname
+      \xdef\@phy@ev{\reserved@a}%
+    \else
+      \xdef\@phy@ev@basis{%
+        \reserved@a}%
+    \fi
+  \fi
+  \expandafter\@phy@ev@do@pt\fi}
+\def\phy@ev@doopt#1{%
+  \edef\@phy@ev{\@empty}\edef\@phy@ev@basis{\@empty}\@phy@ev@do@pt#1,\relax,}
+\DeclareDocumentCommand \expval { s o m }
+  {%
+    \phy@ev@doopt{#2}%
+    \IfValueTF {#2}
+      {%
+        \ifx\@phy@ev\@empty
+          \ifx \@phy@ev@basis\@empty \else
+          \IfBooleanTF{#1}
+            {\phy@d@lx{bk.m}{bk.a}*<\@phy@ev@basis|#3|\@phy@ev@basis>}
+            {\phy@d@lx{bk.m}{bk.a}<\@phy@ev@basis |#3|\@phy@ev@basis>}%
+          \fi
+        \else
+          \ifx\@phy@ev@basis\@empty
+            \IfBooleanTF{#1} {\phy@d@lx{bk.m}{bk.a}*<#3>}
+              {%
+                \expanded{%
+                  \noexpand \phy@d@lx{bk.m}{bk.a}\expandafter \noexpand
+                  \csname \@phy@ev\endcsname}<#3>%
+              }%
+          \else
+            \IfBooleanTF{#1}
+              {%
+                \phy@d@lx{bk.m}{bk.a}*<\@phy@ev@basis|#3|\@phy@ev@basis>%
+              }
+              {%
+                \expanded{%
+                  \noexpand \phy@d@lx{bk.m}{bk.a}\expandafter
+                  \noexpand \csname \@phy@ev\endcsname}%
+                <\@phy@ev@basis|#3|\@phy@ev@basis>%
+              }%
+          \fi
+        \fi
+      }
+      {%
+        \IfBooleanTF{#1}
+          {\phy@d@lx{bk.m}{bk.a}*<#3>} {\phy@d@lx{bk.m}{bk.a}<#3>}%
+      }%
+  }
 %    \end{macrocode}
 % \end{macro}
 %    \begin{macrocode}
@@ -2272,7 +2373,6 @@ $
 %   \begin{quote}
 %     \cs{bra} * \oarg{biggg} \marg{subformula}
 %   \end{quote}
-% \end{macro}
 %    \begin{macrocode}
 \DeclareDocumentCommand\bra{ s o m }{%
   \IfBooleanTF{#1}
@@ -2283,11 +2383,11 @@ $
     }%
 }
 %    \end{macrocode}
+% \end{macro}
 % \begin{macro}{\ket}
 %   \begin{quote}
 %     \cs{ket} * \oarg{biggg} \marg{subformula}
 %   \end{quote}
-% \end{macro}
 %    \begin{macrocode}
 \DeclareDocumentCommand\ket{ s o m }{%
   \IfBooleanTF{#1}
@@ -2298,22 +2398,22 @@ $
     }%
 }
 %    \end{macrocode}
+% \end{macro}
 % \begin{macro}{\braket}
 %   \begin{quote}
 %     \cs{ket} * [\meta{biggg}, $n \in \{1,2,3\}$] \marg{subformula 1} \dots \marg{subformula $n$}
 %   \end{quote}
-% \end{macro}
 %    \begin{macrocode}
-\DeclareDocumentCommand\braket{ s O{} }
+\DeclareDocumentCommand \braket { s O{} }
   {%
-    \IfBooleanTF{#1}%
+    \IfBooleanTF{#1}
       {%
         \gdef\@phy@bk@argnum{ii}%
         \phy@bk@doopt{#2}%
         \gdef\@phy@bk@l{mathopen}%
         \gdef\@phy@bk@m{mathord}%
         \gdef\@phy@bk@r{mathclose}%
-      }%
+      }
       {%
         \gdef\@phy@bk@argnum{ii}%
         \gdef\@phy@bk@l{phy@abopen}%
@@ -2324,6 +2424,7 @@ $
     \csname phy@bk@in@\@phy@bk@argnum\endcsname
   }
 %    \end{macrocode}
+% \end{macro}
 % \begin{macro}{\phy@bk@in@i, \phy@bk@in@ii, \phy@bk@in@iii}
 %   \begin{quote}
 %     \cs{phy@bk@in@\meta{n.roman}} \marg{subformula 1} \dots \marg{subformula $n$}
@@ -2376,17 +2477,17 @@ $
 %     "  "\oarg{between 1 and 2} \marg{subformula 2}
 %   \end{quote}
 %    \begin{macrocode}
-\DeclareDocumentCommand\ketbra{ s o m O{} m }
+\DeclareDocumentCommand \ketbra { s o m O{} m }
   {%
-    \IfBooleanTF{#1}%
+    \IfBooleanTF{#1}
       {%
         \mathopen\vert#3\mathclose\rangle#4%
         \mathopen\langle#5\mathclose\vert
-      }%
-      {
-        \IfValueTF{#2}%
+      }
+      {%
+        \IfValueTF{#2}
           {\csname#2l\endcsname\vert#3\csname#2r\endcsname\rangle#4%
-            \csname#2l\endcsname\langle#5\csname#2r\endcsname\vert}%
+            \csname#2l\endcsname\langle#5\csname#2r\endcsname\vert}
           {\begingroup
             \phy@abopen\vert
               \mathopen{\phy@mathvphantom{#5}}#3\phy@abclose\rangle#4%
@@ -2397,14 +2498,99 @@ $
   }
 %    \end{macrocode}
 % \end{macro}
+% \begin{macro}{\innerproduct, \outerproduct, \expval}
 % Define some high-level commands for inner product, outer product of basis
 % and expectation value.
 %    \begin{macrocode}
-\DeclareDocumentCommand \innerproduct { m } { \braket{#1}{#1} }
-\DeclareDocumentCommand \outerproduct { m } { \ketbra{#1}{#1} }
-\DeclareDocumentCommand \expval { o m }
-  { \IfNoValueTF {#1} { \braket[1]{#2} } { \braket[3]{#1}{#2}{#1} } }
+\DeclareDocumentCommand \innerproduct { s o m }
+  {%
+    \IfBooleanTF{#1}
+      {%
+        \gdef\@phy@bk@l{mathopen}%
+        \gdef\@phy@bk@m{mathord}%
+        \gdef\@phy@bk@r{mathclose}%
+      }
+      {%
+        \gdef\@phy@bk@l{phy@abopen}%
+        \gdef\@phy@bk@m{middle}%
+        \gdef\@phy@bk@r{phy@abclose}%
+        \IfValueT{#2}
+          {%
+            \ifcsname phy@del\expandafter\string\csname#2\endcsname\endcsname
+              \xdef\@phy@bk@l{#2l}%
+              \xdef\@phy@bk@m{#2}%
+              \xdef\@phy@bk@r{#2r}%
+            \fi
+          }%
+      }%
+    \phy@bk@in@ii {#3} {#3}%
+  }
+\DeclareDocumentCommand \outerproduct { s o m }
+  {%
+    \IfBooleanTF{#1}
+      {%
+        \mathopen\vert#3\mathclose\rangle
+        \mathopen\langle#3\mathclose\vert
+      }
+      {%
+        \IfValueTF{#2}
+          {\csname#2l\endcsname\vert#3\csname#2r\endcsname\rangle
+            \csname#2l\endcsname\langle#3\csname#2r\endcsname\vert}
+          {\begingroup
+            \phy@abopen\vert
+              \mathopen{\phy@mathvphantom{#3}}#3\phy@abclose\rangle
+            \phy@abopen\langle#3
+              \mathclose{\phy@mathvphantom{#3}}\phy@abclose\vert
+          \endgroup}%
+      }%
+  }
+\def\@phy@ev@do@pt#1,{\ifx#1\relax\@empty\else
+  \edef\reserved@a{\zap@space#1 \@empty}%
+  \ifx\reserved@a\@empty\else
+    \ifcsname phy@del\expandafter\expandafter\expandafter
+    \expandafter\expandafter\expandafter\expandafter
+    \expandafter\expandafter\expandafter\expandafter
+    \expandafter\expandafter\expandafter\expandafter \string
+    \expandafter\expandafter\expandafter\expandafter
+    \expandafter\expandafter\expandafter \csname
+    \expandafter\expandafter\expandafter \detokenize
+    \expandafter{\reserved@a}\endcsname \endcsname
+      \xdef\@phy@ev{\reserved@a}%
+    \else
+      \xdef\@phy@ev@basis{%
+        \reserved@a}%
+    \fi
+  \fi
+  \expandafter\@phy@ev@do@pt\fi}
+\def\phy@ev@doopt#1{%
+  \edef\@phy@ev{\@empty}\edef\@phy@ev@basis{\@empty}\@phy@ev@do@pt#1,\relax,}
+\DeclareDocumentCommand \expval { s O{} m }
+  {
+    \phy@ev@doopt{#2}%
+    \IfBooleanTF{#1}
+      {%
+        \gdef\@phy@bk@l{mathopen}%
+        \gdef\@phy@bk@m{mathord}%
+        \gdef\@phy@bk@r{mathclose}%
+      }
+      {%
+        \gdef\@phy@bk@l{phy@abopen}%
+        \gdef\@phy@bk@m{middle}%
+        \gdef\@phy@bk@r{phy@abclose}%
+        \ifx \@phy@ev\@empty \else
+          \xdef\@phy@bk@l{\@phy@ev l}%
+          \xdef\@phy@bk@m{\@phy@ev}%
+          \xdef\@phy@bk@r{\@phy@ev r}%
+        \fi
+      }%
+      \ifx \@phy@ev@basis\@empty
+        \phy@bk@in@i {#3}%
+      \else
+        \phy@bk@in@iii {\@phy@ev@basis} {#3} {\@phy@ev@basis}%
+      \fi
+  }
 %    \end{macrocode}
+% \end{macro}
 %    \begin{macrocode}
 \protect \endinput
 %    \end{macrocode}
@@ -2778,29 +2964,41 @@ $
 \phy@define@key{op.lega}{pv}{\def\@phy@oplega@pv{#1}}
 \phy@setkeys{op.lega}{PV=\mathcal{P},pv={p.v.},ReIm=true}
 \phy@processkeyopt{ab}
-\clist_map_inline:nn
-  { asin, acos, atan, acsc, asec, acot, Tr, tr, rank, erf, Res, res }
-  {
-    \exp_after:wN \DeclareRobustCommand \cs:w #1\cs_end:
-      { \mathop { \operator@font #1 } \nolimits }
-  }
-\DeclareRobustCommand\PV{\mathord{\@phy@oplega@PV}}
-\DeclareRobustCommand\pv{\mathop{\operator@font\@phy@oplega@pv{}}\nolimits}
-\RequirePackage{dsfont}
-\DeclareRobustCommand\Identity{\mathbb I}
-\DeclareRobustCommand\identity{\mathds 1}
 %    \end{macrocode}
+% \begin{macro}
+%   {
+%     \asin, \acos, \atan, \acsc, \asec, \acot,
+%     \Tr, \tr, \rank, \erf, \Res, \res, \PV, \pv,
+%     \upe, \iu, \Identity, \identity
+%   }
+%    \begin{macrocode}
+\clist_map_inline:nn
+{ asin, acos, atan, acsc, asec, acot, Tr, tr, rank, erf, Res, res }
+{
+  \exp_after:wN \DeclareRobustCommand \cs:w #1\cs_end:
+  { \mathop { \operator@font #1 } \nolimits }
+  }
+  \DeclareRobustCommand\PV  {\mathord{\@phy@oplega@PV}}
+  \DeclareRobustCommand\pv  {\mathop{\operator@font\@phy@oplega@pv{}}\nolimits}
+  \DeclareRobustCommand\upe {\mathrm e}
+  \DeclareRobustCommand\iu  {\mathrm i\mkern1mu}
+  \RequirePackage{dsfont}
+  \DeclareRobustCommand\Identity{\mathbb I}
+  \DeclareRobustCommand\identity{\mathds 1}
+%    \end{macrocode}
+% \end{macro}
 % Restore \cs{Re} and \cs{Im} in \cs{Resymbol} and \cs{Imsymbol}.
 % The \cs{AtBeginDocument}
 % hook is used for the compatibility of \pkg{unicode-math}.
 %    \begin{macrocode}
-\ifx\phy@reserveda\phy@true
-\AtBeginDocument{%
-  \let\Resymbol\Re%
-  \let\Imsymbol\Im%
-  \DeclareRobustCommand\Re{\mathop{\operator@font Re}\nolimits}%
-  \DeclareRobustCommand\Im{\mathop{\operator@font Im}\nolimits}%
-}
+\ifx \phy@reserveda \phy@true
+  \AtBeginDocument
+    {
+      \let\Resymbol\Re
+      \let\Imsymbol\Im
+      \DeclareRobustCommand\Re{\mathop{\operator@font Re}\nolimits}%
+      \DeclareRobustCommand\Im{\mathop{\operator@font Im}\nolimits}%
+    }
 \fi
 %    \end{macrocode}
 % Requires \pkg{fixdif} version 2.$x$.
@@ -2808,15 +3006,19 @@ $
 \RequirePackage{fixdif}[2023/01/31]
 \letdif\phy@nl@nabla{nabla}
 %    \end{macrocode}
+% \begin{macro}{\grad, \div, \curl, \laplacian}
 %    \begin{macrocode}
 \phy@requiremodule{ab}
-\AtBeginDocument{\ifcsname div\endcsname\let\divsymbol\div\fi
-  \DeclareRobustCommand\grad{\phy@nl@nabla\ab}%
-  \DeclareRobustCommand\div{\phy@nl@nabla\cdot\ab}%
-  \DeclareRobustCommand\curl{\phy@nl@nabla\times\ab}%
-  \DeclareRobustCommand\laplacian{\phy@nl@nabla^2\ab}%
-}
+\AtBeginDocument
+  {
+    \ifcsname div\endcsname\let\divsymbol\div\fi
+    \DeclareRobustCommand \grad     {\phy@nl@nabla\ab}
+    \DeclareRobustCommand \div      {\phy@nl@nabla\cdot\ab}
+    \DeclareRobustCommand \curl     {\phy@nl@nabla\times\ab}
+    \DeclareRobustCommand \laplacian{\phy@nl@nabla^2\ab}
+  }
 %    \end{macrocode}
+% \end{macro}
 %    \begin{macrocode}
 \file_input_stop:
 %    \end{macrocode}
