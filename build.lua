@@ -11,14 +11,14 @@
 
 module              = "physics3"
 version             = "v0.1A"
-date                = "2026-01-25"
+date                = "2026-01-23"
 maintainer          = "Mingyu Xia"
 uploader            = "Mingyu Xia"
 maintainid          = "myhsia"
 email               = "myhsia@outlook.com"
 repository          = "https://github.com/" .. maintainid .. "/" .. module
 announcement        = ""
-summary             = ""
+summary             = "Tools for typesetting math for physics."
 description         = ""
 
 --[==========================================[--

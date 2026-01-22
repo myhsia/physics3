@@ -3,7 +3,6 @@
 % File: physics3.dtx
 % -----------------------------------------------------------------------
 %   Copyright (C) 2026      by Mingyu Xia     <myhsia@outlook.com>      *
-%                                                                       *
 %   Copyright (C) 2022-2024 by Tingxuan Zhang <alphaztx@163.com>        *
 % -----------------------------------------------------------------------
 %   This work may be distributed and/or modified under the conditions   *
@@ -22,7 +21,17 @@
 % -----------------------------------------------------------------------
 %   This work consists of the files physics3.dtx,                       *
 %                                   physics3.ins,                       *
-%                 the derived files phx-*.sty,                          *
+%                 the derived files physics3.sty,                       *
+%                                   phx-ab.sty,                         *
+%                                   phx-ab.braket.sty,                  *
+%                                   phx-braket.sty,                     *
+%                                   phx-diagmat.sty,                    *
+%                                   phx-doubleprod.sty,                 *
+%                                   phx-xmat.sty,                       *
+%                                   phx-operator.sty,                   *
+%                                   phx-ab.legacy.sty,                  *
+%                                   phx-bm-um.legacy.sty,               *
+%                                   phx-qtext.legacy.sty,               *
 %           the documentation files physics3.pdf,                       *
 %                               and README.md.                          *
 % -----------------------------------------------------------------------
@@ -92,13 +101,12 @@ The Current Maintainer of this work is **Mingyu Xia**.
 %
 %<*driver>
 \documentclass[11pt, letterpaper]{l3doc}
-\usepackage{mathtools, framed, xcolor}
 \usepackage[warnings-off={mathtools-colon, mathtools-overbracket}]{unicode-math}
 \usepackage[mono = false]{libertine}
-\usepackage{physics3, fixdif, derivative}
-\usephysicsmodule{ab, ab.braket, diagmat, doubleprod}
+\usepackage{xcolor, physics3, fixdif, derivative}
+\usephysicsmodule{ab, ab.braket, diagmat, doubleprod, operator}
 \usephysicsmodule[showtop = 1, showleft = 2]{xmat}
-\usephysicsmodule{ab.legacy, op.legacy, qtext.legacy, bm-um.legacy}
+\usephysicsmodule{ab.legacy, qtext.legacy, bm-um.legacy}
 \setcounter{tocdepth}{2}
 \makeatletter
 \newwrite\example@out
@@ -120,11 +128,8 @@ The Current Maintainer of this work is **Mingyu Xia**.
   \catcode`\%9\relax}
 \NewDocumentEnvironment{example}{m}{\example@start}
   {\example@end{#1\baselineskip}}
-\setlength \FrameSep {1pt}
 \protected \def \pardanger {\noindent \hbox to \z@{\hss \dbend \enspace}}
-\definecolor{moducolor}{RGB}{0,0,150}
-\providecommand \modu[1]^^A
-  {\texorpdfstring{\textcolor{moducolor}{\textsf{#1}}}{“#1”}}
+\providecommand \modu[1]{\texorpdfstring{\texttt{#1}}{“#1”}}
 \linespread{1.06}
 \@addtoreset{CodelineNo}{section}
 \newbox\@tempboxb
@@ -177,7 +182,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
 %   }}
 % }
 %
-% \date{Released 2026-01-25\quad \texttt{v0.1A}}
+% \date{Released 2026-01-23\quad \texttt{v0.1A}}
 %
 % \maketitle
 %
@@ -240,8 +245,8 @@ The Current Maintainer of this work is **Mingyu Xia**.
 %     \cs{usephysicsmodule}\marg{module}
 %   \end{syntax}
 % \end{function}
-% The usage of \cs{usephysicsmodule} is similar to \cs{usepackage}, so you can
-% load several modules in one line. For example,
+% The usage of \cs{usephysicsmodule} is similar to \cs{usepackage},
+% so you can load several modules in one line. For example,
 % \begin{quote}
 %   "\usephysicsmodule{ab, ab.braket}"
 % \end{quote}
@@ -270,8 +275,9 @@ The Current Maintainer of this work is **Mingyu Xia**.
 %   \end{syntax}
 %   \cs{delopen} and \cs{delclose}, followed by a math delimiter. They can be
 %   regarded as abbreviations of ``open delimiter'' and ``close delimiter''. If
-%   you had heard of the \pkg{mleftright} package. You can regard \cs{delopen}
-%   and \cs{delclose} as a simpler version of \cs{mleft} and \cs{mright}.
+%   you had heard of the \pkg{mleftright} package.
+%   You can regard \cs{delopen} and \cs{delclose} as a simpler version of
+%   \cs[no-index]{mleft} and \cs[no-index]{mright}.
 % \end{function}
 % For example,
 % \iffalse
@@ -446,7 +452,7 @@ $ \ket\Big| \psi         > $
 % \pardanger
 % If you want to write ``$>$'' and ``$<$'' for relations in the argument of
 % \cs{bra} and \cs{ket}, you can write "\mathrel{>}" and "\mathrel{<}"
-% (although there is almost no such need).%
+% (although there is almost no such need).
 % \begin{function}{\braket}
 %   \begin{syntax}
 %     \cs{braket} "<" \meta{subformula} ">"
@@ -867,6 +873,66 @@ $
 % legacy \pkg{physics} package. It's not suggested to use them in a new
 % document.
 %
+% \subsection{The \modu{operator} module}
+%
+% This module provides a series of commands for log-like operators and some
+% commands related to nabla ($\nabla$).
+% Notice that this module requires the \pkg{fixdif} package with file date
+% 2023/01/31 at minimum.
+%
+% \begin{function}
+%   {
+%     \asin,    \acos, \atan,
+%     \acsc,    \asec, \acot,
+%     \rank,    \erf,
+%     \Tr,      \tr,
+%     \Res,     \res,
+%     \PV,      \pv,
+%     \Re,      \Im,
+%     \Identity,\identity,
+%     \grad,    \curl, \div, \laplacian,
+%     \upe,     \iu
+%   }
+%   \cs{Re} and \cs{Im} are redefined. The first five lines of commands
+%   yield what they look like in math mode.
+%
+%   \cs{PV} yields ``$\PV$'' as an ordinary symbol and \cs{pv} yields ``$\pv$''.
+%
+%   \cs{Re} and \cs{Im} are redefined as ``$\Re$'' and ``$\Im$''. $\Resymbol$
+%   and $\Imsymbol$ are redefined as \cs{Resymbol} and \cs{Imsymbol}, in
+%   default.
+%   \paragraph{The options of \modu{operator} module}
+%   This module \emph{does not} require \pkg{amsmath}.
+%   "ReIm", a bool key with default value "true", determines whether to
+%   redefine \cs{Re} and \cs{Im}. If you want to reserve the definition of
+%   \cs{Re} and \cs{Im}, you can write like this:
+%   \begin{quote}
+%     "\usephysicsmodule[ReIm = false]{operator}"
+%   \end{quote}
+% For example,
+% \iffalse
+%<*example>
+% \fi
+\begingroup
+\makeatletter\def\phx@requiremodule#1{}^^A
+\def\PackageWarning#1#2{}^^A
+\catcode`\%14\relax \input phx-braket.sty \catcode`\%9\relax \makeatother
+\begin{example}{7}
+% \usephysicsmodule{braket}
+$ \asin x  $\quad $ \PV f(z) $\quad
+$ \pv f(z) $\quad $ \Re z $\\[1ex]
+$ \Identity = \identity = \int \d^2 \alpha
+  \ketbra\alpha\alpha/\pi $\\[1ex]
+$ \grad V$, $\div (x,y,z)$,
+$ \curl(x,y,z) $\\[1ex] $ \upe^{\iu\pi} = -1$
+\end{example}
+\endgroup
+% \iffalse
+%</example>
+% \fi
+% The ``$\divsymbol$'' symbol was redefined as \cs{divsymbol}.
+% \end{function}
+%
 % \subsection{The \modu{ab.legacy} module}
 %
 % \begin{function}{\abs, \norm, \eval (\peval \beval), \order}
@@ -912,18 +978,20 @@ $ \beval[big]{\0}_a^b $
 %   {\pkg{physics3} manual for the legacy \pkg{physics} users}.
 %
 % \subsection{The \modu{bm-um.legacy} module}
-% If you are maintaining a document with plenty of ``\cs{bm}''s or
-% ``\cs{boldsymbol}''s in it but want to use \pkg{unicode-math} package
-% simultaneously, you could take a look at this module.
+% If you are maintaining a document with plenty of ``\cs[no-index]{bm}''s or
+% ``\cs[no-index]{boldsymbol}''s in it but want to use \pkg{unicode-math}
+% package simultaneously, you could take a look at this module.
 %
-% The \cs{bm} command from \pkg{bm} package uses \cs{mathversion} to support
-% its function, but there are few OpenType math fonts who released with a bold
-% version. The \modu{bm-um.legacy} module provides a \cs{bm} command too, but
-% this \cs{bm} can only take \emph{one} math character or a series of math
-% characters sharing the same category code as its argument.
-% If the argument was Latin letters or Greek letters, \cs{bm} would switch to
-% the bold italic glyphs corresponding to them (if there exists bold italic
-% glyphs); else \cs{bm} would switch to the bold upright glyphs. For example,
+% The \cs[no-index]{bm} command from \pkg{bm} package uses
+% \cs[no-index]{mathversion} to support its function, but there are few
+% OpenType math fonts who released with a bold version. The \modu{bm-um.legacy}
+% module provides a \cs[no-index]{bm} command too, but this \cs[no-index]{bm}
+% can only take \emph{one} math character or a series of math characters
+% sharing the same category code as its argument.
+% If the argument was Latin letters or Greek letters, \cs[no-index]{bm} would
+% switch to the bold italic glyphs corresponding to them (if there exists bold
+% italic glyphs); else \cs[no-index]{bm} would switch to the bold upright
+% glyphs. For example,
 % \iffalse
 %<*example>
 % \fi
@@ -934,66 +1002,6 @@ $ \bm {0 A z \alpha \Omega}          $
 % \iffalse
 %</example>
 % \fi
-%
-% \subsection{The \modu{op.legacy} module}
-%
-% This module provides a series of commands for log-like operators and some
-% commands related to nabla ($\nabla$).
-% Notice that this module requires the \pkg{fixdif} package with file date
-% 2023/01/31 at minimum.
-%
-% \begin{function}
-%   {
-%     \asin,    \acos, \atan,
-%     \acsc,    \asec, \acot,
-%     \rank,    \erf,
-%     \Tr,      \tr,
-%     \Res,     \res,
-%     \PV,      \pv,
-%     \Re,      \Im,
-%     \Identity,\identity,
-%     \grad,    \curl, \div, \laplacian,
-%     \upe,     \iu
-%   }
-%   \cs{Re} and \cs{Im} are redefined. The first five lines of commands
-%   yield what they look like in math mode.
-%
-%   \cs{PV} yields ``$\PV$'' as an ordinary symbol and \cs{pv} yields ``$\pv$''.
-%
-%   \cs{Re} and \cs{Im} are redefined as ``$\Re$'' and ``$\Im$''. $\Resymbol$
-%   and $\Imsymbol$ are redefined as \cs{Resymbol} and \cs{Imsymbol}, in
-%   default.
-%   \paragraph{The options of \modu{op.legacy} module}
-%   This module \emph{does not} require \pkg{amsmath}.
-%   "ReIm", a bool key with default value "true", determines whether to
-%   redefine \cs{Re} and \cs{Im}. If you want to reserve the definition of
-%   \cs{Re} and \cs{Im}, you can write like this:
-%   \begin{quote}
-%     "\usephysicsmodule[ReIm = false]{op.legacy}"
-%   \end{quote}
-% For example,
-% \iffalse
-%<*example>
-% \fi
-\begingroup
-\makeatletter\def\phx@requiremodule#1{}^^A
-\def\PackageWarning#1#2{}^^A
-\catcode`\%14\relax \input phx-braket.sty \catcode`\%9\relax \makeatother
-\begin{example}{7}
-% \usephysicsmodule{braket}
-$ \asin x  $\quad $ \PV f(z) $\quad
-$ \pv f(z) $\quad $ \Re z $\\[1ex]
-$ \Identity = \identity = \int \d^2 \alpha
-  \ketbra\alpha\alpha/\pi $\\[1ex]
-$ \grad V$, $\div (x,y,z)$,
-$ \curl(x,y,z) $\\[1ex] $ \upe^{\iu\pi} = -1$
-\end{example}
-\endgroup
-% \iffalse
-%</example>
-% \fi
-% The ``$\divsymbol$'' symbol was redefined as \cs{divsymbol}.
-% \end{function}
 %
 % \subsection{The \modu{qtext.legacy} module}
 % This module was written just to offer a method to maintain documents written
@@ -1010,7 +1018,7 @@ $ \curl(x,y,z) $\\[1ex] $ \upe^{\iu\pi} = -1$
 %   }}
 % }
 %
-% \date{Released 2026-01-25\quad \texttt{v0.1A}}
+% \date{Released 2026-01-23\quad \texttt{v0.1A}}
 %
 % \maketitle
 %
@@ -1037,39 +1045,41 @@ $ \curl(x,y,z) $\\[1ex] $ \upe^{\iu\pi} = -1$
 %
 % \subsection{Legacy problems with \pkg{physics} package}^^A
 % \label{subsec:physics-legacy-problems}
-% The \pkg{physics} package provides \cs{qty} command for automatic-sizing
-% braces. The \cs{qty} command would cause conflict with the \pkg{siunitx}
-% package, which provides a unified method to typeset numbers and units
-% correctly.
+% The \pkg{physics} package provides \cs[no-index]{qty} command for
+% automatic-sizing braces. The \cs[no-index]{qty} command would cause conflict
+% with the \pkg{siunitx} package, which provides a unified method to typeset
+% numbers and units correctly.
 %
-% Besides, after you loaded \pkg{physics}, when you type \cs{homework} you
-% will get Maxwell equations and Schrödinger equation. The \cs{homework}
-% command is ``declared'' in \texttt{physics.sty} but it was not described
-% in the documentation. That is, if you have defined \cs{homework} before
-% loading \pkg{physics} package, \pkg{physics} would overwrite the definition
-% ``silently''.
+% Besides, after you loaded \pkg{physics}, when you
+% type \cs[no-index]{homework} you will get Maxwell equations and Schr\"odinger
+% equation. The \cs[no-index]{homework} command is ``declared'' in
+% \file{physics.sty} but it was not described in the documentation. That is, if
+% you have defined \cs[no-index]{homework} before loading \pkg{physics}
+% package, \pkg{physics} would overwrite the definition ``silently''.
 %
 % The vector-notation part of \pkg{physics} uses \pkg{amsmath}'s (more
-% exactly, \texttt{amsbsy.sty}'s) \cs{boldsymbol} command to generate bold
-% vectors. Commands for cross/dot product are defined with \cs{boldsymbol}.
-% \cs{boldsymbol} uses \cs{mathversion}, a \LaTeXe\ kernel command that works
-% well with traditional TFM-based fonts but fails when using \pkg{unicode-math}.
+% exactly, \file{amsbsy.sty}'s) \cs[no-index]{boldsymbol} command to generate
+% bold vectors. Commands for cross/dot product are defined
+% with \cs[no-index]{boldsymbol}. \cs[no-index]{boldsymbol} uses
+% \cs[no-index]{mathversion}, a \LaTeXe\ kernel command that works well with
+% traditional TFM-based fonts but fails when using \pkg{unicode-math}.
 %
-% In the definition of \cs{imat}, \cs{xmat}, \cs{dmat} and \cs{admat} commands
+% In the definition of \cs[no-index]{imat}, \cs[no-index]{xmat},~
+% \cs[no-index]{dmat} and \cs[no-index]{admat} commands
 % from \pkg{physics}, there is a \cs{newtoks} command which allocates a token
 % list register and two \cs{newcount} commands allocating two count registers.
-% Every time you write a command like \cs{imat} in your document, then one token
-% list register and two count registers will be wasted. What's even worse is
-% that, if you wrote really too many matrix commands from \pkg{physics} (for
-% example, 32767 \cs{imat}s in \hologo{LuaLaTeX}), there'd be no room for a
-% new \cs{count}.
+% Every time you write a command like \cs[no-index]{imat} in your document,
+% then one token list register and two count registers will be wasted. What's
+% even worse is that, if you wrote really too many matrix commands from
+% \pkg{physics} (for example, 32767 \cs{imat}s in \hologo{LuaLaTeX}), there'd
+% be no room for a new \cs{count}.
 %
 % \pkg{physics} integrated all the functions in one file (\texttt{physics.sty}),
 % that is, you cannot load one of the total seven parts of functions; you have
-% to load the seven parts altogether, even included the extra \cs{homework}
-% command we mentioned in the first paragraph.
+% to load the seven parts altogether, even included the extra
+% \cs[no-index]{homework} command we mentioned in the first paragraph.
 %
-% Moreover, the code of \texttt{physics.sty} ``abuses'' the \texttt{g}-type
+% Moreover, the code of \file{physics.sty} ``abuses'' the "g"-type
 % arguments of \pkg{xparse} package. Therefore the syntax of \pkg{physics}
 % package looks kind of weird.
 % See \href{https://tex.stackexchange.com/questions/470819/macros-dv-and-pdv-eat-the-subsequent-parenthesis-argument/470842#470842}
@@ -1280,7 +1290,7 @@ $ \beval[big]{\0}_a^b $
 % or ``$\times$'' for the products of two vectors. Using \cs{cdot} and
 % \cs{times} is enough.
 %
-% The commands related to ``$\nabla$'' are supported through \modu{op.legacy}
+% The commands related to ``$\nabla$'' are supported through \modu{operator}
 % module. These commands are \cs{grad}, \cs{div} and \cs{curl}. These commands
 % should not be put in the end of a math formula either (just like \cs{ab}).
 % Notice that the former \cs{div} command for a ``$\divsymbol$'' (if there
@@ -1289,7 +1299,7 @@ $ \beval[big]{\0}_a^b $
 %<*example>
 % \fi
 \begin{example}{6}
-% \usephysicsmodule{op.legacy}
+% \usephysicsmodule{operator}
 $ \grad F            $\quad
 $ \grad(\frac G2)    $\\[1ex]
 $ \div\Bigg[X]       $\quad
@@ -1302,7 +1312,7 @@ $ 2 \divsymbol 1 $
 % Actually, the nabla-related commands end with \cs{ab}. Thus, the subformula
 % after these commands can be delimited with "()", "[]" and "\{\}".
 %
-% The \modu{op.legacy} requires the \pkg{fixdif} package at least
+% The \modu{operator} requires the \pkg{fixdif} package at least
 % version 2.0 (file date on or after 2023/01/31).
 %
 % By the way, if you are used to writing \cs{bm} for a vector but interested in
@@ -1326,13 +1336,13 @@ $ 2 \divsymbol 1 $
 %
 % The \pkg{physics} package provides a bundle of commands for log-like functions
 % that have not been defined in the \LaTeXe\ kernel. Those log-like functions
-% can be used with the \modu{op.legacy} module; this module does not support
+% can be used with the \modu{operator} module; this module does not support
 % the syntax of \pkg{physics} either. For example:
 % \iffalse
 %<*example>
 % \fi
 \begin{example}{2}
-% \usephysicsmodule{op.legacy}
+% \usephysicsmodule{operator}
 $ \asin^2 x $\quad $ \rank \{ A \} $
 \end{example}
 % \iffalse
@@ -1665,7 +1675,9 @@ $
 %    \end{macrocode}
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesExplPackage{physics3}{2024-01-10}{v1.0.1}
+\def \phx@date    {2026-01-23}
+\def \phx@version {v0.1A}
+\ProvidesExplPackage {physics3} {2026-01-23} {v0.1A}
   {Tools for typesetting math for physics.}
 %    \end{macrocode}
 %
@@ -1691,7 +1703,7 @@ $
 \def\phx@true{true}
 \def\phx@false{false}
 %    \end{macrocode}
-% \begin{macro}{\@@_define_key:n, \@@_setkeys:n, \@@_processkeyopt:n}
+% \begin{macro}{\@@_define_key:nnnn, \@@_setkeys:nnn, \@@_processkeyopt:n}
 %   \begin{quote}
 %     \cs{phx@define@key} \marg{module} \marg{key}^^A
 %       \oarg{default value} \marg{code}\\
@@ -1702,18 +1714,20 @@ $
 %   the same as the position of \cs{ProcessOptions} in a regular
 %   \LaTeX\ package.
 %    \begin{macrocode}
-\cs_new_nopar:Npn \@@_define_key:n    #1 { \define@key{phx-#1} }
-\cs_new_nopar:Npn \@@_setkeys:n       #1 { \setkeys{phx-#1}    }
+\cs_new_nopar:Npn \@@_define_key:nnnn #1#2#3#4
+  { \define@key {phx-#1} {#2} [#3] {#4} }
+\cs_new_nopar:Npn \@@_setkeys:nnn     #1#2#3
+  { \setkeys    {phx-#1} [#2] {#3}      }
 \cs_new:Npn       \@@_processkeyopt:n #1
   {
     \let\reserved@a\@empty
     \edef\reserved@a{\@ptionlist{\@currname.\@currext}}%
-    \edef\reserved@a{\noexpand\phx@setkeys{#1}{\reserved@a}}%
+    \edef\reserved@a{\noexpand\phx@setkeys{#1}{}{\reserved@a}}%
     \reserved@a% the next line thanks to `geometry'
     \AtEndOfPackage{\let\@unprocessedoptions\relax}
   }
-\cs_set_eq:NN \phx@define@key    \@@_define_key:n
-\cs_set_eq:NN \phx@setkeys       \@@_setkeys:n
+\cs_set_eq:NN \phx@define@key    \@@_define_key:nnnn
+\cs_set_eq:NN \phx@setkeys       \@@_setkeys:nnn
 \cs_set_eq:NN \phx@processkeyopt \@@_processkeyopt:n
 %    \end{macrocode}
 % \end{macro}
@@ -1821,28 +1835,28 @@ $
 %    \begin{macrocode}
 \cs_new:Npn \@@_mathvphantom:n #1
   {
-    \hbox_set:Nn \l_@@_tmpa_box {}%
+    \hbox_set:Nn \l_@@_tmpa_box {}
     \tex_mathchoice:D
       {
-        \hbox_set:Nn \l_tmpa_box { $\displaystyle#1$ }
+        \hbox_set:Nn    \l_tmpa_box    { $\displaystyle#1$ }
         \box_set_ht:Nn  \l_@@_tmpa_box { \box_ht:N \l_tmpa_box }
         \box_set_dp:Nn  \l_@@_tmpa_box { \box_dp:N \l_tmpa_box }
         \box_use_drop:N \l_@@_tmpa_box
       }
       {
-        \hbox_set:Nn \l_tmpa_box { $\textstyle#1$ }
+        \hbox_set:Nn    \l_tmpa_box    { $\textstyle#1$ }
         \box_set_ht:Nn  \l_@@_tmpa_box { \box_ht:N \l_tmpa_box }
         \box_set_dp:Nn  \l_@@_tmpa_box { \box_dp:N \l_tmpa_box }
         \box_use_drop:N \l_@@_tmpa_box
       }
       {
-        \hbox_set:Nn \l_tmpa_box { $\scriptstyle#1$ }
+        \hbox_set:Nn    \l_tmpa_box    { $\scriptstyle#1$ }
         \box_set_ht:Nn  \l_@@_tmpa_box { \box_ht:N \l_tmpa_box }
         \box_set_dp:Nn  \l_@@_tmpa_box { \box_dp:N \l_tmpa_box }
         \box_use_drop:N \l_@@_tmpa_box
       }
       {
-        \hbox_set:Nn \l_tmpa_box { $\scriptscriptstyle#1$ }
+        \hbox_set:Nn    \l_tmpa_box    { $\scriptscriptstyle#1$ }
         \box_set_ht:Nn  \l_@@_tmpa_box { \box_ht:N \l_tmpa_box }
         \box_set_dp:Nn  \l_@@_tmpa_box { \box_dp:N \l_tmpa_box }
         \box_use_drop:N \l_@@_tmpa_box
@@ -1854,11 +1868,13 @@ $
 %
 % \subsubsection{The (used to be) \modu{explsetup} module}
 %
+% \begin{variable}{\l_@@_tmpa_tl, \l_@@_tmpb_tl}
 % Some common variables and functions for experimental \LaTeX3 syntax.
 %    \begin{macrocode}
 \tl_new:N \l_@@_tmpa_tl
 \tl_new:N \l_@@_tmpb_tl
 %    \end{macrocode}
+% \end{variable}
 % The function that can gobble one token.
 %    \begin{macrocode}
 \cs_new:Npn \_@@_gobble_i:n #1 { }
@@ -1869,7 +1885,6 @@ $
 %    \begin{macrocode}
 %</package>
 %    \end{macrocode}
-%
 % Temporally disable the namespace.
 %    \begin{macrocode}
 %<@@=>
@@ -1888,16 +1903,16 @@ $
 % \endgroup
 %    \begin{macrocode}
 %<*ab>
-\ProvidesFile{phx-ab.sty}
-  [2023/10/24 `ab' (autobraces) module of physics3]
+\ProvidesFile {phx-ab.sty}
+  [\phx@date\ `ab' (autobraces) module of physics3]
 %    \end{macrocode}
 % If you don't know when to use \cs{phx@define@key}, \cs{phx@setkeys} and
 % \cs{phx@processkeyopt} in a module, see ahead. In \modu{ab}, the |tightbraces|
 % option can control if the automatically-sized braces are tight or not. Do you
 % remember \cs{delopen} and \cs{delclose}?
 %    \begin{macrocode}
-\phx@define@key{ab}{tightbraces}[true]{\def\@phx@abtight{#1}}
-\phx@setkeys{ab}{tightbraces=true}
+\phx@define@key{ab}{tightbraces}{true}{\def\@phx@abtight{#1}}
+\phx@setkeys{ab}{}{tightbraces=true}
 \phx@processkeyopt{ab}
 %    \end{macrocode}
 %
@@ -2191,8 +2206,8 @@ $
 %
 %    \begin{macrocode}
 %<*ab.braket>
-\ProvidesFile{phx-ab.braket.sty}
-  [2023/10/24 `ab.braket' module of physics3]
+\ProvidesFile {phx-ab.braket.sty}
+  [\phx@date\ `ab.braket' module of physics3]
 %    \end{macrocode}
 % This module requires \cs{phx@abopen} and \cs{phx@abclose} from \modu{ab}.
 % This module may have conflict with \modu{braket}.
@@ -2383,8 +2398,8 @@ $
 % \subsection{The \modu{braket} module}
 %    \begin{macrocode}
 %<*braket>
-\ProvidesFile{phx-braket.sty}
-  [2023/10/24 `braket' module of physics3]
+\ProvidesFile {phx-braket.sty}
+  [\phx@date\ `braket' module of physics3]
 %    \end{macrocode}
 % This module requires \cs{phx@abopen} and \cs{phx@abclose} from \modu{ab}.
 % This module may have conflict with \modu{ab.braket}.
@@ -2631,18 +2646,18 @@ $
 %
 %    \begin{macrocode}
 %<*doubleprod>
-\ProvidesExplFile{phx-doubleprod.sty}{2023-10-24}{}
+\ProvidesExplFile {phx-doubleprod.sty} {\phx@date} {\phx@version}
   {`doubleprod' (vertically stacked binary operators) module of physics3}
 %    \end{macrocode}
 % Boolean options.
 %    \begin{macrocode}
-\@@_define_key:n { doubleprod } { crosssymbol } { \def\@phx@dbl@c{#1}  }
-\@@_define_key:n { doubleprod } { dotsymbol   } { \def\@phx@dbl@d{#1}  }
-\@@_define_key:n { doubleprod } { crossscale  } { \def\@phx@dbl@sc{#1} }
-\@@_define_key:n { doubleprod } { dotscale    } { \def\@phx@dbl@sd{#1} }
-\@@_define_key:n { doubleprod } { crossopenup } { \def\@phx@dbl@oc{#1} }
-\@@_define_key:n { doubleprod } { dotopenup   } { \def\@phx@dbl@od{#1} }
-\@@_setkeys:n    { doubleprod }
+\@@_define_key:nnnn { doubleprod } { crosssymbol } { } { \def\@phx@dbl@c {#1} }
+\@@_define_key:nnnn { doubleprod } { dotsymbol   } { } { \def\@phx@dbl@d {#1} }
+\@@_define_key:nnnn { doubleprod } { crossscale  } { } { \def\@phx@dbl@sc{#1} }
+\@@_define_key:nnnn { doubleprod } { dotscale    } { } { \def\@phx@dbl@sd{#1} }
+\@@_define_key:nnnn { doubleprod } { crossopenup } { } { \def\@phx@dbl@oc{#1} }
+\@@_define_key:nnnn { doubleprod } { dotopenup   } { } { \def\@phx@dbl@od{#1} }
+\@@_setkeys:nnn     { doubleprod } { }
   {
     crosssymbol = \times, crossscale = 0.8, crossopenup = .02,
     dotsymbol   = \ldotp, dotscale   = 1,   dotopenup   = .2
@@ -2667,22 +2682,21 @@ $
 % \subsection{The \modu{diagmat} module}
 %    \begin{macrocode}
 %<*diagmat>
-\ProvidesExplFile{phx-diagmat.sty}{2024-01-10}{}
+\ProvidesExplFile {phx-diagmat.sty} {\phx@date} {\phx@version}
   {`diagmat' module of physics3}
 %    \end{macrocode}
 % This module requires \pkg{mathtools} and \pkg{xpatch}.
 %    \begin{macrocode}
-\RequirePackage { mathtools, xpatch }
+\RequirePackage { mathtools, etoolbox }
 %    \end{macrocode}
 % Do expansion of column specification argument (thanks @egreg
-% on \href{https://tex.stackexchange.com/a/758530/299948}{TeX.SX}).
+% on \href{https://tex.stackexchange.com/a/758530/299948}^^A
+%   {\TeX\ \textsf{Stack\textbf{Exchange}}}).
 %    \begin{macrocode}
-\MHInternalSyntaxOn
-\xpatchcmd{\MT_matrix_begin:N}{\array}{\ExpandArgs{e}\array}{}{}
-\MHInternalSyntaxOff
+\patchcmd \MT_matrix_begin:N { \array } { \exp_args:Ne \array } {}{}
 %    \end{macrocode}
 %    \begin{macrocode}
-\@@_define_key:n { diagmat } { empty } [ 0 ]
+\@@_define_key:nnnn { diagmat } { empty } { 0 }
   { \tl_gset:Nn \l_@@_mat_empty_tl { #1 } }
 %    \end{macrocode}
 % \begin{variable}
@@ -2719,7 +2733,7 @@ $
 \clist_map_inline:nn
   { {}, p, b, B, v, V }
   {
-    \exp_after:wN \DeclareDocumentCommand \cs:w #1diagmat\cs_end: { s O{} m }
+    \exp_args:Nc \DeclareDocumentCommand { #1diagmat } { s O{} m }
       {
         \IfBooleanTF { ##1 }
           { \@@_diagmat_type:nnn { #1small } { ##2 } { ##3 } }
@@ -2794,28 +2808,41 @@ $
 % \subsection{The \modu{xmat} module}
 %    \begin{macrocode}
 %<*xmat>
-\ProvidesExplFile{phx-xmat.sty}{2023/10/24}{}
+\ProvidesExplFile {phx-xmat.sty} {\phx@date} {\phx@version}
   {`xmat' module of physics3}
 \RequirePackage { mathtools }
-\phx@define@key { xmat } { showtop }
+\@@_define_key:nnnn { xmat } { showtop } { }
   { \int_gset:Nn \l_@@_xmat_showtop_int { #1 } }
-\phx@define@key { xmat } { showleft }
+\@@_define_key:nnnn { xmat } { showleft } { }
   { \int_gset:Nn \l_@@_xmat_showleft_int { #1 } }
 %    \end{macrocode}
+% \begin{variable}
+%   {
+%     \l_@@_xmat_extra_vdots_bool,
+%     \l_@@_xmat_extra_cdots_bool,
+%     \l_@@_xmat_showtop_int,
+%     \l_@@_xmat_showleft_int,
+%     \l_@@_xmat_tl,
+%     \l_@@_xmat_showtop_int,
+%     \l_@@_xmat_showleft_int,
+%   }
 % This module requires some new variables.
 %    \begin{macrocode}
-\bool_new:N \l_@@_xmat_extra_vdots_bool
-\bool_new:N \l_@@_xmat_extra_cdots_bool
-\int_new:N \l_@@_xmat_showtop_int
-\int_new:N \l_@@_xmat_showleft_int
-\tl_new:N \l_@@_xmat_tl
-\int_gset:Nn \l_@@_xmat_showtop_int { \value { MaxMatrixCols } - 2 }
-\int_gset:Nn \l_@@_xmat_showleft_int { \value { MaxMatrixCols } - 2 }
+\bool_new:N   \l_@@_xmat_extra_vdots_bool
+\bool_new:N   \l_@@_xmat_extra_cdots_bool
+\int_new:N    \l_@@_xmat_showtop_int
+\int_new:N    \l_@@_xmat_showleft_int
+\tl_new:N     \l_@@_xmat_tl
+\int_gset:Nn  \l_@@_xmat_showtop_int  { \value { MaxMatrixCols } - 2 }
+\int_gset:Nn  \l_@@_xmat_showleft_int { \value { MaxMatrixCols } - 2 }
+%    \end{macrocode}
+% \end{variable}
+%    \begin{macrocode}
 \cs_new:Npn \_@@_xmat_entry_format:nnn #1#2#3
   {
     #1 \c_math_subscript_token { #2 #3 }
   }
-\phx@processkeyopt { xmat }
+\@@_processkeyopt:n { xmat }
 \DeclareDocumentCommand \xmat { O{} m m m }
  { \_@@_xmat_type:nnnnn { } { #1 } { #2 } { #3 } { #4 } }
 \DeclareDocumentCommand \pxmat { O{} m m m }
@@ -2828,7 +2855,7 @@ $
  { \_@@_xmat_type:nnnnn { v } { #1 } { #2 } { #3 } { #4 } }
 \DeclareDocumentCommand \Vxmat { O{} m m m }
  { \_@@_xmat_type:nnnnn { V } { #1 } { #2 } { #3 } { #4 } }
-\keys_define:nn { phy/xmat }
+\keys_define:nn { phx / xmat }
   {
     format  .cs_set:Np = \_@@_xmat_entry_format:nnn #1#2#3 ,
     showtop .int_set:N = \l_@@_xmat_showtop_int ,
@@ -2860,7 +2887,7 @@ $
   {
     \group_begin:
     \tl_gclear:N \l_@@_xmat_tl
-    \keys_set:nn { phy/xmat } { #2 } %
+    \keys_set:nn { phx / xmat } { #2 } %
     \_@@_if_digits_only:nTF { #4 }
       {
         \int_compare:nNnTF { #4 } < { \l_@@_xmat_showtop_int + 1 }
@@ -2946,50 +2973,17 @@ $
 %    \end{macrocode}
 % This part ends here.
 %
-% \subsection{The \modu{ab.legacy} module}
+% \subsection{The \modu{operator} module}
 %    \begin{macrocode}
-%<*ab.legacy>
-\ProvidesFile{phx-ab.legacy.sty}
-  [2023/10/24 `ab.legacy' module of physics3]
-%    \end{macrocode}
-% Requires \modu{ab}'s "tight" option.
-%    \begin{macrocode}
-\phx@requiremodule{ab}
-\phx@define@key{ab.legacy}{order}[\mathcal{O}]{\def\phx@ab@ordersym{#1}}
-\phx@setkeys{ab.legacy}{order}
-\phx@processkeyopt{ab.legacy}
-\phx@d@l@geny\abs\vert\vert
-\phx@d@l@geny\norm\Vert\Vert
-\DeclareDocumentCommand\order{som}{%
-  \phx@ab@ordersym
-  \IfBooleanTF{#1}
-    {(#3)}
-    {\IfValueTF{#2}
-      {\csname#2l\endcsname(#3\csname#2r\endcsname)}
-      {\phx@abopen(#3\phx@abclose)}%
-    }%
-}
-\phx@d@l@geny\eval.\vert
-\phx@d@l@geny\peval(\vert
-\phx@d@l@geny\beval[\vert
-%    \end{macrocode}
-%    \begin{macrocode}
-\protect \endinput
-%    \end{macrocode}
-%    \begin{macrocode}
-%</ab.legacy>
-%    \end{macrocode}
-%
-% \subsection{The \modu{op.legacy} module}
-%    \begin{macrocode}
-%<*op.legacy>
-\ProvidesExplFile{phx-op.legacy.sty}{2023-10-24}{}
-  {`op.legacy' module of physics3}
-\phx@define@key{op.lega}{ReIm}[true]{\def\phx@reserveda{#1}}
-\phx@define@key{op.lega}{PV}{\def\@phx@oplega@PV{#1}}
-\phx@define@key{op.lega}{pv}{\def\@phx@oplega@pv{#1}}
-\phx@setkeys{op.lega}{PV=\mathcal{P},pv={p.v.},ReIm=true}
-\phx@processkeyopt{ab}
+%<*operator>
+\ProvidesExplFile {phx-operator.sty} {\phx@date} {\phx@version}
+  {`operator' module of physics3}
+\@@_define_key:nnnn { op.lega } { ReIm } { true } { \def\phx@reserveda{#1}  }
+\@@_define_key:nnnn { op.lega } { PV   } {      } { \def\@phx@oplega@PV{#1} }
+\@@_define_key:nnnn { op.lega } { pv   } {      } { \def\@phx@oplega@pv{#1} }
+\@@_setkeys:nnn     { op.lega } {      }
+  { PV = \mathcal{P}, pv = {p.v.}, ReIm = true}
+\@@_processkeyopt:n { ab }
 %    \end{macrocode}
 % \begin{macro}
 %   {
@@ -2999,10 +2993,10 @@ $
 %   }
 %    \begin{macrocode}
 \clist_map_inline:nn
-{ asin, acos, atan, acsc, asec, acot, Tr, tr, rank, erf, Res, res }
-{
-  \exp_after:wN \DeclareRobustCommand \cs:w #1\cs_end:
-  { \mathop { \operator@font #1 } \nolimits }
+  { asin, acos, atan, acsc, asec, acot, Tr, tr, rank, erf, Res, res }
+  {
+    \exp_args:Nc \DeclareRobustCommand {#1}
+      { \mathop { \operator@font #1 } \nolimits }
   }
   \DeclareRobustCommand\PV  {\mathord{\@phx@oplega@PV}}
   \DeclareRobustCommand\pv  {\mathop{\operator@font\@phx@oplega@pv{}}\nolimits}
@@ -3050,7 +3044,41 @@ $
 \file_input_stop:
 %    \end{macrocode}
 %    \begin{macrocode}
-%</op.legacy>
+%</operator>
+%    \end{macrocode}
+%
+% \subsection{The \modu{ab.legacy} module}
+%    \begin{macrocode}
+%<*ab.legacy>
+\ProvidesFile {phx-ab.legacy.sty}
+  [\phx@date\ `ab.legacy' module of physics3]
+%    \end{macrocode}
+% Requires \modu{ab}'s "tight" option.
+%    \begin{macrocode}
+\phx@requiremodule{ab}
+\phx@define@key{ab.legacy}{order}{\mathcal{O}}{\def\phx@ab@ordersym{#1}}
+\phx@setkeys{ab.legacy}{}{order}
+\phx@processkeyopt{ab.legacy}
+\phx@d@l@geny\abs\vert\vert
+\phx@d@l@geny\norm\Vert\Vert
+\DeclareDocumentCommand\order{som}{%
+  \phx@ab@ordersym
+  \IfBooleanTF{#1}
+    {(#3)}
+    {\IfValueTF{#2}
+      {\csname#2l\endcsname(#3\csname#2r\endcsname)}
+      {\phx@abopen(#3\phx@abclose)}%
+    }%
+}
+\phx@d@l@geny\eval.\vert
+\phx@d@l@geny\peval(\vert
+\phx@d@l@geny\beval[\vert
+%    \end{macrocode}
+%    \begin{macrocode}
+\protect \endinput
+%    \end{macrocode}
+%    \begin{macrocode}
+%</ab.legacy>
 %    \end{macrocode}
 %
 % \subsection{The \modu{qtext.legacy} module}
@@ -3058,7 +3086,7 @@ $
 % \pkg{physics} only. The commands in this module should NEVER be used!
 %    \begin{macrocode}
 %<*qtext.legacy>
-\ProvidesExplFile{phx-qtext.legacy.sty}{2023-10-24}{}
+\ProvidesExplFile {phx-qtext.legacy.sty} {\phx@date} {\phx@version}
   {`qtext.legacy' module of physics3.sty}
 \RequirePackage{amstext}
 \def\phx@qtext@#1#2{#1\text{#2}\quad}
@@ -3075,7 +3103,7 @@ $
     integer,  and,    or,     as,         in
   }
   {
-    \exp_after:wN \DeclareRobustCommand \cs:w q#1\cs_end:
+    \exp_args:Nc \DeclareRobustCommand { q#1 }
       { \@ifstar{ \phx@qtext@ {} {#1} } { \phx@qtext@ \quad {#1} } }
   }
 %    \end{macrocode}
@@ -3089,7 +3117,7 @@ $
 % \subsection{The \modu{bm-um.legacy} module}
 %    \begin{macrocode}
 %<*bm-um.legacy>
-\ProvidesExplFile{phx-bm-um.legacy.sty}{2023-10-24}{}
+\ProvidesExplFile {phx-bm-um.legacy.sty} {\phx@date} {\phx@version}
   {`bm-um.legacy' module of physics3}
 \AtBeginDocument
   {
