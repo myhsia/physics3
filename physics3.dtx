@@ -100,7 +100,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
 %</internal>
 %
 %<*driver>
-\documentclass[11pt, letterpaper]{l3doc}
+\documentclass[11pt, letterpaper, kernel, cs-break]{l3doc}
 \usepackage[warnings-off={mathtools-colon, mathtools-overbracket}]{unicode-math}
 \usepackage[mono = false]{libertine}
 \usepackage{xcolor, physics3, fixdif, derivative}
@@ -406,10 +406,15 @@ $ \pab[Big]{\0} $\quad $ \bab*{\0} $
 % influences whether thin skips are reserved around the paired delimiters.
 % It only works with the automatically sized delimiters.
 %
-% \subsection{The \modu{ab.braket} module --- Dirac bra-ket notation}
+% \subsection{The \modu{ab.braket} and \modu{braket} module
+%   --- Dirac bra-ket notation}
 %
-% This module provides four commands --- \cs{bra}, \cs{ket}, \cs{braket} and
-% \cs{ketbra}. After these commands can be a star ("*") or a ``biggg''
+% This two modules both provides seven commands
+% \begin{quote}
+%   \cs{bra}, \cs{ket}, \cs{braket}, \cs{ketbra},
+%   \cs{innerproduct}, \cs{outerproduct}, and~\cs{expval}
+% \end{quote}
+% After these commands can be a star ("*") or a ``biggg''
 % command. These commands share similar syntaxes like \cs{ab}'s syntax. But,
 % \emph{the bra-ket commands from \modu{ab.braket} module are completely
 % different from \cs{ab}}. Their internal structures are different.
@@ -523,7 +528,7 @@ $ \ab|{\braket<\psi|\hat H|\psi>}| $
 %
 % For convince, commands for typesetting inner/outerproduct and expectation
 % value are provided in this module.
-% \begin{function}{\innerproduct, \outerproduct, \expval}
+% \begin{function}{\bknorm, \kbprojector, \expval}
 %   \begin{syntax}
 %     \cs{innerproduct} \meta{*} \oarg{size} \marg{basis}
 %     \cs{outerproduct} \meta{*} \oarg{size} \marg{basis}
@@ -537,12 +542,12 @@ $ \ab|{\braket<\psi|\hat H|\psi>}| $
 \begin{example}{12}
 \def \0{\frac\alpha2}
 \edef\1{\uparrow,\downarrow}
-$ \innerproduct     \0 $\quad
-$ \innerproduct*    \0 $\quad
-$ \innerproduct[big]\0 $\\[2ex]
-$ \outerproduct     \0 $\quad
-$ \outerproduct*    \0 $\quad
-$ \outerproduct[big]\0 $\\[2ex]
+$ \bknorm           \0 $\quad
+$ \bknorm*          \0 $\quad
+$ \bknorm[big]      \0 $\\[2ex]
+$ \kbprojector      \0 $\quad
+$ \kbprojector*     \0 $\quad
+$ \kbprojector[big] \0 $\\[2ex]
 $ \expval \0 $\quad $ \expval*\0 $\quad
 $ \expval [big]     {\hat A} $\quad
 $ \expval [\psi, Big]\0 $\\[2ex]
@@ -652,7 +657,7 @@ $ \ketbra [Big]  {\0} [_x^y] {\psi} $
 % \fi
 % For convince, commands for typesetting inner/outerproduct and expectation
 % value are also provided in this module.
-% \begin{function}{\innerproduct, \outerproduct, \expval}
+% \begin{function}{\bknorm, \kbprojector, \expval}
 %   \begin{syntax}
 %     \cs{innerproduct} \meta{*} \oarg{size} \marg{basis}
 %     \cs{outerproduct} \meta{*} \oarg{size} \marg{basis}
@@ -666,12 +671,12 @@ $ \ketbra [Big]  {\0} [_x^y] {\psi} $
 \begin{example}{12}
 \def \0{\frac\alpha2}
 \edef\1{\uparrow,\downarrow}
-$ \innerproduct     \0 $\quad
-$ \innerproduct*    \0 $\quad
-$ \innerproduct[big]\0 $\\[2ex]
-$ \outerproduct     \0 $\quad
-$ \outerproduct*    \0 $\quad
-$ \outerproduct[big]\0 $\\[2ex]
+$ \bknorm           \0 $\quad
+$ \bknorm*          \0 $\quad
+$ \bknorm[big]      \0 $\\[2ex]
+$ \kbprojector      \0 $\quad
+$ \kbprojector*     \0 $\quad
+$ \kbprojector[big] \0 $\\[2ex]
 $ \expval \0 $\quad $ \expval*\0 $\quad
 $ \expval [big]     {\hat A} $\quad
 $ \expval [\psi, Big]\0 $\\[2ex]
@@ -1916,7 +1921,7 @@ $
 \phx@processkeyopt{ab}
 %    \end{macrocode}
 %
-% \begin{macro}{\phx@abopen, \phx@abclose}
+% \begin{macro}[int]{\phx@abopen, \phx@abclose}
 %   \begin{quote}
 %     \cs{phx@abopen} \meta{left delimiter}\\
 %     \cs{phx@abclose} \meta{right delimiter}
@@ -2036,7 +2041,7 @@ $
 % The ``"("'' in the example above must not be replaced by a subformula braced
 % by a pair of "{}".
 % \end{texnote}
-% \begin{macro}{\phx@AB@gen}
+% \begin{macro}[int]{\phx@AB@gen}
 %   \begin{quote}
 %     \cs{phx@AB@gen} \marg{branch name} \meta{left delimiter}\\
 %     "  "\marg{arg spec} \marg{definition}
@@ -2090,7 +2095,7 @@ $
   {\mathopen#1\langle#2\mathclose#1\rangle\endgroup}
 %    \end{macrocode}
 % \end{macro}
-% \begin{macro}{\phx@del}
+% \begin{macro}[int]{\phx@del}
 %   The syntax seems not important. These following lines seems only
 %   for \cs{ifcsname} to judge if the commands are defined.
 %    \begin{macrocode}
@@ -2111,7 +2116,7 @@ $
   #1#2#3{\Bigggl#1#3\Bigggr#2}
 %    \end{macrocode}
 % \end{macro}
-% \begin{macro}{\phx@d@lx}
+% \begin{macro}[int]{\phx@d@lx}
 %   \begin{quote}
 %     \cs{phx@d@lx} \marg{biggg or star branch name} \marg{automatic branch name} "{#3}"
 %   \end{quote}
@@ -2125,7 +2130,7 @@ $
   \csname phx@d@lx\reserved@a\endcsname#3}
 %    \end{macrocode}
 % \end{macro}
-% \begin{macro}{\phx@d@l@genxm, \phx@d@l@genxa}
+% \begin{macro}[int]{\phx@d@l@genxm, \phx@d@l@genxa}
 %   \begin{quote}
 %     \cs{phx@d@l@genxm} \marg{biggg or star branch name}\\
 %     \cs{phx@d@l@genxa} \marg{automatic branch name}
@@ -2141,7 +2146,7 @@ $
     \csname phx@#1@\string##1\endcsname##1}}
 %    \end{macrocode}
 % \end{macro}
-% \begin{macro}{\phx@d@lxmb, \phx@d@lxab}
+% \begin{macro}[int]{\phx@d@lxmb, \phx@d@lxab}
 %   \begin{quote}
 %     \cs{phx@d@lxmb} \meta{biggg or *} \meta{left delimiter}\\
 %     "  "\meta{subformula} \meta{right delimiter}\\
@@ -2162,7 +2167,7 @@ $
 % \subsubsection{\cs{pab}-like commands}
 % This is so simple. No need to comment a lot.
 %
-% \begin{macro}{\phx@d@l@geny}
+% \begin{macro}[int]{\phx@d@l@geny}
 %   \begin{quote}
 %     \cs{phx@d@l@geny} \meta{command} \meta{left delimiter} \meta{right delimiter}
 %   \end{quote}
@@ -2298,11 +2303,11 @@ $
 \DeclareRobustCommand \ketbra {\phx@d@lx{kb.m}{kb.a}}
 %    \end{macrocode}
 % \end{macro}
-% \begin{macro}{\innerproduct, \outerproduct, \expval}
+% \begin{macro}{\bknorm, \kbprojector, \expval}
 % Define some high-level commands for inner product, outer product of basis
 % and expectation value.
 %    \begin{macrocode}
-\DeclareDocumentCommand \innerproduct { s o m }
+\DeclareDocumentCommand \bknorm { s o m }
   {%
     \IfBooleanTF{#1} {\mathopen\langle#3\vert #3\mathclose\rangle}
       {%
@@ -2312,7 +2317,7 @@ $
           {\phx@d@lx{bk.m}{bk.a}<#3|#3>}%
       }%
   }
-\DeclareDocumentCommand \outerproduct { s o m }
+\DeclareDocumentCommand \kbprojector { s o m }
   {%
     \IfBooleanTF{#1}
       {%
@@ -2466,7 +2471,7 @@ $
   }
 %    \end{macrocode}
 % \end{macro}
-% \begin{macro}{\phx@bk@in@i, \phx@bk@in@ii, \phx@bk@in@iii}
+% \begin{macro}[int]{\phx@bk@in@i, \phx@bk@in@ii, \phx@bk@in@iii}
 %   \begin{quote}
 %     \cs{phx@bk@in@\meta{n.roman}} \marg{subformula 1} \dots \marg{subformula $n$}
 %   \end{quote}
@@ -2486,7 +2491,7 @@ $
   \csname\@phx@bk@r\endcsname\rangle}
 %    \end{macrocode}
 % \end{macro}
-% \begin{macro}{\phx@bk@doopt, \phx@bk@do@pt}
+% \begin{macro}[int]{\phx@bk@doopt, \phx@bk@do@pt}
 %   \begin{quote}
 %     \cs{phx@bk@doopt} \marg{clist}
 %   \end{quote}
@@ -2539,11 +2544,11 @@ $
   }
 %    \end{macrocode}
 % \end{macro}
-% \begin{macro}{\innerproduct, \outerproduct, \expval}
+% \begin{macro}{\bknorm, \kbprojector, \expval}
 % Define some high-level commands for inner product, outer product of basis
 % and expectation value.
 %    \begin{macrocode}
-\DeclareDocumentCommand \innerproduct { s o m }
+\DeclareDocumentCommand \bknorm { s o m }
   {%
     \IfBooleanTF{#1}
       {%
@@ -2566,7 +2571,7 @@ $
       }%
     \phx@bk@in@ii {#3} {#3}%
   }
-\DeclareDocumentCommand \outerproduct { s o m }
+\DeclareDocumentCommand \kbprojector { s o m }
   {%
     \IfBooleanTF{#1}
       {%
