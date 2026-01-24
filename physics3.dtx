@@ -129,7 +129,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
   \catcode`\%9\relax}
 \NewDocumentEnvironment{example}{m}{\example@start}
   {\example@end{#1\baselineskip}}
-\protected \def \pardanger {\noindent \hbox to \z@{\hss \dbend \enspace}}
+\protect \def \pardanger {\noindent \hbox to \z@{\hss \dbend \enspace}}
 \providecommand \modu[1]{\texorpdfstring{\texttt{#1}}{“#1”}}
 \linespread{1.06}
 \@addtoreset{CodelineNo}{section}
@@ -235,8 +235,6 @@ The Current Maintainer of this work is **Mingyu Xia**.
 % \pkg{physics3} itself doesn't provide many features.
 % You need to load different modules of \pkg{physics3} to have different
 % features applied to your document.
-%
-% \subsection{Loading a module of \pkg{physics3}}
 %
 % You can load a module of \pkg{physics3} only \emph{after} you write
 % "\usepackage{physics3}" in the preamble. Load a \pkg{physics3} module
@@ -410,62 +408,106 @@ $ \pab[Big]{\0} $\quad $ \bab*{\0} $
 % \subsection{The \modu{ab.braket} and \modu{braket} module
 %   --- Dirac bra-ket notation}
 %
-% This two modules both provides seven commands
+% This two modules both contain four basic commands
 % \begin{quote}
-%   \cs{bra}, \cs{ket}, \cs{braket}, \cs{ketbra},
-%   \cs{bknorm},        \cs{kbproj}, \cs{expval}
+%   \cs{bra},\quad \cs{ket},\quad \cs{braket},\quad \cs{ketbra},\quad
+%   \cs{bknorm},\quad             \cs{kbproj},\quad \cs{expval}
 % \end{quote}
-% After these commands can be a star ("*") or a ``biggg''
-% command. These commands share similar syntaxes like \cs{ab}'s syntax. But,
-% \emph{the bra-ket commands from \modu{ab.braket} module are completely
-% different from \cs{ab}}. Their internal structures are different.
-% \begin{function}{\bra}
+% These commands in the two modules share the same goal, but differ in syntax.\\
+% \DescribeOption{ab.braket}
+% A star ("*") or a size command can follow these commands,
+% which are similar to the syntaxes of \cs{ab} module. The size commands can
+% take the control sequences:
+% \begin{quote}
+% \cs{big},\quad \cs{Big},\quad \cs{bigg},\quad \cs{Bigg},\quad
+% \cs{biggg}\quad or\quad \cs{Biggg}.
+% \end{quote}
+% \DescribeOption{braket}
+% A star ("*") or a square-bracket-delimited size option, the size option can
+% take the following values:
+% \begin{quote}
+% " ""big",\quad " ""Big",\quad " ""bigg",\quad " ""Bigg",\quad
+% " ""biggg"\quad or\quad " ""Biggg".
+% \end{quote}
+% The star in the two modules stands for ``do not size the bra-ket
+% automatically''. Four basic commands' syntaxes are described as
+% follows respectively.
+% Please notice that the two module are conflict with each other,
+% so don't use them together. One can choose one module according to
+% personal habit.
+% \begin{function}{\bra, \ket}
 %   \begin{syntax}
-%     \cs{bra} "<" \meta{subformula} "|"
+%     \cs{bra} \meta{* or size command}   "<" \meta{subformula} "|"^^A
+%   ---> \modu{ab.braket} module
+%     \cs{ket} \meta{* or size command}   "|" \meta{subformula} ">"^^A
+%   ---> \modu{ab.braket} module
+%     \cs{bra} \meta{\meta{*} or \oarg{size option}} \marg{subformula}^^A
+%   ---> \modu{braket} module
+%     \cs{ket} \meta{\meta{*} or \oarg{size option}} \marg{subformula}^^A
+%   ---> \modu{braket} module
 %   \end{syntax}
-%   The argument of \cs{bra} should be delimited with "<" and "|".
+%   \begin{itemize}[leftmargin = 0pt]
+%     \item In \modu{ab.braket} module,
+%     the argument of \cs{bra} should be delimited with "<" and "|", and
+%     the argument of \cs{ket} should be delimited with "|" and ">".\\
+%     \pardanger
+%     If you want to write ``$>$'' and ``$<$'' for relations in the argument of
+%     \cs{bra} and \cs{ket}, you can write "\mathrel{>}" and "\mathrel{<}"
+%     (although there is almost no such need).
+%     \item In \modu{braket} module, \cs{bra} and \cs{ket} take one mandatory
+%     argument, which should be braced  with "{" and "}".
+%   \end{itemize}
 % \end{function}
-% For example,
+% For example, in \modu{ab.braket} module,
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{3}
-$ \bra    < \frac \phi 2 | $\quad
-$ \bra*   < \frac \phi 2 | $\quad
-$ \bra\Big< \phi         | $
+\begin{example}{5}
+\def\0{\frac\phi2}
+$ \bra<\0| $\quad $ \bra*<\0|      $%
+            \quad $ \bra\Big<\phi| $\\[1ex]
+$ \ket|\0> $\quad $ \ket*|\0>      $%
+            \quad $ \ket\Big|\psi> $
 \end{example}
 % \iffalse
 %</example>
 % \fi
-% \begin{function}{\ket}
-%   \begin{syntax}
-%     \cs{ket} "|" \meta{subformula} ">"
-%   \end{syntax}
-%   The argument of \cs{ket} should be delimited with "|" and ">".
-% \end{function}
-% For example,
+% and in \modu{braket} module
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{3}
-$ \ket    | \frac \psi 2 > $\quad
-$ \ket*   | \frac \psi 2 > $\quad
-$ \ket\Big| \psi         > $
+\begingroup
+\makeatletter\def\phx@requiremodule#1{}%
+\def\PackageWarning#1#2{}%
+\catcode`\%14\relax \input phx-braket.sty \catcode`\%9\relax \makeatother
+\begin{example}{5}
+\def\0{\frac\phi2}
+$ \bra  \0 $\quad $ \bra*     \0   $%
+            \quad $ \bra[Big] \psi $\\[1ex]
+$ \ket  \0 $\quad $ \ket*     \0   $%
+            \quad $ \ket[Big] \psi $
 \end{example}
+\endgroup
 % \iffalse
 %</example>
 % \fi
-% \pardanger
-% If you want to write ``$>$'' and ``$<$'' for relations in the argument of
-% \cs{bra} and \cs{ket}, you can write "\mathrel{>}" and "\mathrel{<}"
-% (although there is almost no such need).
-% \begin{function}{\braket}
+% \begin{function}{\braket, \ketbra}
 %   \begin{syntax}
-%     \cs{braket} "<" \meta{subformula} ">"
+%     \cs{braket} \meta{* or size command}\:   "<" \meta{subformula} ">"^^A
+%   ---> \modu{ab.braket} module
+%     \cs{braket} \meta{* or \oarg{size option}} i*\marg{subformula}^^A
+%   ---> \modu{braket} module
+%     \cs{ketbra} \meta{* or size command} "|" \meta{subformula_1} ">"^^A
+% \meta{optional} "<" \meta{subformula_2} "|"
+%   \hfill---> \modu{ab.braket} module
 %   \end{syntax}
-%   The argument of \cs{braket} should be delimited with "<" and ">".
-%   In the \meta{subformula} argument, every ``"|"'' will be regarded as an
-%   extensible vertical bar.
+%   \begin{itemize}[leftmargin = 0pt]
+%     \item In \modu{ab.braket} module, the argument of \cs{braket} should be
+%     delimited with "<" and ">".
+%     In the \meta{subformula} argument, every ``"|"'' will be regarded as an
+%     extensible vertical bar.
+%     \item 
+%   \end{itemize}
 % \end{function}
 % For example,
 % \iffalse
@@ -482,9 +524,6 @@ $ \braket\Bigg<\0> $
 %</example>
 % \fi
 % \begin{function}{\ketbra}
-%   \begin{syntax}
-%     \cs{ketbra} "|" \meta{subformula$_1$} ">" \meta{optional} "<" \meta{subformula$_2$} "|"
-%   \end{syntax}
 %   The argument of \cs{ketbra} should be delimited with "|" and "|".
 %   In the argument, ">" and "<" will be regarded as extensible $\rangle$
 %   and $\langle$.
@@ -574,34 +613,7 @@ $ \expval*[\1]      {\hat A} $
 % \iffalse
 %</example>
 % \fi
-% Please notice that this module is conflict with the \modu{ab.braket} module.
-% Don't use them together.
-%
-% This module contains four commands --- \cs{bra}, \cs{ket}, \cs{braket} and
-% \cs{ketbra}. After these commands can be a star ("*") or a
-% square-bracket-delimited size option, the size option can
-% take the following values:
-% \begin{quote}
-% "big",\quad "Big",\quad "bigg",\quad "Bigg",\quad
-% "biggg"\quad or\quad "Biggg".
-% \end{quote}
-% Star stands for ``do not size the bra-ket automatically''.
-%
-% The argument(s) of these four commands are braced with "{" and "}".
-% \cs{bra} and \cs{ket} take one mandatory argument. For example,
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{5}
-\def\0{\frac\phi2}
-$ \bra {\0} $\quad $ \bra* {\0}     $
-             \quad $ \bra[Big] {\0} $\\[1ex]
-$ \ket {\0} $\quad $ \ket* {\0}     $
-             \quad $ \ket[Big] {\0} $
-\end{example}
-% \iffalse
-%</example>
-% \fi
+
 % The \cs{braket} command, in default, can take two arguments.
 % \iffalse
 %<*example>
