@@ -158,9 +158,12 @@ The Current Maintainer of this work is **Mingyu Xia**.
 }
 \protected \def \macrocr{\par}
 \newdimen\ttwd
+\newdimen\sttwd
 \protected\def\updatettwd{^^A
   \setbox\@tempboxa\hbox{\normalsize\ttfamily x}
   \ttwd=\wd\@tempboxa
+  \setbox\@tempboxb\hbox{\small\ttfamily x}
+  \sttwd=\wd\@tempboxb
 }
 \updatettwd
 \makeatother
@@ -410,8 +413,7 @@ $ \pab[Big]{\0} $\quad $ \bab*{\0} $
 %
 % This two modules both contain four basic commands
 % \begin{quote}
-%   \cs{bra},\quad \cs{ket},\quad \cs{braket},\quad \cs{ketbra},\quad
-%   \cs{bknorm},\quad             \cs{kbproj},\quad \cs{expval}
+%   \cs{bra},\quad \cs{ket},\quad \cs{braket},\quad \cs{ketbra}
 % \end{quote}
 % These commands in the two modules share the same goal, but differ in syntax.\\
 % \DescribeOption{ab.braket}
@@ -432,19 +434,19 @@ $ \pab[Big]{\0} $\quad $ \bab*{\0} $
 % The star in the two modules stands for ``do not size the bra-ket
 % automatically''. Four basic commands' syntaxes are described as
 % follows respectively.
-% Please notice that the two module are conflict with each other,
-% so don't use them together. One can choose one module according to
+% \textbf{Please notice that the two module are conflict with each other,
+% so don't use them together.} One can choose one module according to
 % personal habit.
 % \begin{function}{\bra, \ket}
 %   \begin{syntax}
 %     \cs{bra} \meta{* or size command}   "<" \meta{subformula} "|"^^A
-%   ---> \modu{ab.braket} module
+% \hfill --> \makebox[15\sttwd][r]{\modu{ab.braket} modu.}
 %     \cs{ket} \meta{* or size command}   "|" \meta{subformula} ">"^^A
-%   ---> \modu{ab.braket} module
+% \hfill --> \makebox[15\sttwd][r]{\modu{ab.braket} modu.}
 %     \cs{bra} \meta{\meta{*} or \oarg{size option}} \marg{subformula}^^A
-%   ---> \modu{braket} module
+% \hfill --> \makebox[15\sttwd][r]{\modu{braket} modu.}
 %     \cs{ket} \meta{\meta{*} or \oarg{size option}} \marg{subformula}^^A
-%   ---> \modu{braket} module
+% \hfill --> \makebox[15\sttwd][r]{\modu{braket} modu.}
 %   \end{syntax}
 %   \begin{itemize}[leftmargin = 0pt]
 %     \item In \modu{ab.braket} module,
@@ -452,8 +454,7 @@ $ \pab[Big]{\0} $\quad $ \bab*{\0} $
 %     the argument of \cs{ket} should be delimited with "|" and ">".\\
 %     \pardanger
 %     If you want to write ``$>$'' and ``$<$'' for relations in the argument of
-%     \cs{bra} and \cs{ket}, you can write "\mathrel{>}" and "\mathrel{<}"
-%     (although there is almost no such need).
+%     \cs{bra} and \cs{ket}, you can write "\mathrel{>}" and "\mathrel{<}".
 %     \item In \modu{braket} module, \cs{bra} and \cs{ket} take one mandatory
 %     argument, which should be braced  with "{" and "}".
 %   \end{itemize}
@@ -491,83 +492,122 @@ $ \ket  \0 $\quad $ \ket*     \0   $%
 % \iffalse
 %</example>
 % \fi
-% \begin{function}{\braket, \ketbra}
+% \begin{function}{\braket}
 %   \begin{syntax}
-%     \cs{braket} \meta{* or size command}\:   "<" \meta{subformula} ">"^^A
-%   ---> \modu{ab.braket} module
-%     \cs{braket} \meta{* or \oarg{size option}} i*\marg{subformula}^^A
-%   ---> \modu{braket} module
-%     \cs{ketbra} \meta{* or size command} "|" \meta{subformula_1} ">"^^A
-% \meta{optional} "<" \meta{subformula_2} "|"
-%   \hfill---> \modu{ab.braket} module
+%     \cs{braket} \meta{* or size command}\:       "<" \meta{subformula} ">"^^A
+% \hfill --> \makebox[15\sttwd][r]{\modu{ab.braket} modu.}
+%     \cs{braket} \meta{* or \oarg{size option, i}} i*\marg{subformula}^^A
+% \hfill --> \makebox[15\sttwd][r]{\modu{braket} modu.}
 %   \end{syntax}
 %   \begin{itemize}[leftmargin = 0pt]
 %     \item In \modu{ab.braket} module, the argument of \cs{braket} should be
-%     delimited with "<" and ">".
-%     In the \meta{subformula} argument, every ``"|"'' will be regarded as an
-%     extensible vertical bar.
-%     \item 
+%     delimited with "<" and ">", every ``"|"'' will be regarded as an
+%     extensible vertical bar in the \meta{subformula} argument.
+%     \pardanger
+%     If you want to write ``$>$'' and ``$<$'' for relations in the argument of
+%     \cs{braket} and \cs{ketbra} in this module,
+%     you can write \cs{>} and \cs{<}.
+%     It is quite different from "\mathrel{>}" or "\mathrel{<}" because in these
+%     commands' argument, ">" and "<" will be redefined.
+%     \item In \modu{braket} module, the \cs{braket} command, in default, can
+%     take two arguments. If you want \cs{braket} to take one or three
+%     arguments, you can write the number "i" of arguments in the square
+%     bracket, separate from the size option with a comma.
 %   \end{itemize}
 % \end{function}
-% For example,
+% For example, in \modu{ab.braket} and \modu{braket} module,
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{5}
-\def\0{\frac\phi2|\psi}
-$ \braket<A> $\quad $ \braket<m|n> $\quad
-$ \braket<m|A|n> $\\[1ex]
-$ \braket<\0> $\quad $\braket*<\0> $\quad
-$ \braket\Bigg<\0> $
+\begin{example}{7}
+\def\0{\frac\phi2}
+$ \braket     <\hat A>  $\quad
+$ \braket     <\0|\hat A|\psi> $\quad
+$ \braket\big <\0|\psi> $\quad\\[1ex]
+$ \braket*    <\0|\psi> $\quad
+$ \braket\Big <\0|\psi> $\quad
+$ \ab|{\braket<\psi|\hat A|\psi>}| $
 \end{example}
+% \iffalse
+%</example>
+% \fi
+% \pardanger
+% Commands from \modu{ab.braket} should not be placed barely in
+% \cs{ab}"|"\meta{subformula}"|" or errors will arise.
+% So, adding braces like the last line in the example above.
+% \iffalse
+%<*example>
+% \fi
+\begingroup
+\makeatletter\def\phx@requiremodule#1{}%
+\def\PackageWarning#1#2{}%
+\catcode`\%14\relax \input phx-braket.sty \catcode`\%9\relax \makeatother
+\begin{example}{7}
+\def\0{\frac\phi2}
+$ \braket  [1]     {\hat A}       $\quad
+$ \braket  [3] {\0}{\hat A}{\psi} $\quad
+$ \braket[big] {\0}{\psi} $\quad\\[1ex]
+$ \braket*     {\0}{\psi} $\quad
+$ \braket[Big] {\0}{\psi} $\quad
+$ \ab|{\braket[3]{\psi}{\hat A}{\psi}}| $
+\end{example}
+\endgroup
 % \iffalse
 %</example>
 % \fi
 % \begin{function}{\ketbra}
-%   The argument of \cs{ketbra} should be delimited with "|" and "|".
-%   In the argument, ">" and "<" will be regarded as extensible $\rangle$
-%   and $\langle$.
+%   \begin{syntax}
+%     \cs{ketbra} \meta{* or size command}\:       "|" \meta{subformula_1} ">"
+% ""        \meta{optional formula}\:        "<" \meta{subformula_2} "|"^^A
+% \hfill --> \makebox[15\sttwd][r]{\modu{ab.braket} modu.}
+%     \cs{ketbra} \meta{* or \oarg{size option}}      \marg{subformula_1}
+% ""        \meta{optional formula}         \:\marg{subformula_2}^^A
+% \hfill --> \makebox[15\sttwd][r]{\modu{braket} modu.}
+%   \end{syntax}
+%   \begin{itemize}[leftmargin = 0pt]
+%     \item In \modu{ab.braket} module, the argument of \cs{ketbra} should be
+%     delimited with "|" and "|", ">" and "<" will be regarded as extensible
+%     $\rangle$ and $\langle$ in the argument.
+%     \item In \modu{braket} module, the \cs{ketbra} command takes two
+%     mandatory arguments by default, and one optional argument between the
+%     two mandatory arguments ($\rangle$ and $\langle$).
+%   \end{itemize}
 % \end{function}
-% For example,
+% For example, in \modu{ab.braket} and \modu{braket} module,
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{5}
+\begin{example}{4}
 \def\0{\frac\phi2}
-$ \ketbra     | \0 >< \psi | $\quad
-$ \ketbra*    | \0 >< \psi | $\\[1ex]
-$ \ketbra\Bigg| \0 >< \psi | $\quad
-$ \ketbra| \0 >_x^y < \psi | $
+$ \ketbra         | \0 >< \psi | $\quad
+$ \ketbra*        | \0 >< \psi | $\quad
+$ \ketbra\Big | \0 >_x^y< \psi | $
 \end{example}
 % \iffalse
 %</example>
 % \fi
-% \pardanger
-% If you want to write ``$>$'' and ``$<$'' for relations in the argument of
-% \cs{braket} and \cs{ketbra}, you can write \cs{>} and \cs{<} (although there
-% is almost no such need). It is quite different from "\mathrel{>}" or
-% "\mathrel{<}" because in these commands' argument, ">" and "<"
-% will be redefined.
-%
-% \pardanger
-% \textbf{Important Notes:}
-% Commands provided by \modu{ab.braket} should NOT be placed barely
-% in \meta{subformula} of \cs{ab}\texttt|\meta{subformula}\texttt|.
-% Errors will arise if you write such code. To avoid the errors, you can write
-% like this:
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{1}
-$ \ab|{\braket<\psi|\hat H|\psi>}| $
+\begingroup
+\makeatletter\def\phx@requiremodule#1{}^^A
+\def\PackageWarning#1#2{}^^A
+\catcode`\%14\relax \input phx-braket.sty \catcode`\%9\relax \makeatother
+\begin{example}{4}
+\def\0{\frac\phi2}
+$ \ketbra        {\0} {\psi} $\quad
+$ \ketbra*       {\0} {\psi} $\quad
+$ \ketbra  [Big] {\0} [_x^y] {\psi} $
 \end{example}
+\endgroup
 % \iffalse
 %</example>
 % \fi
-% Just add the braces.
-%
-% For convince, commands for typesetting inner/outerproduct and expectation
-% value are provided in both modules.
+% For convince, the two modules also contain three advanced commands
+% \begin{quote}
+%   \cs{bknorm},\quad \cs{kbproj},\quad \cs{expval}
+% \end{quote}
+% These commands have the same syntax in the two modules.
 % \begin{function}{\bknorm, \kbproj, \expval}
 %   \begin{syntax}
 %     \cs{bknorm} \meta{*} \oarg{size} \marg{basis}
@@ -579,92 +619,16 @@ $ \ab|{\braket<\psi|\hat H|\psi>}| $
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{12}
+\begin{example}{8}
 \def \0{\frac\alpha2}
 \edef\1{\uparrow,\downarrow}
-$ \bknorm      \0 $\quad
-$ \bknorm*     \0 $\quad
-$ \bknorm[big] \0 $\\[2ex]
-$ \kbproj      \0 $\quad
-$ \kbproj*     \0 $\quad
-$ \kbproj[big] \0 $\\[2ex]
-$ \expval \0 $\quad $ \expval*\0 $\quad
-$ \expval [big]     {\hat A} $\quad
-$ \expval [\psi, Big]\0 $\\[2ex]
+$ \bknorm \0 $\quad $ \bknorm [big]\0 $
+              \quad $ \bknorm*\0 $\\[2ex]
+$ \kbproj \0 $\quad $ \kbproj [big]\0 $
+              \quad $ \kbproj*\0 $\\[2ex]
 $ \expval [\1, Big] {\hat A} $\quad
-$ \expval*[\1]      {\hat A} $
+$ \expval*[\psi, Big]\0 $
 \end{example}
-% \iffalse
-%</example>
-% \fi
-%
-% Next, the \modu{braket} module will be introduced. Please notice that
-% \modu{braket} is conflict with \modu{ab.braket}, they cannot be used together.
-%
-% \subsection{The \modu{braket} module --- Dirac bra-ket notation}
-%
-% \iffalse
-%<*example>
-% \fi
-\begingroup
-\makeatletter\def\phx@requiremodule#1{}^^A
-\def\PackageWarning#1#2{}^^A
-\catcode`\%14\relax \input phx-braket.sty \catcode`\%9\relax \makeatother
-% \iffalse
-%</example>
-% \fi
-
-% The \cs{braket} command, in default, can take two arguments.
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{4}
-\def\0{\frac\phi2}
-$ \braket      {\0} {\psi} $\quad
-$ \braket*     {\0} {\psi} $\quad
-$ \braket[big] {\0} {\psi} $
-\end{example}
-% \iffalse
-%</example>
-% \fi
-% If you want \cs{braket} to take one or three arguments, you can write the
-% number of arguments in the square bracket. If you need to specify the size
-% of bra-ket simultaneously, you need to separate the number and the size with
-% a comma:
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{6}
-\def\0{\frac\phi2}
-$ \braket [1]    {\0}          $\quad
-$ \braket*[1]    {\0}          $\quad
-$ \braket [3]    {\0}{A}{\psi} $\\[1ex]
-$ \braket[3,big] {\0}{A}{\psi} $\quad
-$ \braket[Big,3] {\0}{A}{\psi} $
-\end{example}
-% \iffalse
-%</example>
-% \fi
-% The \cs{ketbra} command takes two mandatory arguments. It can also take an
-% optional argument between the two mandatory arguments. The optional argument
-% will be placed between $\rangle$ and $\langle$:
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{5}
-\def\0{\frac\phi2}
-$ \ketbra        {\0} {\psi} $\quad
-$ \ketbra*       {\0} {\psi} $\\[1ex]
-$ \ketbra [bigg] {\0} {\psi} $\quad
-$ \ketbra [Big]  {\0} [_x^y] {\psi} $
-\end{example}
-% \iffalse
-%</example>
-% \fi
-% \iffalse
-%<*example>
-% \fi
-\endgroup
 % \iffalse
 %</example>
 % \fi
@@ -3144,4 +3108,4 @@ $
 %    \end{macrocode}
 % This part ends here.
 % \end{implementation}
-^^A % \PrintIndex
+% \PrintIndex
