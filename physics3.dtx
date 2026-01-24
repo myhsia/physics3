@@ -105,11 +105,27 @@ The Current Maintainer of this work is **Mingyu Xia**.
 \usepackage{mathtools, fixdif, derivative, xcolor}
 \usepackage[warnings-off={mathtools-colon, mathtools-overbracket}]{unicode-math}
 \usepackage{physics3}
-\usephysicsmodule{ab, ab.braket, diagmat, doubleprod, operator}
-\usephysicsmodule[showtop = 1, showleft = 2]{xmat}
-\usephysicsmodule{ab.legacy, qtext.legacy, bm-um.legacy}
+\usephxmodu{ab, ab.braket, diagmat, doubleprod, operator}
+\usephxmodu[showtop = 1, showleft = 2]{xmat}
+\usephxmodu{ab.legacy, qtext.legacy, bm-um.legacy}
 \setcounter{tocdepth}{2}
-\makeatletter
+\ExplSyntaxOn \makeatletter
+\DeclareDocumentCommand \key { s m }
+  {
+    \IfBooleanTF {#1} { \textcolor{red}{\ttfamily \bfseries #2} }
+      {
+        \ttfamily
+        \seq_set_from_clist:Nn \l_tmpa_seq {#2}
+        \seq_set_map:NNn \l_tmpb_seq \l_tmpa_seq
+          { \exp_not:n { \textcolor{red}{\bfseries ##1} } }
+        \seq_use:Nn \l_tmpb_seq { ,~ } \:=\:
+      }
+  }
+\DeclareCommandCopy \val \meta
+\def \TFF {true\textup{\textbar\underline{\textbf{false}}}}
+\def \TTF {\textup{\underline{\textbf{true}}\textbar}false}
+\newlist{keyval}{itemize}{10}
+\setlist[keyval]{leftmargin = 0pt, labelsep = 0pt}
 \newwrite\example@out
 \def\example@name{\jobname.example.aux}
 \long\def\example@start{\begingroup\@bsphack
@@ -166,7 +182,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
   \sttwd=\wd\@tempboxb
 }
 \updatettwd
-\makeatother
+\makeatother \ExplSyntaxOff
 \begin{document}
   \DeleteShortVerb\|
   \DocInput{\jobname.dtx}
@@ -204,14 +220,15 @@ The Current Maintainer of this work is **Mingyu Xia**.
 % \label{doc:physics3-documentation}
 %
 % \tableofcontents
+% 
+% \clearpage
 %
 % \section{Introduction}
 %
-% \subsection{The purpose of this package}
-%
-% This package aims to provide a bundle of commands for typesetting math faster
-% in different modules. The commands provided by \pkg{physics3} and its
-% different modules are designed to be short and easy to memorize.
+% The \pkg{physics3} package aims to provide a bundle of commands for
+% typesetting math faster in different modules. The commands provided by
+% \pkg{physics3} and its different modules are designed to be short and easy
+% to memorize.
 %
 % \subsection{Packages required}
 %
@@ -242,25 +259,19 @@ The Current Maintainer of this work is **Mingyu Xia**.
 % You can load a module of \pkg{physics3} only \emph{after} you write
 % "\usepackage{physics3}" in the preamble. Load a \pkg{physics3} module
 % like this
-% \begin{function}{\usephysicsmodule}
+% \begin{function}{\usephxmodu}
 %   \begin{syntax}
-%     \cs{usephysicsmodule}\marg{module}
+%     \cs{usephxmodu} \oarg{options} \marg{module}
 %   \end{syntax}
 % \end{function}
-% The usage of \cs{usephysicsmodule} is similar to \cs{usepackage},
+% The usage of \cs{usephxmodu} is similar to \cs{usepackage},
 % so you can load several modules in one line. For example,
 % \begin{quote}
-%   "\usephysicsmodule{ab, ab.braket}"
+%   "\usephxmodu [tightbraces = true] {ab}"\\
+%   "\usephxmodu {ab.braket, doubleprod}"
 % \end{quote}
-% This line loads the \modu{ab} and \modu{ab.braket} modules.
-%
-% You can also load \emph{one} module with options. The options of a
-% \pkg{physics3} module can be a comma-separated key-value list. For example,
-% \begin{quote}
-%   "\usephysicsmodule[tightbraces = true]{ab}"\\
-%   "\usephysicsmodule{ab.braket, doubleprod}"
-% \end{quote}
-% These two lines load the \modu{ab} module with option
+% The options of a \pkg{physics3} module can be a comma-separated key-value
+% list. These two lines load the \modu{ab} module with option
 % "tightbraces = true" and load \modu{ab.braket} and \modu{doubleprod} modules.
 %
 % The following sections introduce all the user-level modules of \pkg{physics3}.
@@ -325,10 +336,9 @@ $ \Biggg(\biggg(\Bigg(\bigg(
 % \cs{ab}" | ... | " or \cs{ab} \cs{vert}   ... \cs{vert}
 % \cs{ab}"\| ... \|" or \cs{ab} \cs{Vert}   ... \cs{Vert}
 %   \end{syntax}
-%   For example, it's illegal to write an ``"\ab("'' without a ``")"'';
-%   it's also illegal to write "\ab=foo=".
 % \end{function}
-% Take some correct examples:
+% For example, it's illegal to write an ``"\ab("'' without a ``")"'';
+% it's also illegal to write "\ab=foo=". Take some correct examples:
 % \iffalse
 %<*example>
 % \fi
@@ -402,11 +412,11 @@ $ \pab[Big]{\0} $\quad $ \bab*{\0} $
 % \iffalse
 %</example>
 % \fi
-%
-% \paragraph{The options of \modu{ab} module}
-% "tightbraces", a bool type key, whose default value is "true",
-% influences whether thin skips are reserved around the paired delimiters.
-% It only works with the automatically sized delimiters.
+% \begin{keyval}
+%   \item[\key{tightbraces}]\val{\TTF}: Influences whether thin skips are
+%   reserved around the paired delimiters. It only works with the automatically
+%   sized delimiters.
+% \end{keyval}
 %
 % \subsection{The \modu{ab.braket} and \modu{braket} module
 %   --- Dirac bra-ket notation}
@@ -633,45 +643,11 @@ $ \expval*[\psi, Big]\0 $
 %</example>
 % \fi
 %
-% \subsection{The \modu{diagmat} module --- simple diagonal matrices}
-%
-% This module provides \cs{diagmat} command:
-% \begin{function}
-%   {\diagmat, \pdiagmat, \bdiagmat, \Bdiagmat, \vdiagmat, \Vdiagmat}
-% \begin{syntax}
-%   \cs{\meta{delimiter type}diagmat}\meta{*}
-%   "  "[align = \meta{l|c|r}, empty = \meta{empty entry}] \marg{diag}
-% \end{syntax}
-% where \meta{diag} is the diagonal of the diagonal matrix. The entries should
-% be separated by commas. The "empty" option is optional, with default blanck.
-% Prefixes like "p", "b", "B" have the same meaning as the "p", "b", "V"
-% in \pkg{mathtools}'s "pmatrix", "bmatrix" and "Vmatrix".
-% This module requires \pkg{mathtools}.
-% \end{function}
-% For example,
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{6}
-$ \diagmat { 1, \sqrt2, \sqrt[3]4 } $\qquad
-$ \pdiagmat [ empty = 0 ] { a, b, c } $\\[1ex]
-$ \diagmat* [ align = r ]
-    { 1, \sqrt2, \sqrt[3]4 } $\quad
-$ \bdiagmat* { 1, \sqrt2, \sqrt[3]4 } $\quad
-$ \Vdiagmat* [ empty = 0 ] { a, b, c } $
-\end{example}
-% \iffalse
-%</example>
-% \fi
-%
-% \paragraph{The options of \modu{diagmat} module}
-% You can set the default value of \cs{diagmat}'s empty entries and align in
-% the module option like this:
-% \begin{quote}
-% "\usephysicsmodule[empty = {\cdot}, align = r]{diagmat}"
-% \end{quote}
-%
 % \subsection{The \modu{doubleprod} module --- tensors' double product operator}
+% 
+% \begin{function}{\doublecross, \doubledot}
+% This module provides the \cs{doublecross} and \cs{doubledot} commands,
+% which are regarded as binary operators by \TeX.
 % Take an example of this module:
 % \iffalse
 %<*example>
@@ -682,28 +658,63 @@ $ A \doublecross B \doubledot C $
 % \iffalse
 %</example>
 % \fi
-% \cs{doublecross} and \cs{doubledot} are regarded as binary operators by \TeX.
+% \end{function}
+% \begin{keyval}
+%   \item[\key{crossscale, dotscale}]\val{fp num}: Scales of ``$\times$''
+%   and ``$\cdot$'' (Default: ".8" and "1").
+%   \item[\key{crossopenup, dotopenup}]\val{fp num}: Spaces between
+%   ``$\times$''s and ``$\cdot$''s "=" \val{fp num} "*" font size
+%   (Default: ".02" and ".2").
+%   \item[\key{doubledot, crosssymbol}]\val{symbol}: Pieces of
+%   \cs{doublecross} and \cs{doubledot} (Default: \cs{times}, \cs{ldotp}).
+% \end{keyval}
+% Their default values can be configured in module option. For example,
+% \begin{quote}
+% "\usephxmodu [crossscale  = .75, dotscale  = 1.2,"\\
+% "             crossopenup = .05, dotopenup = .25] {doubleprod}"
+% \end{quote}
 %
-% \paragraph{The options of \modu{doubleprod} module}
-% You can control the scale of ``$\times$'' and ``$\cdot$'' in \cs{doublecross}
-% and \cs{doubledot} in module option. For example,
+% \subsection{The \modu{diagmat} module --- simple diagonal matrices}
+%
+% This module requires the \pkg{mathtools} package and provides six
+% \cs{*diagmat} commands:
+% \begin{function}
+%   {\diagmat, \pdiagmat, \bdiagmat, \Bdiagmat, \vdiagmat, \Vdiagmat}
+% \begin{syntax}
+%   \cs{\meta{delimiter type}diagmat}\meta{*}
+%   "  "[align = \meta{l\textup\textbar{c}\textup\textbar{r}},^^A
+% empty = \meta{empty entry}] \marg{diag}
+% \end{syntax}
+% where \meta{diag} is the diagonal of the diagonal matrix. The entries should
+% be separated by commas.
+% Prefixes like "p", "b", "V" have the same meanings as "pmatrix", "bmatrix" and
+% "Vmatrix" in the \pkg{mathtools} package, a star ("*") follows the
+% \cs{*diagmat} commands correspond to "*smallmatrix" in the
+% \pkg{mathtools} package.
+% \end{function}
+% \begin{keyval}
+%   \item[\key{empty}]\val{token list}:
+%   Value of \cs{diagmat}'s empty entries (Default is blanck).
+%   \item[\key{align}]\val{l\textup\textbar{c}\textup\textbar{r}}:
+%   Align of \cs{diagmat}'s diagonal entries (Default: "r").
+% \end{keyval}
+% Their default values can be configured in module option. For example,
 % \begin{quote}
-% "\usephysicsmodule [crossscale = .75,"\\
-% "                   dotscale   = 1.2] {doubleprod}"
+% "\usephxmodu[empty = \cdot, align = r]{diagmat}"
 % \end{quote}
-% The default values of "crossscale" and "dotscale" are "0.8" and
-% "1". You can also control the distances between the two ``$\times$''s and
-% ``$\cdot$''s through the "crossopenup" and "dotopenup" options.
 % For example,
-% \begin{quote}
-% "\usephysicsmodule [crossopenup = .05,"\\
-% "                   dotopenup   = .25] {doubleprod}"
-% \end{quote}
-% The default values of "crossopenup" and "dotopenup" are "0.02"
-% and "0.2". The value stands for the multiple of current font size.
-% Moreover, you can change the symbols produced by \cs{doublecross} and
-% \cs{doubledot} by setting "crosssymbol" and "dotsymbol" in module
-% option.
+% \iffalse
+%<*example>
+% \fi
+\begin{example}{4}
+$ \pdiagmat [empty = \mathbf O] {
+    \diagmat*[align = r]{1, \sqrt[3]4},
+    \diagmat*{a, b} } $,
+$ \bdiagmat* {1, -1, -1, -1} $
+\end{example}
+% \iffalse
+%</example>
+% \fi
 %
 % \subsection{The \modu{xmat} module --- matrices with formatted entries}
 %
@@ -740,23 +751,25 @@ $
 % \iffalse
 %</example>
 % \fi
+% \begin{keyval}
+%   \item[\key{showtop, showleft}]\val{int num} (Default: "MaxMatrixCols - 2").
+% \end{keyval}
 % If \meta{rows shown} and \meta{cols shown} contain non-digit characters,
 % extra dots will be added. For example,
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{2}
+\begin{example}{3}
 $ \bxmat[showtop = 1, showleft = 2]
     {X}{m}{n} $
 \end{example}
 % \iffalse
 %</example>
 % \fi
-% In this example we used the "showleft" and "showtop" options. The
-% default value of them is the value of "MaxMatrixCols" minus 2. You can
-% also set them in the module option like this:
+% In this example we used the "showleft" and "showtop" options.
+% You can also set them in the module option like this:
 % \begin{quote}
-%   "\usephysicsmodule[showtop = 3, showleft = 3]{xmat}"
+%   "\usephxmodu[showtop = 3, showleft = 3]{xmat}"
 % \end{quote}
 % Then every \cs{xmat} with non-digital \meta{rows shown} and \meta{cols shown}
 % will have 2 top-most rows and 3 left-most columns shown. This will also
@@ -767,7 +780,7 @@ $ \bxmat[showtop = 1, showleft = 2]
 %<*example>
 % \fi
 \begin{example}{3}
-%  \usephysicsmodule
+%  \usephxmodu
 %    [showtop = 1, showleft = 2]{xmat}
 \[ \pxmat{A}{8}{8} \]
 \end{example}
@@ -784,7 +797,7 @@ $ \bxmat[showtop = 1, showleft = 2]
 %<*example>
 % \fi
 \begin{example}{4}
-% \usephysicsmodule
+% \usephxmodu
 %   [showtop = 1, showleft = 2]{xmat}
 $ \pxmat[showtop = 2, showleft = 3]
     {A}{4}{4} $
@@ -813,16 +826,9 @@ $
 % stands for the row index and "#3" stands for the column index.
 %
 % This module requires \pkg{mathtools}.
-%
-% \paragraph{The options of \modu{xmat} module}
 % Only "showtop" and "showleft" can be used as module options.
 % "format" should be only used in the optional argument of the
 % \cs{xmat} command.
-%
-% The legacy modules have similar names like \meta{module}".legacy". Most of
-% them are designed to provide solutions to maintain documents written with the
-% legacy \pkg{physics} package. It's not suggested to use them in a new
-% document.
 %
 % \subsection{The \modu{operator} module}
 %
@@ -858,7 +864,7 @@ $
 %   redefine \cs{Re} and \cs{Im}. If you want to reserve the definition of
 %   \cs{Re} and \cs{Im}, you can write like this:
 %   \begin{quote}
-%     "\usephysicsmodule[ReIm = false]{operator}"
+%     "\usephxmodu[ReIm = false]{operator}"
 %   \end{quote}
 % For example,
 % \iffalse
@@ -869,7 +875,7 @@ $
 \def\PackageWarning#1#2{}^^A
 \catcode`\%14\relax \input phx-braket.sty \catcode`\%9\relax \makeatother
 \begin{example}{7}
-% \usephysicsmodule{braket}
+% \usephxmodu{braket}
 $ \asin x  $\quad $ \PV f(z) $\quad
 $ \pv f(z) $\quad $ \Re z $\\[1ex]
 $ \Identity = \identity = \int \d^2 \alpha
@@ -883,6 +889,11 @@ $ \grad V$, $\div (x,y,z)$, $ \curl(x,y,z) $
 % \fi
 % The ``$\divsymbol$'' symbol was redefined as \cs{divsymbol}.
 % \end{function}
+%
+% The legacy modules have similar names like \meta{module}".legacy". Most of
+% them are designed to provide solutions to maintain documents written with the
+% legacy \pkg{physics} package. It's not suggested to use them in a new
+% document.
 %
 % \subsection{The \modu{ab.legacy} module}
 %
@@ -922,7 +933,7 @@ $ \beval[big]{\0}_a^b $
 % You can set the ``order'' symbol in this module through
 % the "order" option like this:
 % \begin{quote}
-%   "\usephysicsmodule[order = O]{ab.legacy}"
+%   "\usephxmodu[order = O]{ab.legacy}"
 % \end{quote}
 % For further information of this module,
 % see~\hyperref[doc:physics-legacy]^^A
@@ -1049,16 +1060,16 @@ $ \bm0 \bm A\bm z \bm\alpha\bm\Omega $
 % If you want to load any module of \pkg{physics3}, write this line after
 % loading \pkg{physics3} package:
 % \begin{quote}
-% \cs{usephysicsmodule}\marg{module list}
+% \cs{usephxmodu}\marg{module list}
 % \end{quote}
-% For example, ``"\usephysicsmodule{ab,doubleprod}"'' loads the \modu{ab}
+% For example, ``"\usephxmodu{ab, doubleprod}"'' loads the \modu{ab}
 % module and the \modu{doubleprod} module.
 %
 % You can also load a module with options:
 % \begin{quote}
-%   \cs{usephysicsmodule}\oarg{option list}\marg{module}
+%   \cs{usephxmodu}\oarg{option list}\marg{module}
 % \end{quote}
-% For example, ``"\usephysicsmodule[legacy]{ab}"'' loads \modu{ab} with the
+% For example, ``"\usephxmodu[legacy]{ab}"'' loads \modu{ab} with the
 % option ``"legacy"''.
 %
 % \pardanger Attention, if you used any font package in your document, remember
@@ -1074,7 +1085,7 @@ $ \bm0 \bm A\bm z \bm\alpha\bm\Omega $
 %
 % \DescribeMacro{\ab}
 % The \cs{ab} command requires the \modu{ab} module, so don't forget to write
-% "\usephysicsmodule{ab}" in the preamble after you loaded \pkg{physics3}.
+% "\usephxmodu{ab}" in the preamble after you loaded \pkg{physics3}.
 % Always remember, \emph{do not put an \cs{ab} separately in the end of a math
 % formula}. Take some examples:
 % \iffalse
@@ -1165,7 +1176,7 @@ $ \pab[Big]{\0} \quad \bab*{\0} $
 % the first four commands can be used through the \modu{ab.legacy} module of
 % \pkg{physics3}:
 % \begin{quote}
-% "\usephysicsmodule{ab.legacy}"
+% "\usephxmodu{ab.legacy}"
 % \end{quote}
 % For example,
 % \iffalse
@@ -1202,7 +1213,7 @@ $ \beval[big]{\0}_a^b $
 % By the way, you can set the ``order'' symbol in \modu{ab.legacy} through
 % the "order" option like this:
 % \begin{quote}
-% "\usephysicsmodule[order = O]{ab.legacy}"
+% "\usephxmodu[order = O]{ab.legacy}"
 % \end{quote}
 % Then "$\order(N)$" yields $O(N)$.
 %
@@ -1250,7 +1261,7 @@ $ \beval[big]{\0}_a^b $
 %<*example>
 % \fi
 \begin{example}{6}
-% \usephysicsmodule{operator}
+% \usephxmodu{operator}
 $ \grad F            $\quad
 $ \grad(\frac G2)    $\\[1ex]
 $ \div\Bigg[X]       $\quad
@@ -1293,7 +1304,7 @@ $ 2 \divsymbol 1 $
 %<*example>
 % \fi
 \begin{example}{2}
-% \usephysicsmodule{operator}
+% \usephxmodu{operator}
 $ \asin^2 x $\quad $ \rank \{ A \} $
 \end{example}
 % \iffalse
@@ -1313,7 +1324,7 @@ $ \asin^2 x $\quad $ \rank \{ A \} $
 %<*example>
 % \fi
 \begin{example}{5}
-% \usephysicsmodule{qtext.legacy}
+% \usephxmodu{qtext.legacy}
 $ A \qq {foo bar} B $\\[1ex]
 $ A \qq*{foo bar} B $\\[1ex]
 $ C \qcc D \qcc*  E $\\[1ex]
@@ -1593,7 +1604,7 @@ $
 $
 \end{example}
 \begin{example}{3}
-% \usephysicsmodule
+% \usephxmodu
 %   [showleft = 2, showtop = 1]{xmat}
 $ \pxmat{X}{m}{n} $
 \end{example}
@@ -1684,19 +1695,19 @@ $
 % \end{macro}
 % We use almost the same way to load \pkg{physics3} modules as \LaTeXe\ kernel
 % does. We use a lot of kernel commands in \LaTeXe.
-% \begin{macro}{\usephysicsmodule, \phx@requiremodule}
+% \begin{macro}{\usephxmodu, \phx@requiremodule}
 %   \begin{quote}
-%     \cs{usephysicsmodule} \oarg{key-val options}^^A
+%     \cs{usephxmodu} \oarg{key-val options}^^A
 %       \marg{module} \oarg{key-val options}\\
 %     \cs{phx@requiremodule} \oarg{key-val options}^^A
 %       \marg{module} \oarg{key-val options}
 %   \end{quote}
-%   \cs{usephysicsmodule} is a user command, and \cs{phx@requiremodule} is a
+%   \cs{usephxmodu} is a user command, and \cs{phx@requiremodule} is a
 %   developer command.
 %    \begin{macrocode}
-\def\usephysicsmodule{\phx@FWoptions\@pkgextension}
-\let\phx@requiremodule\usephysicsmodule
-\@onlypreamble\usephysicsmodule
+\def\usephxmodu{\phx@FWoptions\@pkgextension}
+\let\phx@requiremodule\usephxmodu
+\@onlypreamble\usephxmodu
 \def\phx@FWoptions#1{\@ifnextchar[%]
   {\phx@FW@ptions#1}{\phx@FW@ptions#1[]}}
 \@onlypreamble\phx@FWoptions
@@ -2592,6 +2603,7 @@ $
 %    \begin{macrocode}
 %<@@=phx>
 %    \end{macrocode}
+%
 % \subsection{The \modu{doubleprod} module}
 %
 %    \begin{macrocode}
@@ -2630,6 +2642,7 @@ $
 %    \end{macrocode}
 %
 % \subsection{The \modu{diagmat} module}
+%
 %    \begin{macrocode}
 %<*diagmat>
 \ProvidesExplFile {phx-diagmat.sty} {\phx@date} {\phx@version}
@@ -2648,6 +2661,8 @@ $
 %    \begin{macrocode}
 \@@_define_key:nnnn { diagmat } { empty } { 0 }
   { \tl_gset:Nn \l_@@_mat_empty_tl { #1 } }
+\@@_define_key:nnnn { diagmat } { align } { 0 }
+  { \tl_gset:Nn \l_@@_mat_align_tl { #1 } }
 %    \end{macrocode}
 % \begin{variable}
 %   {
@@ -2670,7 +2685,6 @@ $
 \keys_define:nn { phy/diagmat }
   {
     empty   .tl_set:N  = \l_@@_mat_empty_tl,
-      empty .initial:n = {},
     align   .tl_set:N  = \l_@@_mat_align_tl,
   }
 %    \end{macrocode}
@@ -3108,4 +3122,5 @@ $
 %    \end{macrocode}
 % This part ends here.
 % \end{implementation}
+% \clearpage
 % \PrintIndex
