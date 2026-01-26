@@ -122,8 +122,10 @@ The Current Maintainer of this work is **Mingyu Xia**.
       }
   }
 \DeclareCommandCopy \val \meta
-\def \TFF {true\textup{\textbar\underline{\textbf{false}}}}
-\def \TTF {\textup{\underline{\textbf{true}}\textbar}false}
+\def \TTF {true\textup{\textbar\textbf{false}\makebox[0pt][r]{^^A
+  \underline {\phantom{\bfseries true}\kern-0.1em}}}}
+\def \TTF {\textup{\textbf{true}\makebox[0pt][r]{^^A
+  \underline {\phantom{\bfseries true}\kern-0.1em}}\textbar}false}
 \newlist{keyval}{itemize}{10}
 \setlist[keyval]{leftmargin = 0pt, labelsep = 0pt}
 \newwrite\example@out
@@ -521,8 +523,8 @@ $ \ket  \0 $\quad $ \ket*     \0   $%
 %     commands' argument, ">" and "<" will be redefined.
 %     \item In \modu{braket} module, the \cs{braket} command, in default, can
 %     take two arguments. If you want \cs{braket} to take one or three
-%     arguments, you can write the number "i" of arguments in the square
-%     bracket, separate from the size option with a comma.
+%     arguments, you can specific the number of arguments by number "i" in the
+%     square bracket, separate from the size option with a comma.
 %   \end{itemize}
 % \end{function}
 % For example, in \modu{ab.braket} and \modu{braket} module,
@@ -645,7 +647,6 @@ $ \expval*[\psi, Big]\0 $
 %
 % \subsection{The \modu{doubleprod} module --- tensors' double product operator}
 % 
-% \begin{function}{\doublecross, \doubledot}
 % This module provides the \cs{doublecross} and \cs{doubledot} commands,
 % which are regarded as binary operators by \TeX.
 % Take an example of this module:
@@ -658,7 +659,6 @@ $ A \doublecross B \doubledot C $
 % \iffalse
 %</example>
 % \fi
-% \end{function}
 % \begin{keyval}
 %   \item[\key{crossscale, dotscale}]\val{fp num}: Scales of ``$\times$''
 %   and ``$\cdot$'' (Default: ".8" and "1").
@@ -718,14 +718,16 @@ $ \bdiagmat* {1, -1, -1, -1} $
 %
 % \subsection{The \modu{xmat} module --- matrices with formatted entries}
 %
-% The \modu{xmat} module provides \cs{xmat} command for matrices with formatted
-% entries:
-% \begin{quote}
-% \cs{xmat}\oarg{options}\marg{entry}\marg{rows shown}\marg{cols shown}
-% \end{quote}
+% \begin{function}{\xmat}
+% \begin{syntax}
+%   \cs{xmat} \oarg{options} \marg{entry} \marg{rows shown} \marg{cols shown}
+% \end{syntax}
+% Command for matrices with formatted entries:
 % If \meta{rows shown} and \meta{cols shown} are digits, the value of them
 % must be less at least 2 than the value of \pkg{amsmath}'s "MaxMatrixCols"
-% counter. For example,
+% counter.
+% \end{function}
+% For example,
 % \iffalse
 %<*example>
 % \fi
@@ -739,18 +741,7 @@ $
 % \fi
 % \cs{pxmat}, \cs{bxmat}, \cs{Bxmat}, \cs{vxmat} and \cs{Vxmat} are also
 % available. The meaning of "p" and so on is the same as the "p"
-% in "pmatrix" of \pkg{amsmath}. For example,
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{3}
-$
-  \pxmat{M}{3}{3}
-$
-\end{example}
-% \iffalse
-%</example>
-% \fi
+% in "pmatrix" of \pkg{amsmath}.
 % \begin{keyval}
 %   \item[\key{showtop, showleft}]\val{int num} (Default: "MaxMatrixCols - 2").
 % \end{keyval}
@@ -805,67 +796,59 @@ $ \pxmat[showtop = 2, showleft = 3]
 % \iffalse
 %</example>
 % \fi
-%
-% The \cs{xmat} command provides the "format" option, which allows users
-% to use a new entry format. For example,
+% \begin{keyval}
+%   \item[\key{format}]\val{custom entry format in terms of \#1, \#2, and \#3}:
+%   \begin{arguments}
+%     \item The common entry, or the first mandatory \meta{entry} argument
+%     of \cs{xmat};
+%     \item The row index;
+%     \item The column index.
+%   \end{arguments}
+% \end{keyval}
+% For example,
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{5}
-$
-  \xmat[showtop = 2, showleft = 1,
-        format = \texttt{#1[#2][#3]}]
-    {x}{m}{n}
-$
+\begin{example}{3}
+$ \xmat [ showtop = 2, showleft = 1,
+          format = \texttt{#1[#2][#3]}]
+    {x}{m}{n} $
 \end{example}
 % \iffalse
 %</example>
 % \fi
-% In the value of "format" key, "#1" stands for the common entry,
-% or the first mandatory \meta{entry} argument of \cs{xmat}; "#2"
-% stands for the row index and "#3" stands for the column index.
-%
 % This module requires \pkg{mathtools}.
 % Only "showtop" and "showleft" can be used as module options.
-% "format" should be only used in the optional argument of the
-% \cs{xmat} command.
+% "format" should be only used in the optional argument of \cs{xmat}.
 %
 % \subsection{The \modu{operator} module}
 %
 % This module provides a series of commands for log-like operators and some
-% commands related to nabla ($\nabla$).
-% Notice that this module requires the \pkg{fixdif} package with file date
-% 2023/01/31 at minimum.
-%
-% \begin{function}
-%   {
-%     \asin,    \acos, \atan,
-%     \acsc,    \asec, \acot,
-%     \rank,    \erf,
-%     \Tr,      \tr,
-%     \Res,     \res,
-%     \PV,      \pv,
-%     \Re,      \Im,
-%     \Identity,\identity,
-%     \grad,    \curl, \div, \laplacian,
-%     \upe,     \iu
-%   }
-%   \cs{Re} and \cs{Im} are redefined. The first five lines of commands
-%   yield what they look like in math mode.
-%
-%   \cs{PV} yields ``$\PV$'' as an ordinary symbol and \cs{pv} yields ``$\pv$''.
-%
-%   \cs{Re} and \cs{Im} are redefined as ``$\Re$'' and ``$\Im$''. $\Resymbol$
-%   and $\Imsymbol$ are redefined as \cs{Resymbol} and \cs{Imsymbol}, in
-%   default.
-%   \paragraph{The options of \modu{operator} module}
-%   This module \emph{does not} require \pkg{amsmath}.
-%   "ReIm", a bool key with default value "true", determines whether to
-%   redefine \cs{Re} and \cs{Im}. If you want to reserve the definition of
-%   \cs{Re} and \cs{Im}, you can write like this:
-%   \begin{quote}
-%     "\usephxmodu[ReIm = false]{operator}"
-%   \end{quote}
+% commands related to nabla ($\nabla$)
+% \begin{quote}
+%   "\asin      \acos     \atan     \acsc     \asec     \acot "\\
+%   "\rank      \erf      \Tr       \tr       \Res      \res  "\\
+%   "\PV        \pv       \upe      \iu       \Re       \Im   "\\
+%   "\identity  \grad     \curl     \div      \laplacian      "
+% \end{quote}
+% \begin{itemize}[leftmargin = 0pt]
+%   \item The first two lines of commands yield what they look like in math mode
+%   \item \cs{PV} yields ``$\PV$'' as an ordinary symbol and \cs{pv}
+%   yields ``$\pv$''.
+%   \item \cs{Re} and \cs{Im} are redefined as ``$\Re$'' and ``$\Im$''.
+%   $\Resymbol$ and $\Imsymbol$ are redefined as \cs{Resymbol} and
+%   \cs{Imsymbol}, in default.
+%   \item The ``$\divsymbol$'' symbol was redefined as \cs{divsymbol}.
+% \end{itemize}
+% \begin{keyval}
+%   \item[\key{ReIm}]\val{\TTF}: Determines whether to redefine \cs{Re}
+%   and \cs{Im}.
+% \end{keyval}
+% If you want to reserve the definition of \cs{Re} and \cs{Im}, you can write
+% like this:
+% \begin{quote}
+%   "\usephxmodu[ReIm = false]{operator}"
+% \end{quote}
 % For example,
 % \iffalse
 %<*example>
@@ -874,21 +857,20 @@ $
 \makeatletter\def\phx@requiremodule#1{}^^A
 \def\PackageWarning#1#2{}^^A
 \catcode`\%14\relax \input phx-braket.sty \catcode`\%9\relax \makeatother
-\begin{example}{7}
+\begin{example}{6}
 % \usephxmodu{braket}
-$ \asin x  $\quad $ \PV f(z) $\quad
-$ \pv f(z) $\quad $ \Re z $\\[1ex]
-$ \Identity = \identity = \int \d^2 \alpha
+$ \asin x  $, $ \PV f(z) = \pv f(z) $\\[1ex]
+$ \identity = \int \d^2 \alpha
   \ketbra\alpha\alpha/\pi $\\[1ex]
-$ \upe^{\iu\pi} = -1$\\[1ex]
+$ \Re z = \Im z = \upe^{\iu\pi} = -1$\\[1ex]
 $ \grad V$, $\div (x,y,z)$, $ \curl(x,y,z) $
 \end{example}
 \endgroup
 % \iffalse
 %</example>
 % \fi
-% The ``$\divsymbol$'' symbol was redefined as \cs{divsymbol}.
-% \end{function}
+% This module requires the \pkg{fixdif} package with file date "2023/01/31"
+% at minimum, and \emph{does not} require \pkg{amsmath}.
 %
 % The legacy modules have similar names like \meta{module}".legacy". Most of
 % them are designed to provide solutions to maintain documents written with the
@@ -970,40 +952,22 @@ $ \bm0 \bm A\bm z \bm\alpha\bm\Omega $
 % with the legacy \pkg{physics} package. See \S\ref{subsec:qtext} for
 % more information.
 % \end{documentation}
-%
+% \clearpage
 % \begin{documentation}
 %
-% \title{\pkg{physics3} manual for the legacy \pkg{physics} users}
+% \section{For the legacy \pkg{physics} users}\label{doc:physics-legacy}
 %
-% \author{Mingyu Xia\thanks{\texttt{^^A
-%     \href{mailto:xiamingyu@westlake.edu.cn}{xiamingyu@westlake.edu.cn}^^A
-%   }}
-% }
-%
-% \date{Released 2026-01-23\quad \texttt{v0.1A}}
-%
-% \maketitle
-%
-% \begin{abstract}
-% This short document describes \pkg{physics3} package for those who are
-% used to the \pkg{physics} package. This document is only a simple reference
+% This section describes \pkg{physics3} package for those who are
+% used to the \pkg{physics} package, which is only a simple reference
 % manual for:
 % \begin{itemize}
 %   \item Frequent users of the legacy \pkg{physics} package;
 %   \item Those who have to maintain a document written with \pkg{physics};
 %   \item Users who failed to use \pkg{unicode-math} with \pkg{physics}.
 % \end{itemize}
-% It seems no reason for any other user to read \emph{this} document instead of
-% the \hyperref[doc:physics3-documentation]{package documentation}
-% of \pkg{physics3}, because this document cannot describe the package
-% in detail.
 %
-% In this document, the modules of \pkg{physics3} will be introduced in
+% In this section, the modules of \pkg{physics3} will be introduced in
 % the same order as the \pkg{physics} documentation.
-% \end{abstract}
-% \label{doc:physics-legacy}
-%
-% \section{Before you start}
 %
 % \subsection{Legacy problems with \pkg{physics} package}^^A
 % \label{subsec:physics-legacy-problems}
@@ -1631,7 +1595,7 @@ $
 %    \begin{macrocode}
 %<*package>
 %    \end{macrocode}
-% We use "phy" as the namespace for \pkg{physics3} modules.
+% We use "phx" as the namespace for \pkg{physics3} modules.
 %    \begin{macrocode}
 %<@@=phx>
 %    \end{macrocode}
@@ -1665,7 +1629,7 @@ $
 \def\phx@true{true}
 \def\phx@false{false}
 %    \end{macrocode}
-% \begin{macro}{\@@_define_key:nnnn, \@@_setkeys:nnn, \@@_processkeyopt:n}
+% \begin{macro}{\@@_define_key:nnnn, \@@_setkeys:nn, \@@_processkeyopt:n}
 %   \begin{quote}
 %     \cs{phx@define@key} \marg{module} \marg{key}^^A
 %       \oarg{default value} \marg{code}\\
@@ -1678,18 +1642,18 @@ $
 %    \begin{macrocode}
 \cs_new_nopar:Npn \@@_define_key:nnnn #1#2#3#4
   { \define@key {phx-#1} {#2} [#3] {#4} }
-\cs_new_nopar:Npn \@@_setkeys:nnn     #1#2#3
-  { \setkeys    {phx-#1} [#2] {#3}      }
+\cs_new_nopar:Npn \@@_setkeys:nn     #1#2
+  { \setkeys    {phx-#1} {#2}           }
 \cs_new:Npn       \@@_processkeyopt:n #1
   {
     \let\reserved@a\@empty
     \edef\reserved@a{\@ptionlist{\@currname.\@currext}}%
-    \edef\reserved@a{\noexpand\phx@setkeys{#1}{}{\reserved@a}}%
+    \edef\reserved@a{\noexpand\phx@setkeys{#1}{\reserved@a}}%
     \reserved@a% the next line thanks to `geometry'
     \AtEndOfPackage{\let\@unprocessedoptions\relax}
   }
 \cs_set_eq:NN \phx@define@key    \@@_define_key:nnnn
-\cs_set_eq:NN \phx@setkeys       \@@_setkeys:nnn
+\cs_set_eq:NN \phx@setkeys       \@@_setkeys:nn
 \cs_set_eq:NN \phx@processkeyopt \@@_processkeyopt:n
 %    \end{macrocode}
 % \end{macro}
@@ -1874,7 +1838,7 @@ $
 % remember \cs{delopen} and \cs{delclose}?
 %    \begin{macrocode}
 \phx@define@key{ab}{tightbraces}{true}{\def\@phx@abtight{#1}}
-\phx@setkeys{ab}{}{tightbraces=true}
+\phx@setkeys{ab}{tightbraces=true}
 \phx@processkeyopt{ab}
 %    \end{macrocode}
 %
@@ -2619,7 +2583,7 @@ $
 \@@_define_key:nnnn { doubleprod } { dotscale    } { } { \def\@phx@dbl@sd{#1} }
 \@@_define_key:nnnn { doubleprod } { crossopenup } { } { \def\@phx@dbl@oc{#1} }
 \@@_define_key:nnnn { doubleprod } { dotopenup   } { } { \def\@phx@dbl@od{#1} }
-\@@_setkeys:nnn     { doubleprod } { }
+\@@_setkeys:nn      { doubleprod }
   {
     crosssymbol = \times, crossscale = 0.8, crossopenup = .02,
     dotsymbol   = \ldotp, dotscale   = 1,   dotopenup   = .2
@@ -2659,9 +2623,9 @@ $
 \patchcmd \MT_matrix_begin:N { \array } { \exp_args:Ne \array } {}{}
 %    \end{macrocode}
 %    \begin{macrocode}
-\@@_define_key:nnnn { diagmat } { empty } { 0 }
+\@@_define_key:nnnn { diagmat } { empty } {   }
   { \tl_gset:Nn \l_@@_mat_empty_tl { #1 } }
-\@@_define_key:nnnn { diagmat } { align } { 0 }
+\@@_define_key:nnnn { diagmat } { align } { r }
   { \tl_gset:Nn \l_@@_mat_align_tl { #1 } }
 %    \end{macrocode}
 % \begin{variable}
@@ -2945,15 +2909,14 @@ $
 \@@_define_key:nnnn { op.lega } { ReIm } { true } { \def\phx@reserveda{#1}  }
 \@@_define_key:nnnn { op.lega } { PV   } {      } { \def\@phx@oplega@PV{#1} }
 \@@_define_key:nnnn { op.lega } { pv   } {      } { \def\@phx@oplega@pv{#1} }
-\@@_setkeys:nnn     { op.lega } {      }
-  { PV = \mathcal{P}, pv = {p.v.}, ReIm = true}
+\@@_setkeys:nn     { op.lega } { PV = \mathcal{P}, pv = {p.v.}, ReIm = true}
 \@@_processkeyopt:n { ab }
 %    \end{macrocode}
-% \begin{macro}
+% \begin{macro}[int]
 %   {
-%     \asin, \acos, \atan, \acsc, \asec, \acot,
-%     \Tr, \tr, \rank, \erf, \Res, \res, \PV, \pv,
-%     \upe, \iu, \Identity, \identity
+%     \asin,  \acos,  \atan,  \acsc,  \asec,  \acot,
+%     \Tr,    \tr,    \rank,  \erf,   \Res,   \res,
+%     \PV,    \pv,    \upe,   \iu,    \identity
 %   }
 %    \begin{macrocode}
 \clist_map_inline:nn
@@ -2966,31 +2929,31 @@ $
   \DeclareRobustCommand\pv  {\mathop{\operator@font\@phx@oplega@pv{}}\nolimits}
   \DeclareRobustCommand\upe {\mathrm e}
   \DeclareRobustCommand\iu  {\mathrm i\mkern1mu}
-  \RequirePackage{dsfont}
-  \DeclareRobustCommand\Identity{\mathbb I}
-  \DeclareRobustCommand\identity{\mathds 1}
+  \DeclareRobustCommand\identity{\mathbb I}
 %    \end{macrocode}
 % \end{macro}
+% \begin{macro}[int]{\Re, \Im}
 % Restore \cs{Re} and \cs{Im} in \cs{Resymbol} and \cs{Imsymbol}.
 % The \cs{AtBeginDocument}
 % hook is used for the compatibility of \pkg{unicode-math}.
 %    \begin{macrocode}
 \ifx \phx@reserveda \phx@true
-  \AtBeginDocument
-    {
-      \let\Resymbol\Re
-      \let\Imsymbol\Im
-      \DeclareRobustCommand\Re{\mathop{\operator@font Re}\nolimits}%
-      \DeclareRobustCommand\Im{\mathop{\operator@font Im}\nolimits}%
-    }
-\fi
+\AtBeginDocument
+{
+  \let\Resymbol\Re
+  \let\Imsymbol\Im
+  \DeclareRobustCommand\Re{\mathop{\operator@font Re}\nolimits}%
+  \DeclareRobustCommand\Im{\mathop{\operator@font Im}\nolimits}%
+  }
+  \fi
 %    \end{macrocode}
+% \end{macro}
 % Requires \pkg{fixdif} version 2.$x$.
 %    \begin{macrocode}
 \RequirePackage{fixdif}[2023/01/31]
 \letdif\phx@nl@nabla{nabla}
 %    \end{macrocode}
-% \begin{macro}{\grad, \div, \curl, \laplacian}
+% \begin{macro}[int]{\grad, \div, \curl, \laplacian}
 %   $\nabla$-related operators.
 %    \begin{macrocode}
 \phx@requiremodule{ab}
@@ -3021,7 +2984,7 @@ $
 %    \begin{macrocode}
 \phx@requiremodule{ab}
 \phx@define@key{ab.legacy}{order}{\mathcal O}{\def\phx@ab@ordersym{#1}}
-\phx@setkeys{ab.legacy}{}{order}
+\phx@setkeys{ab.legacy}{order}
 \phx@processkeyopt{ab.legacy}
 \phx@d@l@geny\abs\vert\vert
 \phx@d@l@geny\norm\Vert\Vert
