@@ -1,0 +1,1 @@
+The new physics3 package released. This package provides a simple way for typesetting maths formulae

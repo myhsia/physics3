@@ -11,15 +11,14 @@
 
 module              = "physics3"
 version             = "v0.1A"
-date                = "2026-01-23"
+date                = "2026-01-26"
 maintainer          = "Mingyu Xia"
 uploader            = "Mingyu Xia"
 maintainid          = "myhsia"
 email               = "myhsia@outlook.com"
 repository          = "https://github.com/" .. maintainid .. "/" .. module
-announcement        = ""
 summary             = "Tools for typesetting math for physics."
-description         = ""
+description         = "The physics3 package defines commands for typesetting maths formulae faster and more simply."
 
 --[==========================================[--
           Build, Pack, Tag, and Upload
@@ -33,22 +32,22 @@ textfiles           = {"*.md", "LICENSE", "*.lua"}
 typesetexe          = "latexmk -xelatex -shell-escape"
 typesetruns         = 1
 uploadconfig  = {
-  pkg          = module,
-  version      = version .. " " .. date,
-  author       = maintainer,
-  uploader     = uploader,
-  email        = email,
-  summary      = summary,
-  description  = description,
-  license      = "lppl1.3c",  
-  ctanPath     = "/macros/latex/contrib/" .. module,
-  announcement = announcement,
-  home         = "https://github.com/" .. maintainid,
-  bugtracker   = repository .. "/issues",
-  support      = repository .. "/issues",
-  repository   = repository,
-  development  = "https://github.com/" .. maintainid,
-  update       = true
+  announcement_file = "announcement.md",
+  pkg               = module,
+  version           = version .. " " .. date,
+  author            = maintainer,
+  uploader          = uploader,
+  email             = email,
+  summary           = summary,
+  description       = description,
+  license           = "lppl1.3c",  
+  ctanPath          = "/macros/latex/contrib/" .. module,
+  home              = "https://github.com/" .. maintainid,
+  bugtracker        = repository .. "/issues",
+  support           = repository .. "/issues",
+  repository        = repository,
+  development       = "https://github.com/" .. maintainid,
+  update            = true
 }
 function update_tag(file, content, tagname, tagdate)
   tagname = version

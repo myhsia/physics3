@@ -25,12 +25,12 @@
 %                                   phx-ab.sty,                         *
 %                                   phx-ab.braket.sty,                  *
 %                                   phx-braket.sty,                     *
-%                                   phx-diagmat.sty,                    *
 %                                   phx-doubleprod.sty,                 *
+%                                   phx-diagmat.sty,                    *
 %                                   phx-xmat.sty,                       *
 %                                   phx-operator.sty,                   *
+%                                   phx-bm-um.sty,                      *
 %                                   phx-ab.legacy.sty,                  *
-%                                   phx-bm-um.legacy.sty,               *
 %                                   phx-qtext.legacy.sty,               *
 %           the documentation files physics3.pdf,                       *
 %                               and README.md.                          *
@@ -106,8 +106,8 @@ The Current Maintainer of this work is **Mingyu Xia**.
 \usepackage[warnings-off={mathtools-colon, mathtools-overbracket}]{unicode-math}
 \usepackage{physics3}
 \usephxmodu{ab, ab.braket, diagmat, doubleprod, operator}
-\usephxmodu[showtop = 1, showleft = 2]{xmat}
-\usephxmodu{ab.legacy, qtext.legacy, bm-um.legacy}
+\usephxmodu{xmat}
+\usephxmodu{ab.legacy, qtext.legacy, bm-um}
 \setcounter{tocdepth}{2}
 \ExplSyntaxOn \makeatletter
 \DeclareDocumentCommand \key { s m }
@@ -204,7 +204,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
 %   }}
 % }
 %
-% \date{Released 2026-01-23\quad \texttt{v0.1A}}
+% \date{Released 2026-01-26\quad \texttt{v0.1A}}
 %
 % \maketitle
 %
@@ -213,13 +213,16 @@ The Current Maintainer of this work is **Mingyu Xia**.
 % typesetting math formulae faster and more simply. \pkg{physics3} is a
 % modularized package, each module provides its own function.
 %
-% This document describes the \pkg{physics3} package in more detail.
-% But if you are a user of the legacy \pkg{physics} package, you can click
-% \href{./physics3-legacy.pdf}{here} to see the documentation for
-% \pkg{physics} users before you start. If you never used \pkg{physics} package
-% before, just read \emph{this} documentation.
+% If you are a user of the legacy \pkg{physics} package, you can click
+% \hyperref[sec:physics-legacy]{here} to see the section for \pkg{physics} users
+% before you start. If you never used \pkg{physics} package before, just read
+% \emph{this} documentation.
+% 
+% The upstream maintainer of the similar package is Tingxuan Zhang^^A
+% \footnote{\ttfamily\href{mailto:alphaztx@163.com}{alphaztx@163.com}}.
+% This package is based on his \pkg{physics2} package, then added some
+% high-level macros and optimized the packing workflow.
 % \end{abstract}
-% \label{doc:physics3-documentation}
 %
 % \tableofcontents
 % 
@@ -255,12 +258,9 @@ The Current Maintainer of this work is **Mingyu Xia**.
 % \pkg{physics3} doesn't provide a package option.
 %
 % \pkg{physics3} itself doesn't provide many features.
-% You need to load different modules of \pkg{physics3} to have different
-% features applied to your document.
-%
-% You can load a module of \pkg{physics3} only \emph{after} you write
-% "\usepackage{physics3}" in the preamble. Load a \pkg{physics3} module
-% like this
+% You need to load different modules of \pkg{physics3} by using the
+% \cs{usephxmodu} command only \emph{after} loading this package in the
+% preamble to have different features applied to your document.
 % \begin{function}{\usephxmodu}
 %   \begin{syntax}
 %     \cs{usephxmodu} \oarg{options} \marg{module}
@@ -276,8 +276,10 @@ The Current Maintainer of this work is **Mingyu Xia**.
 % list. These two lines load the \modu{ab} module with option
 % "tightbraces = true" and load \modu{ab.braket} and \modu{doubleprod} modules.
 %
-% The following sections introduce all the user-level modules of \pkg{physics3}.
-% View back to the table of contents to see the names of user-level modules.
+% The following section introduce all the user-level modules of \pkg{physics3}.
+% The modules have similar names like \meta{module}".legacy" are designed to
+% provide solutions to maintain documents written with the legacy \pkg{physics}
+% package. It's not suggested to use them in a new document.
 %
 % \section{Modules of \pkg{physics3}}
 %
@@ -670,8 +672,8 @@ $ A \doublecross B \doubledot C $
 % \end{keyval}
 % Their default values can be configured in module option. For example,
 % \begin{quote}
-% "\usephxmodu [crossscale  = .75, dotscale  = 1.2,"\\
-% "             crossopenup = .05, dotopenup = .25] {doubleprod}"
+% "\usephxmodu[crossscale  = .75, dotscale  = 1.2,"\\
+% "            crossopenup = .05, dotopenup = .25]{doubleprod}"
 % \end{quote}
 %
 % \subsection{The \modu{diagmat} module --- simple diagonal matrices}
@@ -681,9 +683,7 @@ $ A \doublecross B \doubledot C $
 % \begin{function}
 %   {\diagmat, \pdiagmat, \bdiagmat, \Bdiagmat, \vdiagmat, \Vdiagmat}
 % \begin{syntax}
-%   \cs{\meta{delimiter type}diagmat}\meta{*}
-%   "  "[align = \meta{l\textup\textbar{c}\textup\textbar{r}},^^A
-% empty = \meta{empty entry}] \marg{diag}
+%   \cs{\meta{delimiter type}diagmat}\meta{*} \oarg{options} \marg{diag}
 % \end{syntax}
 % where \meta{diag} is the diagonal of the diagonal matrix. The entries should
 % be separated by commas.
@@ -698,7 +698,7 @@ $ A \doublecross B \doubledot C $
 %   \item[\key{align}]\val{l\textup\textbar{c}\textup\textbar{r}}:
 %   Align of \cs{diagmat}'s diagonal entries (Default: "r").
 % \end{keyval}
-% Their default values can be configured in module option. For example,
+% Their default values can be configured in the module option like this:
 % \begin{quote}
 % "\usephxmodu[empty = \cdot, align = r]{diagmat}"
 % \end{quote}
@@ -718,118 +718,97 @@ $ \bdiagmat* {1, -1, -1, -1} $
 %
 % \subsection{The \modu{xmat} module --- matrices with formatted entries}
 %
-% \begin{function}{\xmat}
+% This module requires the \pkg{mathtools} package and provides six
+% \cs{*xmat} commands:
+% \begin{function}{\xmat, \pxmat, \bxmat, \Bxmat, \vxmat, \Vxmat}
 % \begin{syntax}
-%   \cs{xmat} \oarg{options} \marg{entry} \marg{rows shown} \marg{cols shown}
+%   \cs{\meta{delimeter type}xmat}\meta{*} \oarg{options} \marg{entry}^^A
+% \marg{rows shown} \marg{cols shown}
 % \end{syntax}
-% Command for matrices with formatted entries:
-% If \meta{rows shown} and \meta{cols shown} are digits, the value of them
-% must be less at least 2 than the value of \pkg{amsmath}'s "MaxMatrixCols"
-% counter.
-% \end{function}
+% Prefixes like "p", "b", "V" have the same meanings as "pmatrix", "bmatrix" and
+% "Vmatrix" in the \pkg{mathtools} package, a star ("*") follows the
+% \cs{*xmat} commands correspond to "*smallmatrix" in the
+% \pkg{mathtools} package.
 % For example,
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{3}
-$
-  \vxmat{a}{3}{4}
-$
+\begin{example}{2}
+$ \vxmat{a}{2}{3} $
 \end{example}
 % \iffalse
 %</example>
 % \fi
-% \cs{pxmat}, \cs{bxmat}, \cs{Bxmat}, \cs{vxmat} and \cs{Vxmat} are also
-% available. The meaning of "p" and so on is the same as the "p"
-% in "pmatrix" of \pkg{amsmath}.
-% \begin{keyval}
-%   \item[\key{showtop, showleft}]\val{int num} (Default: "MaxMatrixCols - 2").
-% \end{keyval}
-% If \meta{rows shown} and \meta{cols shown} contain non-digit characters,
+% If \meta{rows shown} or \meta{cols shown} contains non-digit characters,
 % extra dots will be added. For example,
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{3}
-$ \bxmat[showtop = 1, showleft = 2]
+\begin{example}{2}
+$ \bxmat*[showtop = 1, showleft = 2]
     {X}{m}{n} $
 \end{example}
 % \iffalse
 %</example>
 % \fi
-% In this example we used the "showleft" and "showtop" options.
-% You can also set them in the module option like this:
+% \begin{keyval}
+%   \item[\key{showtop, showleft}]\val{int num}: Numbers of rows and columns to
+%   be shown at the top and the left side (Default: "MaxMatrixCols - 2").
+% \end{keyval}
+% Their default values can be configured in the module option like this:
 % \begin{quote}
-%   "\usephxmodu[showtop = 3, showleft = 3]{xmat}"
+%   "\usephxmodu[showtop = 1, showleft = 2]{xmat}"
 % \end{quote}
-% Then every \cs{xmat} with non-digital \meta{rows shown} and \meta{cols shown}
-% will have 2 top-most rows and 3 left-most columns shown. This will also
-% influence ``\cs{xmat}''s with digital \meta{rows shown} and \meta{cols shown}
-% when \meta{rows shown} and \meta{cols shown} are larger than the values
-% corresponding to "showtop" and "showleft". For example,
+% This will also influence ``\cs{xmat}''s with digital \meta{rows shown} and
+% \meta{cols shown} they are larger than the values corresponding to "showtop"
+% and "showleft". For example,
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{3}
-%  \usephxmodu
-%    [showtop = 1, showleft = 2]{xmat}
-\[ \pxmat{A}{8}{8} \]
+\begin{example}{2}
+$ \pxmat*[showtop  = 1,
+          showleft = 2]{A}{8}{8} $
 \end{example}
 % \iffalse
 %</example>
 % \fi
-% However, when \meta{rows shown} and \meta{cols shown} are 1 greater than
-% \meta{showtop} and \meta{showleft}, for example, \meta{rows shown}$\:=4$ and
-% \meta{cols shown}$\:=4$ in last example's settings, \cs{xmat} will still add
-% the extra dots.
-% In such situations, we need to specify "showtop" and "showleft"
-% manually. For example,
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{4}
-% \usephxmodu
-%   [showtop = 1, showleft = 2]{xmat}
-$ \pxmat[showtop = 2, showleft = 3]
-    {A}{4}{4} $
-\end{example}
-% \iffalse
-%</example>
-% \fi
+% The "format" option allows users to use a new entry format.
 % \begin{keyval}
 %   \item[\key{format}]\val{custom entry format in terms of \#1, \#2, and \#3}:
 %   \begin{arguments}
 %     \item The common entry, or the first mandatory \meta{entry} argument
 %     of \cs{xmat};
+%     \par \vspace{-12pt}
+%     \begin{multicols}{2}
 %     \item The row index;
 %     \item The column index.
+%     \end{multicols}
+%     \par \vspace{-12pt}
 %   \end{arguments}
 % \end{keyval}
+% This option should be only used in the optional argument of \cs{xmat}.
 % For example,
 % \iffalse
 %<*example>
 % \fi
 \begin{example}{3}
-$ \xmat [ showtop = 2, showleft = 1,
+$ \Bxmat*[showtop = 2, showleft = 1,
           format = \texttt{#1[#2][#3]}]
     {x}{m}{n} $
 \end{example}
 % \iffalse
 %</example>
 % \fi
-% This module requires \pkg{mathtools}.
-% Only "showtop" and "showleft" can be used as module options.
-% "format" should be only used in the optional argument of \cs{xmat}.
+% \end{function}
 %
 % \subsection{The \modu{operator} module}
 %
 % This module provides a series of commands for log-like operators and some
-% commands related to nabla ($\nabla$)
+% commands for nabla-related operators ($\nabla$)
 % \begin{quote}
-%   "\asin      \acos     \atan     \acsc     \asec     \acot "\\
-%   "\rank      \erf      \Tr       \tr       \Res      \res  "\\
-%   "\PV        \pv       \upe      \iu       \Re       \Im   "\\
-%   "\identity  \grad     \curl     \div      \laplacian      "
+%   "\asin  \acos  \atan  \acsc  \asec  \acot  \rank  \erf"\\
+%   "\Tr    \tr    \Res   \res   \PV    \pv    \upe   \iu "\\
+%   "\Re    \Im    \identity     \grad  \curl  \div   \laplacian"
 % \end{quote}
 % \begin{itemize}[leftmargin = 0pt]
 %   \item The first two lines of commands yield what they look like in math mode
@@ -843,12 +822,12 @@ $ \xmat [ showtop = 2, showleft = 1,
 % \begin{keyval}
 %   \item[\key{ReIm}]\val{\TTF}: Determines whether to redefine \cs{Re}
 %   and \cs{Im}.
+%   If you want to reserve the definition of \cs{Re} and \cs{Im}, you can write
+%   like this:
+%   \begin{quote}
+%     "\usephxmodu[ReIm = false]{operator}"
+%   \end{quote}
 % \end{keyval}
-% If you want to reserve the definition of \cs{Re} and \cs{Im}, you can write
-% like this:
-% \begin{quote}
-%   "\usephxmodu[ReIm = false]{operator}"
-% \end{quote}
 % For example,
 % \iffalse
 %<*example>
@@ -861,7 +840,7 @@ $ \xmat [ showtop = 2, showleft = 1,
 % \usephxmodu{braket}
 $ \asin x  $, $ \PV f(z) = \pv f(z) $\\[1ex]
 $ \identity = \int \d^2 \alpha
-  \ketbra\alpha\alpha/\pi $\\[1ex]
+  \kbproj\alpha/\pi $\\[1ex]
 $ \Re z = \Im z = \upe^{\iu\pi} = -1$\\[1ex]
 $ \grad V$, $\div (x,y,z)$, $ \curl(x,y,z) $
 \end{example}
@@ -870,12 +849,27 @@ $ \grad V$, $\div (x,y,z)$, $ \curl(x,y,z) $
 %</example>
 % \fi
 % This module requires the \pkg{fixdif} package with file date "2023/01/31"
-% at minimum, and \emph{does not} require \pkg{amsmath}.
+% at minimum.
 %
-% The legacy modules have similar names like \meta{module}".legacy". Most of
-% them are designed to provide solutions to maintain documents written with the
-% legacy \pkg{physics} package. It's not suggested to use them in a new
-% document.
+% \subsection{The \modu{bm-um} module}
+%
+% Similarly to the \pkg{bm} package, this module also provides a
+% \cs[no-index]{bm} command, but can take \emph{a series of} math characters as
+% its argument, which works for the \pkg{unicode-math} package.
+%
+% The Latin letters or Greek letters in the argument will be switched to the
+% bold italic glyphs corresponding to them (if there exists bold italic
+% glyphs); else \cs[no-index]{bm} would switch to the bold upright glyphs.
+% For example,
+% \iffalse
+%<*example>
+% \fi
+\begin{example}{1}
+$ \bm {0 A z \alpha \Omega} $
+\end{example}
+% \iffalse
+%</example>
+% \fi
 %
 % \subsection{The \modu{ab.legacy} module}
 %
@@ -891,11 +885,9 @@ $ \grad V$, $\div (x,y,z)$, $ \curl(x,y,z) $
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{4}
+\begin{example}{2}
 \def\0{1+\frac12}
-$ \abs      {\0} $\quad
-$ \norm[Big]{\0} $\quad
-$ \order*   {\0} $
+$ \abs\0 $, $ \norm[Big]\0 $, $ \order*\0 $
 \end{example}
 % \iffalse
 %</example>
@@ -904,9 +896,9 @@ $ \order*   {\0} $
 %<*example>
 % \fi
 \begin{example}{4}
-\def\0{1+\frac12x}
-$ \eval      {\0}_a^b $\quad
-$ \peval*    {\0}_a^b $\quad
+\def\0{1+\frac x2}
+$ \eval      {\0}_a^b $,
+$ \peval*    {\0}_a^b $,
 $ \beval[big]{\0}_a^b $
 \end{example}
 % \iffalse
@@ -917,45 +909,35 @@ $ \beval[big]{\0}_a^b $
 % \begin{quote}
 %   "\usephxmodu[order = O]{ab.legacy}"
 % \end{quote}
-% For further information of this module,
-% see~\hyperref[doc:physics-legacy]^^A
-%   {\pkg{physics3} manual for the legacy \pkg{physics} users}.
+% Then "$\order{N}$" yields $O(N)$.
 %
-% \subsection{The \modu{bm-um.legacy} module}
-% If you are maintaining a document with plenty of ``\cs[no-index]{bm}''s or
-% ``\cs[no-index]{boldsymbol}''s in it but want to use \pkg{unicode-math}
-% package simultaneously, you could take a look at this module.
+% \subsection{The \modu{qtext.legacy} module}
 %
-% The \cs[no-index]{bm} command from \pkg{bm} package uses
-% \cs[no-index]{mathversion} to support its function, but there are few
-% OpenType math fonts who released with a bold version. The \modu{bm-um.legacy}
-% module provides a \cs[no-index]{bm} command too, but this \cs[no-index]{bm}
-% can only take \emph{one} math character or a series of math characters
-% sharing the same category code as its argument.
-% If the argument was Latin letters or Greek letters, \cs[no-index]{bm} would
-% switch to the bold italic glyphs corresponding to them (if there exists bold
-% italic glyphs); else \cs[no-index]{bm} would switch to the bold upright
-% glyphs. For example,
+% The \modu{qtext.legacy} module provides the \cs{q}\meta{foo} commands
+% for \cs{quad}-wrapped texts. These commands have the same syntax as
+% \pkg{physics}. For example,
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{2}
-$ \bm {0 A z \alpha \Omega}   $\\[1ex]
-$ \bm0 \bm A\bm z \bm\alpha\bm\Omega $
+\begin{example}{5}
+% \usephxmodu{qtext.legacy}
+$ A \qq {foo bar} B $\\[1ex]
+$ A \qq*{foo bar} B $\\[1ex]
+$ C \qcc D \qcc*  E $\\[1ex]
+$ F \qif G \qthen H $
 \end{example}
 % \iffalse
 %</example>
 % \fi
-%
-% \subsection{The \modu{qtext.legacy} module}
-% This module was written just to offer a method to maintain documents written
-% with the legacy \pkg{physics} package. See \S\ref{subsec:qtext} for
-% more information.
-% \end{documentation}
+% All the commands described in \S2.4 of
+% \href{http://mirrors.ctan.org/macros/latex/contrib/physics/physics.pdf}^^A
+%   {\textsf{physics} documentation} are supported when using
+% \modu{qtext.legacy} module, but I don't recommend using this module unless
+% you are maintaining a document written with \pkg{physics}'s \cs{q}\meta{foo}
+% commands.
 % \clearpage
-% \begin{documentation}
 %
-% \section{For the legacy \pkg{physics} users}\label{doc:physics-legacy}
+% \section{For the legacy \pkg{physics} users}\label{sec:physics-legacy}
 %
 % This section describes \pkg{physics3} package for those who are
 % used to the \pkg{physics} package, which is only a simple reference
@@ -1039,95 +1021,13 @@ $ \bm0 \bm A\bm z \bm\alpha\bm\Omega $
 % \pardanger Attention, if you used any font package in your document, remember
 % that \pkg{physics3} requires to be loaded \emph{after} font packages.
 %
-% \section{List of commands}
+% \subsection{List of commands}
 %
-% \subsection{Automatic bracing}\label{subsec:ab-and-legacy}
+% \subsubsection{Automatic bracing}
 % As mentioned in \S\ref{subsec:physics-legacy-problems}, the \cs{qty} command
-% from \pkg{physics} would cause conflicts with \pkg{siunitx}. The command for
-% automatic braces in \pkg{physics3} is \cs{ab}, a shorthand for
-% {\bfseries a}utomatic {\bfseries b}races.
-%
-% \DescribeMacro{\ab}
-% The \cs{ab} command requires the \modu{ab} module, so don't forget to write
-% "\usephxmodu{ab}" in the preamble after you loaded \pkg{physics3}.
-% Always remember, \emph{do not put an \cs{ab} separately in the end of a math
-% formula}. Take some examples:
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{3}
-$ \ab ( \frac12 )  $ \quad
-$ \ab [ \frac12 ]  $ \quad
-$ \ab\{ \frac12 \} $
-\end{example}
-% \iffalse
-%</example>
-% \fi
-% \cs{ab} can modify a delimiter-braced subformula. But the delimiters should
-% not be out of the range described by the following chart:
-% \begin{quote}
-% " (,    ) "\qquad        \qquad"[,   ]"\\
-% "\{,    \}"\makebox[4em][c]{or}"\lbrace,   \rbrace"\\
-% "\<,    \>"\makebox[4em][c]{or}"\langle,   \rangle"\\
-% " |,    | "\makebox[4em][c]{or}"\verb,     \vert"\\
-% "\|,    \|"\makebox[4em][c]{or}"\Verb,     \Vert"
-% \end{quote}
-% For example, "$\ab{foo}$" and "$\ab(foo]$" are illegal, but
-% "$\ab\{foo\}$" and "$\ab(foo)$" are okay; "$\ab([)$" is okay but
-% "$\ab(()$" is illegal.
-%
-% \pardanger Attention, if you want to delimit a subformula with ``\{'' and
-% ``\}'', you can only write "\{", "\}" or \cs{lbrace}, \cs{rbrace}
-% around it. "{" and "}" are not supported in \modu{ab} module.
-%
-% Between \cs{ab} and the first delimiter can be a ``biggg'' command, that is,
-% from \cs{big} to \cs{Bigg}. Actually, you can also write \cs{biggg} and
-% \cs{Biggg} because \pkg{physics3} defines these after you load it. For
-% example,
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{3}
-$ \ab\Big \| \frac12 \| $\quad
-$ \ab\Bigg < \frac12 >  $\quad
-$ \ab\Biggg| \frac12 |  $
-\end{example}
-% \iffalse
-%</example>
-% \fi
-% Between \cs{ab} and the first delimiter can also be a star ("*"), which
-% means ``use the default size of delimiters''. But in this situation, you
-% needn't use the \cs{ab} command at all.
-%
-% The \pkg{physics} package provides commands like \cs{pqty}, \cs{bqty}. In
-% the \modu{ab} module of \pkg{physics3}, these commands have changed to
-% \cs{pab}, \cs{bab}, etc. The following example shows all the
-% \cs{\meta{delimiter type}ab} commands in \modu{ab} module:
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{5}
-\def\0{\frac12}
-$ \pab{\0} $\quad $ \bab{\0} $%
-            \quad $ \Bab{\0} $\\[1ex]
-$ \aab{\0} $\quad $ \vab{\0} $%
-            \quad $ \Vab{\0} $
-\end{example}
-% \iffalse
-%</example>
-% \fi
-% \cs{\meta{delimiter type}ab} can take an optional star and an optional
-% \oarg{biggg} argument. For example,
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{2}
-\def\0{\frac12}
-$ \pab[Big]{\0} \quad \bab*{\0} $
-\end{example}
-% \iffalse
-%</example>
-% \fi
+% from \pkg{physics} will conflict with \pkg{siunitx}. The command for
+% automatic braces in \pkg{physics3} is \cs{ab}, short for \textbf automatic
+% \textbf braces.
 %
 % \pkg{physics} also provides the following commands:
 % \begin{quote}
@@ -1142,35 +1042,12 @@ $ \pab[Big]{\0} \quad \bab*{\0} $
 % \begin{quote}
 % "\usephxmodu{ab.legacy}"
 % \end{quote}
-% For example,
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{3}
-\def\0{\frac12}
-$ \abs\0 $\quad $ \abs[big]\0 $%
-          \quad $ \abs*\0 $
-\end{example}
-% \iffalse
-%</example>
-% \fi
 % Users of the legacy \pkg{physics} package should notice that the syntax of
 % \cs{eval} has been changed. The \modu{ab.legacy} module abandoned the
 % "\eval(foo|"-like syntax. The new \cs{eval}'s syntax is just like other
 % commands in this module. There are also two variants of \cs{eval} ---
-% \cs{peval} and \cs{beval}. For example,
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{4}
-\def\0{1+\frac12x}
-$ \eval{\0}_a^b   $\quad
-$ \peval*{\0}_a^b $\quad
-$ \beval[big]{\0}_a^b $
-\end{example}
-% \iffalse
-%</example>
-% \fi
+% \cs{peval} and \cs{beval}.
+%
 % The \cs{comm}, \cs{acomm} and \cs{pb} (Poisson bracket) are not supported.
 % But you can write like "\ab[foo,baz]" or "\bab{foo,baz}" instead.
 %
@@ -1181,7 +1058,7 @@ $ \beval[big]{\0}_a^b $
 % \end{quote}
 % Then "$\order(N)$" yields $O(N)$.
 %
-% \subsection{Vector notation}
+% \subsubsection{Vector notation}
 %
 % Unfortunately, there is not a plan for \pkg{physics3} to support this part
 % of \pkg{physics} completely, but the rest of this section will show some
@@ -1220,21 +1097,8 @@ $ \beval[big]{\0}_a^b $
 % module. These commands are \cs{grad}, \cs{div} and \cs{curl}. These commands
 % should not be put in the end of a math formula either (just like \cs{ab}).
 % Notice that the former \cs{div} command for a ``$\divsymbol$'' (if there
-% exists one) is redefined as \cs{divsymbol}. For example,
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{6}
-% \usephxmodu{operator}
-$ \grad F            $\quad
-$ \grad(\frac G2)    $\\[1ex]
-$ \div\Bigg[X]       $\quad
-$ \curl*\{\frac Y2\} $\quad
-$ 2 \divsymbol 1 $
-\end{example}
-% \iffalse
-%</example>
-% \fi
+% exists one) is redefined as \cs{divsymbol}.
+%
 % Actually, the nabla-related commands end with \cs{ab}. Thus, the subformula
 % after these commands can be delimited with "()", "[]" and "\{\}".
 %
@@ -1242,12 +1106,12 @@ $ 2 \divsymbol 1 $
 % version 2.0 (file date on or after 2023/01/31).
 %
 % By the way, if you are used to writing \cs{bm} for a vector but interested in
-% \pkg{unicode-math}, the \modu{bm-um.legacy} module would be a passable
+% \pkg{unicode-math}, the \modu{bm-um} module would be a passable
 % alternative to \pkg{bm} package. Notice that the \cs{bm} command from the
-% \modu{bm-um.legacy} module can only take \emph{one} letter (or \emph{one}
+% \modu{bm-um} module can only take \emph{one} letter (or \emph{one}
 % digit) as its argument.
 %
-% \subsection{Operators}
+% \subsubsection{Operators}
 %
 % There's no plan for \pkg{physics3} to support this part of \pkg{physics}
 % completely. The syntax in this part of \pkg{physics} (such as "\tan[2](x)")
@@ -1261,50 +1125,23 @@ $ 2 \divsymbol 1 $
 % log-like functions.
 %
 % The \pkg{physics} package provides a bundle of commands for log-like functions
-% that have not been defined in the \LaTeXe\ kernel. Those log-like functions
-% can be used with the \modu{operator} module; this module does not support
-% the syntax of \pkg{physics} either. For example:
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{2}
-% \usephxmodu{operator}
-$ \asin^2 x $\quad $ \rank \{ A \} $
-\end{example}
-% \iffalse
-%</example>
-% \fi
+% that have not been defined in the \LaTeXe\ kernel. They can be used with the
+% \modu{operator} module; this module does not support the syntax
+% of \pkg{physics} either.
+%
 % The \cs{Re} and \cs{Im} commands are redefined as operators ``$\Re$'' and
 % ``$\Im$'', while $\Resymbol$ and $\Imsymbol$ are reserved as \cs{Resymbol} and
 % \cs{Imsymbol}. $\Resymbol$ and $\Imsymbol$ are ordinary symbols but $\Re$ and
 % $\Im$ are operators.
 %
-% \subsection{Quick quad text}\label{subsec:qtext}
+% \subsubsection{Quick quad text}
 %
-% The \modu{qtext.legacy} module provides the \cs{q}\meta{foo} commands
-% for \cs{quad}-wrapped texts. These commands have the same syntax as
-% \pkg{physics}. For example,
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{5}
-% \usephxmodu{qtext.legacy}
-$ A \qq {foo bar} B $\\[1ex]
-$ A \qq*{foo bar} B $\\[1ex]
-$ C \qcc D \qcc*  E $\\[1ex]
-$ F \qif G \qthen H $
-\end{example}
-% \iffalse
-%</example>
-% \fi
 % All the commands described in \S2.4 of
 % \href{http://mirrors.ctan.org/macros/latex/contrib/physics/physics.pdf}^^A
 %   {\textsf{physics} documentation} are supported when using
-% \modu{qtext.legacy} module, but I don't recommend using this module unless
-% you are maintaining a document written with \pkg{physics}'s \cs{q}\meta{foo}
-% commands.
+% \modu{qtext.legacy} module. Click here to see the \modu{qtext.legacy} module.
 %
-% \subsection{Derivatives}
+% \subsubsection{Derivatives}
 %
 % There is no plan for \pkg{physics3} to support this part of \pkg{physics}. If
 % you want to typeset the differential operators on a better sense, you can try
@@ -1324,12 +1161,12 @@ Math ($\d x$) v.s.\ Text (\d x)
 % \fi
 % Here are the documentations of
 % \href{http://mirrors.ctan.org/macros/latex/contrib/fixdif/fixdif.pdf}
-%   {\textsf{fixdif}} and
+%   {\pkg{fixdif}} and
 % \href{http://mirrors.ctan.org/macros/latex/contrib/derivative/derivative.pdf}
-%   {\textsf{derivative}}.
+%   {\pkg{derivative}}.
 % \pkg{fixdif}'s commands behave better in superscripts and subscripts.
 %
-% \subsection{Dirac bra-ket notation}
+% \subsubsection{Dirac bra-ket notation}
 %
 % There are two solutions to Dirac bra-ket in \pkg{physics3} ---
 % \modu{ab.braket} and \modu{braket}. These two modules are \emph{not}
@@ -1338,199 +1175,7 @@ Math ($\d x$) v.s.\ Text (\d x)
 % \modu{ab.braket} module and \hyperlink{para:braket}{\textcolor{cyan}{here}}
 % to see the \modu{braket} module.
 %
-% \paragraph{The \modu{ab.braket} module}
-%
-% \hypertarget{para:ab.braket}{This} module provides four commands --- \cs{bra},
-% \cs{ket}, \cs{braket} and \cs{ketbra}. After these commands can be a star
-% ("*") or a ``biggg'' command. These commands share similar syntaxes like
-% \cs{ab}'s syntax. But, \emph{the bra-ket commands from \modu{ab.braket}
-% module are completely different from \cs{ab}}. Their internal structures are
-% different.
-%
-% \DescribeMacro{\bra}
-% The argument of \cs{bra} should be delimited with "<" and "|",
-% that is,
-% \begin{quote}
-% \cs{bra} "<" \meta{subformula} "|"
-% \end{quote}
-% For example,
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{3}
-$ \bra    < \frac \phi 2 | $\quad
-$ \bra*   < \frac \phi 2 | $\quad
-$ \bra\Big< \phi         | $
-\end{example}
-% \iffalse
-%</example>
-% \fi
-% \DescribeMacro{\ket}
-% The argument of \cs{ket} should be delimited with "|" and ">",
-% that is,
-% \begin{quote}
-% \cs{ket} "|" \meta{subformula} ">"
-% \end{quote}
-% For example,
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{3}
-$ \ket    | \frac \psi 2 > $\quad
-$ \ket*   | \frac \psi 2 > $\quad
-$ \ket\Big| \psi         > $
-\end{example}
-% \iffalse
-%</example>
-% \fi
-% \pardanger
-% If you want to write ``$>$'' and ``$<$'' for relations in the argument of
-% \cs{bra} and \cs{ket}, you can write "\mathrel{>}| and \verb|\mathrel{<}"
-% (although there is almost no such need).
-% \DescribeMacro{\braket}
-% The argument of \cs{braket} should be delimited with "<" and ">",
-% that is,
-% \begin{quote}
-% \cs{braket} "<" \meta{subformula} ">"
-% \end{quote}
-% In the \meta{subformula} argument, every ``"|"'' will be regarded as an
-% extensible vertical bar. For example,
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{5}
-\def\0{\frac\phi2|\psi}
-$ \braket<A> $\quad $ \braket<m|n> $
-\quad $ \braket<m|A|n> $\\[1ex]
-$ \braket<\0> $\quad $\braket*<\0> $
-\quad $ \braket\Bigg<\0> $
-\end{example}
-% \iffalse
-%</example>
-% \fi
-% \DescribeMacro{\ketbra}
-% The argument of \cs{ketbra} should be delimited with "|" and "|".
-% In the argument, ">" and "<" will be regarded as extensible $\rangle$
-% and $\langle$. That is,
-% \begin{quote}
-% \cs{ketbra} "|" \meta{subformula$_1$} ">" \meta{optional}
-%   "<" \meta{subformula$_2$} "|"
-% \end{quote}
-% For example,
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{5}
-\def\0{\frac\phi2}
-$ \ketbra     | \0 >< \psi | $\quad
-$ \ketbra*    | \0 >< \psi | $\\[1ex]
-$ \ketbra\Bigg| \0 >< \psi | $\quad
-$ \ketbra| \0 >_x^y < \psi | $
-\end{example}
-% \iffalse
-%</example>
-% \fi
-% \pardanger
-% If you want to write ``$>$'' and ``$<$'' for relations in the argument of
-% \cs{braket} and \cs{ketbra}, you can write \cs{>} and \cs{<} (although there
-% is almost no such need). It is quite different from "\mathrel{>}" or
-% "\mathrel{<}" because in these commands' argument, ">" and "<"
-% will be redefined.
-%
-% \paragraph{The \modu{braket} module}
-%
-% \iffalse
-%<*example>
-% \fi
-\begingroup
-\makeatletter\def\phx@requiremodule#1{}%
-\def\PackageWarning#1#2{}%
-\catcode`\%14\relax \input phx-braket.sty \catcode`\%9\relax \makeatother
-% \iffalse
-%</example>
-% \fi
-%
-% \hypertarget{para:braket}{This} module contains four commands --- \cs{bra},
-% \cs{ket}, \cs{braket} and \cs{ketbra}. After these commands can be a star
-% ("*") or a square-bracket-delimited size option, the size option can
-% take the following values:
-% \begin{quote}
-% "big",\quad "Big",\quad "bigg",\quad "Bigg",\quad
-% "biggg",\quad or\quad"Biggg".
-% \end{quote}
-% Star stands for ``do not size the bra-ket automatically''.
-%
-% The argument(s) of these four commands are braced with "{" and "}".
-% \cs{bra} and \cs{ket} take one mandatory argument. For example,
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{5}
-\def\0{\frac\phi2}
-$ \bra {\0} $\quad $ \bra* {\0}     $%
-             \quad $ \bra[Big] {\0} $\\[1ex]
-$ \ket {\0} $\quad $ \ket* {\0}     $%
-             \quad $ \ket[Big] {\0} $
-\end{example}
-% \iffalse
-%</example>
-% \fi
-% The \cs{braket} command, in default, can take two arguments.
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{4}
-\def\0{\frac\phi2}
-$ \braket      {\0} {\psi} $\quad
-$ \braket*     {\0} {\psi} $\quad
-$ \braket[big] {\0} {\psi} $
-\end{example}
-% \iffalse
-%</example>
-% \fi
-% If you want \cs{braket} to take one or three arguments, you can write the
-% number of arguments in the square bracket. If you need to specify the size
-% of bra-ket simultaneously, you need to separate the number and the size with
-% a comma:
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{6}
-\def\0{\frac\phi2}
-$ \braket [1]    {\0}          $\quad
-$ \braket*[1]    {\0}          $\quad
-$ \braket [3]    {\0}{A}{\psi} $\\[1ex]
-$ \braket[3,big] {\0}{A}{\psi} $\quad
-$ \braket[Big,3] {\0}{A}{\psi} $
-\end{example}
-% \iffalse
-%</example>
-% \fi
-% The \cs{ketbra} command takes two mandatory arguments. It can also take an
-% optional argument between the two mandatory arguments. The optional argument
-% will be placed between $\rangle$ and $\langle$:
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{5}
-\def\0{\frac\phi2}
-$ \ketbra        {\0} {\psi} $\quad
-$ \ketbra*       {\0} {\psi} $\\[1ex]
-$ \ketbra [bigg] {\0} {\psi} $\quad
-$ \ketbra [Big]  {\0} [_x^y] {\psi} $
-\end{example}
-% \iffalse
-%</example>
-% \fi
-% \iffalse
-%<*example>
-% \fi
-\endgroup
-% \iffalse
-%</example>
-% \fi
-%
-% \subsection{Matrix macros}
+% \subsubsection{Matrix macros}
 %
 % Unfortunately, \pkg{physics3} do not support the \cs{mqty} command from
 % \pkg{physics}. If you are used to this command, you can write like this:
@@ -1542,56 +1187,19 @@ $ \ketbra [Big]  {\0} [_x^y] {\psi} $
 % These are equal to physics's "\mqty(foo)" (require \pkg{amsmath}).
 %
 % \pkg{physics3}'s \modu{diagmat} module provides \cs{diagmat} command
-% for diagonal matrices. For example,
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{3}
-$ \diagmat { 1, 2, 3 } $\quad
-$ \pdiagmat [ empty = 0, align = r ]
-    { 1, \sqrt2, \sqrt[3]4 } $
-\end{example}
-% \iffalse
-%</example>
-% \fi
+% for diagonal matrices.
 % \cs{pdiagmat}, \cs{bdiagmat}, \cs{Bdiagmat}, \cs{vdiagmat} and \cs{Vdiagmat}
 % are also available.
 %
 % \pkg{physics3}'s \modu{xmat} module provides \cs{xmat} command
-% for matrices with formatted entries. For example,
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{3}
-$
-  \vxmat{a}{3}{4}
-$
-\end{example}
-\begin{example}{3}
-% \usephxmodu
-%   [showleft = 2, showtop = 1]{xmat}
-$ \pxmat{X}{m}{n} $
-\end{example}
-\begin{example}{5}
-$
-  \xmat [showleft = 1, showtop = 2,
-         format = \texttt{#1[#2][#3]}]
-    {x}{m}{n}
-$
-\end{example}
-% \iffalse
-%</example>
-% \fi
+% for matrices with formatted entries.
 % \cs{pxmat}, \cs{bxmat}, \cs{Bxmat}, \cs{vxmat} and \cs{Vxmat} are
 % also available.
 % \end{documentation}
 % \clearpage
 % \begin{implementation}
-%
 % \section{Code Implementation}
-%
 % \subsection{The \pkg{physics3} package}
-%
 %    \begin{macrocode}
 %<*package>
 %    \end{macrocode}
@@ -1603,12 +1211,10 @@ $
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \def \phx@date    {2026-01-23}
 \def \phx@version {v0.1A}
-\ProvidesExplPackage {physics3} {2026-01-23} {v0.1A}
+\ProvidesExplPackage {physics3} {2026-01-26} {v0.1A}
   {Tools for typesetting math for physics.}
 %    \end{macrocode}
-%
 % \subsubsection{Common variables}
-%
 % \begin{variable}{\l_@@_tmpa_box}
 %   \begin{quote}
 %     \cs{phx@temp}\meta{register type}\meta{a or b}
@@ -1619,9 +1225,7 @@ $
 \box_new:N \l_@@_tmpa_box
 %    \end{macrocode}
 % \end{variable}
-%
 % \subsubsection{Package requirements and module-loading methods}
-%
 % \pkg{physics3} requires \pkg{keyval} (part of the graphics bundle) to
 % process options of modules.
 %    \begin{macrocode}
@@ -1693,9 +1297,7 @@ $
 \@onlypreamble\phx@FW@pti@ns
 %    \end{macrocode}
 % \end{macro}
-%
 % \subsubsection{The (used to be) \modu{common} module}
-%
 % The code below used to be the automatically-loaded \modu{common} module,
 % but now we load it together with \pkg{physics3}'s code. This change may
 % bring better performance in Windows system.
@@ -1791,9 +1393,7 @@ $
 \cs_set_eq:NN \phx@mathvphantom \@@_mathvphantom:n
 %    \end{macrocode}
 % \end{macro}
-%
 % \subsubsection{The (used to be) \modu{explsetup} module}
-%
 % \begin{variable}{\l_@@_tmpa_tl, \l_@@_tmpb_tl}
 % Some common variables and functions for experimental \LaTeX3 syntax.
 %    \begin{macrocode}
@@ -1815,9 +1415,7 @@ $
 %    \begin{macrocode}
 %<@@=>
 %    \end{macrocode}
-%
 % \subsection{The \modu{ab} module}
-%
 % \begingroup\color{gray}%
 % \noindent$\langle*\hbox{\sffamily gibberish}\rangle$\par
 % This module is important but the code is hard to read. One of the motivations
@@ -1841,7 +1439,6 @@ $
 \phx@setkeys{ab}{tightbraces=true}
 \phx@processkeyopt{ab}
 %    \end{macrocode}
-%
 % \begin{macro}[int]{\phx@abopen, \phx@abclose}
 %   \begin{quote}
 %     \cs{phx@abopen} \meta{left delimiter}\\
@@ -1860,7 +1457,6 @@ $
 \fi
 %    \end{macrocode}
 % \end{macro}
-%
 % \subsubsection{The implementation of \cs{ab}}
 % This is the alienest part of \modu{ab}. It's better to draw something rather
 % than write boring comments. First let's take a look at \cs{ab}'s syntax.
@@ -1956,7 +1552,6 @@ $
 % If \meta{branch name} is \texttt{mb}, \marg{arg spec} should be "mr()",
 % where "m" is for biggg or star;
 % If \meta{branch name} is \texttt{ab}, \marg{arg spec} should be "r()".
-%
 % \begin{texnote}
 % The ``"("'' in the example above must not be replaced by a subformula braced
 % by a pair of "{}".
@@ -2086,7 +1681,6 @@ $
 % \end{macro}
 % \subsubsection{\cs{pab}-like commands}
 % This is so simple. No need to comment a lot.
-%
 % \begin{macro}[int]{\phx@d@l@geny}
 %   \begin{quote}
 %     \cs{phx@d@l@geny} \meta{command} \meta{left delimiter} \meta{right delimiter}
@@ -2126,9 +1720,7 @@ $
 %</ab>
 %    \end{macrocode}
 % \end{macro}
-%
 % \subsection{The \modu{ab.braket} module}
-%
 %    \begin{macrocode}
 %<*ab.braket>
 \ProvidesFile {phx-ab.braket.sty}
@@ -2567,9 +2159,7 @@ $
 %    \begin{macrocode}
 %<@@=phx>
 %    \end{macrocode}
-%
 % \subsection{The \modu{doubleprod} module}
-%
 %    \begin{macrocode}
 %<*doubleprod>
 \ProvidesExplFile {phx-doubleprod.sty} {\phx@date} {\phx@version}
@@ -2604,9 +2194,7 @@ $
 %    \begin{macrocode}
 %</doubleprod>
 %    \end{macrocode}
-%
 % \subsection{The \modu{diagmat} module}
-%
 %    \begin{macrocode}
 %<*diagmat>
 \ProvidesExplFile {phx-diagmat.sty} {\phx@date} {\phx@version}
@@ -2620,7 +2208,8 @@ $
 % on \href{https://tex.stackexchange.com/a/758530/299948}^^A
 %   {\TeX\ \textsf{Stack\textbf{Exchange}}}).
 %    \begin{macrocode}
-\patchcmd \MT_matrix_begin:N { \array } { \exp_args:Ne \array } {}{}
+\patchcmd \MT_matrix_begin:N { \exp_args:Ne \array } { \exp_args:Ne \array } {}
+  { \patchcmd \MT_matrix_begin:N { \array } { \exp_args:Ne \array } {} {} }
 %    \end{macrocode}
 %    \begin{macrocode}
 \@@_define_key:nnnn { diagmat } { empty } {   }
@@ -2658,8 +2247,7 @@ $
 %     \cs{\meta{delimiter type}diagmat} \oarg{key-val list} \marg{diagonal}
 %   \end{quote}
 %    \begin{macrocode}
-\clist_map_inline:nn
-  { {}, p, b, B, v, V }
+\clist_map_inline:nn { {}, p, b, B, v, V }
   {
     \exp_args:Nc \DeclareDocumentCommand { #1diagmat } { s O{} m }
       {
@@ -2738,7 +2326,19 @@ $
 %<*xmat>
 \ProvidesExplFile {phx-xmat.sty} {\phx@date} {\phx@version}
   {`xmat' module of physics3}
-\RequirePackage { mathtools }
+%    \end{macrocode}
+% This module requires \pkg{mathtools} and \pkg{xpatch}.
+%    \begin{macrocode}
+\RequirePackage { mathtools, etoolbox }
+%    \end{macrocode}
+% Do expansion of column specification argument (thanks @egreg
+% on \href{https://tex.stackexchange.com/a/758530/299948}^^A
+%   {\TeX\ \textsf{Stack\textbf{Exchange}}}).
+%    \begin{macrocode}
+\patchcmd \MT_matrix_begin:N { \exp_args:Ne \array } { \exp_args:Ne \array } {}
+  { \patchcmd \MT_matrix_begin:N { \array } { \exp_args:Ne \array } {} {} }
+%    \end{macrocode}
+%    \begin{macrocode}
 \@@_define_key:nnnn { xmat } { showtop } { }
   { \int_gset:Nn \l_@@_xmat_showtop_int { #1 } }
 \@@_define_key:nnnn { xmat } { showleft } { }
@@ -2771,18 +2371,15 @@ $
     #1 \c_math_subscript_token { #2 #3 }
   }
 \@@_processkeyopt:n { xmat }
-\DeclareDocumentCommand \xmat { O{} m m m }
- { \_@@_xmat_type:nnnnn { } { #1 } { #2 } { #3 } { #4 } }
-\DeclareDocumentCommand \pxmat { O{} m m m }
- { \_@@_xmat_type:nnnnn { p } { #1 } { #2 } { #3 } { #4 } }
-\DeclareDocumentCommand \bxmat { O{} m m m }
- { \_@@_xmat_type:nnnnn { b } { #1 } { #2 } { #3 } { #4 } }
-\DeclareDocumentCommand \Bxmat { O{} m m m }
- { \_@@_xmat_type:nnnnn { B } { #1 } { #2 } { #3 } { #4 } }
-\DeclareDocumentCommand \vxmat { O{} m m m }
- { \_@@_xmat_type:nnnnn { v } { #1 } { #2 } { #3 } { #4 } }
-\DeclareDocumentCommand \Vxmat { O{} m m m }
- { \_@@_xmat_type:nnnnn { V } { #1 } { #2 } { #3 } { #4 } }
+\clist_map_inline:nn { {}, p, b, B, v, V }
+  {
+    \exp_args:Nc \DeclareDocumentCommand { #1xmat } { s O{} m m m }
+      {
+        \IfBooleanTF { ##1 }
+          { \_@@_xmat_type:nnnnn { #1small } { ##2 } { ##3 } { ##4 } { ##5 } }
+          { \_@@_xmat_type:nnnnn { #1      } { ##2 } { ##3 } { ##4 } { ##5 } }
+      }
+  }
 \keys_define:nn { phx / xmat }
   {
     format  .cs_set:Np = \_@@_xmat_entry_format:nnn #1#2#3 ,
@@ -2899,8 +2496,6 @@ $
 %    \begin{macrocode}
 %</xmat>
 %    \end{macrocode}
-% This part ends here.
-%
 % \subsection{The \modu{operator} module}
 %    \begin{macrocode}
 %<*operator>
@@ -2973,7 +2568,48 @@ $
 %    \begin{macrocode}
 %</operator>
 %    \end{macrocode}
-%
+% \subsection{The \modu{bm-um} module}
+%    \begin{macrocode}
+%<*bm-um>
+\ProvidesExplFile {phx-bm-um.sty} {\phx@date} {\phx@version}
+  {`bm-um' module of physics3}
+\AtBeginDocument
+  {
+    \cs_if_exist:cF { symbf }
+      {
+        \PackageError { physics3 }
+          {
+            The ~ `bm-um' ~ module ~ requires ~
+            `unicode-math' ~ package
+          }
+          {
+            Have ~ you ~ used ~ `unicode-math' ~
+            in ~ the ~ preamble?
+          }
+      }
+  }
+\DeclareDocumentCommand \bm { m }
+  {
+    \mode_if_math:TF
+      {
+        \tl_map_inline:nn { #1 }
+          {
+            \tl_if_head_eq_catcode:nNTF { ##1 } A
+              { \symbfit { ##1 } } { \symbf { ##1 } }
+          }
+      }
+      {
+        \msg_error:nn { physics3 }
+          { The ~ \string\bm\space command ~ requires ~ math ~ mode. }
+      }
+  }
+%    \end{macrocode}
+%    \begin{macrocode}
+\file_input_stop:
+%    \end{macrocode}
+%    \begin{macrocode}
+%</bm-um>
+%    \end{macrocode}
 % \subsection{The \modu{ab.legacy} module}
 %    \begin{macrocode}
 %<*ab.legacy>
@@ -3007,7 +2643,6 @@ $
 %    \begin{macrocode}
 %</ab.legacy>
 %    \end{macrocode}
-%
 % \subsection{The \modu{qtext.legacy} module}
 % This module is written for the compatibility with the bad commands provided by
 % \pkg{physics} only. The commands in this module should NEVER be used!
@@ -3040,50 +2675,6 @@ $
 %    \begin{macrocode}
 %</qtext.legacy>
 %    \end{macrocode}
-%
-% \subsection{The \modu{bm-um.legacy} module}
-%    \begin{macrocode}
-%<*bm-um.legacy>
-\ProvidesExplFile {phx-bm-um.legacy.sty} {\phx@date} {\phx@version}
-  {`bm-um.legacy' module of physics3}
-\AtBeginDocument
-  {
-    \cs_if_exist:cF { symbf }
-      {
-        \PackageError { physics3 }
-          {
-            The ~ `bm-um.legacy' ~ module ~ requires ~
-            `unicode-math' ~ package
-          }
-          {
-            Have ~ you ~ used ~ `unicode-math' ~
-            in ~ the ~ preamble?
-          }
-      }
-  }
-\DeclareDocumentCommand \bm { m }
-  {
-    \mode_if_math:TF
-      {
-        \tl_map_inline:nn { #1 }
-          {
-            \tl_if_head_eq_catcode:nNTF { ##1 } A
-              { \symbfit { ##1 } } { \symbf { ##1 } }
-          }
-      }
-      {
-        \msg_error:nn { physics3 }
-          { The ~ \string\bm\space command ~ requires ~ math ~ mode. }
-      }
-  }
-%    \end{macrocode}
-%    \begin{macrocode}
-\file_input_stop:
-%    \end{macrocode}
-%    \begin{macrocode}
-%</bm-um.legacy>
-%    \end{macrocode}
-% This part ends here.
 % \end{implementation}
 % \clearpage
 % \PrintIndex
