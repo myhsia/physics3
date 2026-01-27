@@ -101,7 +101,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
 %
 %<*driver>
 \documentclass[11pt, letterpaper, cs-break = true]{l3doc}
-\usepackage[mono = false, osf]{libertine}
+\usepackage[osf, mono = false]{libertine}
 \usepackage{mathtools, fixdif, derivative, xcolor}
 \usepackage[warnings-off={mathtools-colon, mathtools-overbracket}]{unicode-math}
 \usepackage{physics3}
@@ -123,7 +123,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
 \DeclareCommandCopy \val \meta
 \def \TTF {true\textup{\textbar\textbf{false}\makebox[0pt][r]{^^A
   \underline {\phantom{\bfseries true}\kern-0.1em}}}}
-\def \TTF {\textup{\textbf{true}\makebox[0pt][r]{^^A
+\def \TFF {\textup{\textbf{true}\makebox[0pt][r]{^^A
   \underline {\phantom{\bfseries true}\kern-0.1em}}\textbar}false}
 \newlist{keyval}{itemize}{10}
 \setlist[keyval]{leftmargin = 0pt, labelsep = 0pt}
@@ -203,7 +203,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
 %   }}
 % }
 %
-% \date{Released 2026-01-26\quad \texttt{v0.1B}}
+% \date{Released 2026-01-31\quad \texttt{v0.1B}}
 %
 % \maketitle
 %
@@ -1203,7 +1203,7 @@ Math ($\d x$) v.s.\ Text (\d x)
 %    \end{macrocode}
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\def \phx@date    {2026-01-26}
+\def \phx@date    {2026-01-31}
 \def \phx@version {v0.1B}
 \ProvidesExplPackage {physics3} {\phx@date} {\phx@version}
   {Tools for typesetting math for physics.}

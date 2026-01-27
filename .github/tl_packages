@@ -1,0 +1,34 @@
+# Shell
+l3build
+latexmk
+makeindex
+#
+# l3doc
+l3kernel
+## Base
+latex
+## Required
+graphics
+tools
+psnfss
+## Generic
+hologo
+## Contrib
+alphalph
+amsmath
+amsfonts
+booktabs
+cm-super
+colortbl
+csquotes
+enumitem
+fancyvrb
+hypdoc
+lm
+underscore
+#
+# Preamble
+derivative
+fixdif
+libertine
+unicode-math

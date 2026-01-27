@@ -11,7 +11,7 @@
 
 module              = "physics3"
 version             = "v0.1B"
-date                = "2026-01-26"
+date                = "2026-01-31"
 maintainer          = "Mingyu Xia"
 uploader            = "Mingyu Xia"
 maintainid          = "myhsia"
