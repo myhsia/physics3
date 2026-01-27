@@ -101,13 +101,12 @@ The Current Maintainer of this work is **Mingyu Xia**.
 %
 %<*driver>
 \documentclass[11pt, letterpaper, cs-break = true]{l3doc}
-\usepackage[mono = false]{libertine}
+\usepackage[mono = false, osf]{libertine}
 \usepackage{mathtools, fixdif, derivative, xcolor}
 \usepackage[warnings-off={mathtools-colon, mathtools-overbracket}]{unicode-math}
 \usepackage{physics3}
-\usephxmodu{ab, ab.braket, diagmat, doubleprod, operator}
-\usephxmodu{xmat}
-\usephxmodu{ab.legacy, qtext.legacy, bm-um}
+\usephxmodu{ab, ab.braket, diagmat, doubleprod, operator, xmat, bm-um}
+\usephxmodu{ab.legacy, qtext.legacy}
 \setcounter{tocdepth}{2}
 \ExplSyntaxOn \makeatletter
 \DeclareDocumentCommand \key { s m }
@@ -204,7 +203,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
 %   }}
 % }
 %
-% \date{Released 2026-01-26\quad \texttt{v0.1A}}
+% \date{Released 2026-01-26\quad \texttt{v0.1B}}
 %
 % \maketitle
 %
@@ -217,11 +216,6 @@ The Current Maintainer of this work is **Mingyu Xia**.
 % \hyperref[sec:physics-legacy]{here} to see the section for \pkg{physics} users
 % before you start. If you never used \pkg{physics} package before, just read
 % \emph{this} documentation.
-% 
-% The upstream maintainer of the similar package is Tingxuan Zhang^^A
-% \footnote{\ttfamily\href{mailto:alphaztx@163.com}{alphaztx@163.com}}.
-% This package is based on his \pkg{physics2} package, then added some
-% high-level macros and optimized the packing workflow.
 % \end{abstract}
 %
 % \tableofcontents
@@ -454,13 +448,13 @@ $ \pab[Big]{\0} $\quad $ \bab*{\0} $
 % \begin{function}{\bra, \ket}
 %   \begin{syntax}
 %     \cs{bra} \meta{* or size command}   "<" \meta{subformula} "|"^^A
-% \hfill --> \makebox[15\sttwd][r]{\modu{ab.braket} modu.}
+% \hfill---> \makebox[16\sttwd][r]{\modu{ab.braket} module}
 %     \cs{ket} \meta{* or size command}   "|" \meta{subformula} ">"^^A
-% \hfill --> \makebox[15\sttwd][r]{\modu{ab.braket} modu.}
+% \hfill---> \makebox[16\sttwd][r]{\modu{ab.braket} module}
 %     \cs{bra} \meta{\meta{*} or \oarg{size option}} \marg{subformula}^^A
-% \hfill --> \makebox[15\sttwd][r]{\modu{braket} modu.}
+% \hfill---> \makebox[16\sttwd][r]{\modu{braket} module}
 %     \cs{ket} \meta{\meta{*} or \oarg{size option}} \marg{subformula}^^A
-% \hfill --> \makebox[15\sttwd][r]{\modu{braket} modu.}
+% \hfill---> \makebox[16\sttwd][r]{\modu{braket} module}
 %   \end{syntax}
 %   \begin{itemize}[leftmargin = 0pt]
 %     \item In \modu{ab.braket} module,
@@ -492,8 +486,8 @@ $ \ket|\0> $\quad $ \ket*|\0>      $%
 %<*example>
 % \fi
 \begingroup
-\makeatletter\def\phx@requiremodule#1{}%
-\def\PackageWarning#1#2{}%
+\makeatletter\def\RequirePhxmodu#1{}^^A
+\def\PackageWarning#1#2{}^^A
 \catcode`\%14\relax \input phx-braket.sty \catcode`\%9\relax \makeatother
 \begin{example}{5}
 \def\0{\frac\phi2}
@@ -509,9 +503,9 @@ $ \ket  \0 $\quad $ \ket*     \0   $%
 % \begin{function}{\braket}
 %   \begin{syntax}
 %     \cs{braket} \meta{* or size command}\:       "<" \meta{subformula} ">"^^A
-% \hfill --> \makebox[15\sttwd][r]{\modu{ab.braket} modu.}
+% \hfill---> \makebox[16\sttwd][r]{\modu{ab.braket} module}
 %     \cs{braket} \meta{* or \oarg{size option, i}} i*\marg{subformula}^^A
-% \hfill --> \makebox[15\sttwd][r]{\modu{braket} modu.}
+% \hfill---> \makebox[16\sttwd][r]{\modu{braket} module}
 %   \end{syntax}
 %   \begin{itemize}[leftmargin = 0pt]
 %     \item In \modu{ab.braket} module, the argument of \cs{braket} should be
@@ -553,8 +547,8 @@ $ \ab|{\braket<\psi|\hat A|\psi>}| $
 %<*example>
 % \fi
 \begingroup
-\makeatletter\def\phx@requiremodule#1{}%
-\def\PackageWarning#1#2{}%
+\makeatletter\def\RequirePhxmodu#1{}^^A
+\def\PackageWarning#1#2{}^^A
 \catcode`\%14\relax \input phx-braket.sty \catcode`\%9\relax \makeatother
 \begin{example}{7}
 \def\0{\frac\phi2}
@@ -573,10 +567,10 @@ $ \ab|{\braket[3]{\psi}{\hat A}{\psi}}| $
 %   \begin{syntax}
 %     \cs{ketbra} \meta{* or size command}\:       "|" \meta{subformula_1} ">"
 % ""        \meta{optional formula}\:        "<" \meta{subformula_2} "|"^^A
-% \hfill --> \makebox[15\sttwd][r]{\modu{ab.braket} modu.}
+% \hfill---> \makebox[16\sttwd][r]{\modu{ab.braket} module}
 %     \cs{ketbra} \meta{* or \oarg{size option}}      \marg{subformula_1}
 % ""        \meta{optional formula}         \:\marg{subformula_2}^^A
-% \hfill --> \makebox[15\sttwd][r]{\modu{braket} modu.}
+% \hfill---> \makebox[16\sttwd][r]{\modu{braket} module}
 %   \end{syntax}
 %   \begin{itemize}[leftmargin = 0pt]
 %     \item In \modu{ab.braket} module, the argument of \cs{ketbra} should be
@@ -604,7 +598,7 @@ $ \ketbra\Big | \0 >_x^y< \psi | $
 %<*example>
 % \fi
 \begingroup
-\makeatletter\def\phx@requiremodule#1{}^^A
+\makeatletter\def\RequirePhxmodu#1{}^^A
 \def\PackageWarning#1#2{}^^A
 \catcode`\%14\relax \input phx-braket.sty \catcode`\%9\relax \makeatother
 \begin{example}{4}
@@ -833,7 +827,7 @@ $ \Bxmat*[showtop = 2, showleft = 1,
 %<*example>
 % \fi
 \begingroup
-\makeatletter\def\phx@requiremodule#1{}^^A
+\makeatletter\def\RequirePhxmodu#1{}^^A
 \def\PackageWarning#1#2{}^^A
 \catcode`\%14\relax \input phx-braket.sty \catcode`\%9\relax \makeatother
 \begin{example}{6}
@@ -874,7 +868,7 @@ $ \bm {0 A z \alpha \Omega} $
 % \subsection{The \modu{ab.legacy} module}
 %
 % \begin{function}{\abs, \norm, \eval (\peval \beval), \order}
-% This module provides the above commands.
+% This module provides the left commands.
 % They share the same syntax as
 % \begin{syntax}
 %   \cs{\meta{cmd}}"*"\oarg{biggg}\marg{subformula}.
@@ -1196,7 +1190,7 @@ Math ($\d x$) v.s.\ Text (\d x)
 % \cs{pxmat}, \cs{bxmat}, \cs{Bxmat}, \cs{vxmat} and \cs{Vxmat} are
 % also available.
 % \end{documentation}
-% \clearpage
+% \clearpage \appendix \addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
 % \begin{implementation}
 % \section{Code Implementation}
 % \subsection{The \pkg{physics3} package}
@@ -1209,9 +1203,9 @@ Math ($\d x$) v.s.\ Text (\d x)
 %    \end{macrocode}
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\def \phx@date    {2026-01-23}
-\def \phx@version {v0.1A}
-\ProvidesExplPackage {physics3} {2026-01-26} {v0.1A}
+\def \phx@date    {2026-01-26}
+\def \phx@version {v0.1B}
+\ProvidesExplPackage {physics3} {\phx@date} {\phx@version}
   {Tools for typesetting math for physics.}
 %    \end{macrocode}
 % \subsubsection{Common variables}
@@ -1263,18 +1257,18 @@ Math ($\d x$) v.s.\ Text (\d x)
 % \end{macro}
 % We use almost the same way to load \pkg{physics3} modules as \LaTeXe\ kernel
 % does. We use a lot of kernel commands in \LaTeXe.
-% \begin{macro}{\usephxmodu, \phx@requiremodule}
+% \begin{macro}{\usephxmodu, \RequirePhxmodu}
 %   \begin{quote}
 %     \cs{usephxmodu} \oarg{key-val options}^^A
 %       \marg{module} \oarg{key-val options}\\
-%     \cs{phx@requiremodule} \oarg{key-val options}^^A
+%     \cs{RequirePhxmodu} \oarg{key-val options}^^A
 %       \marg{module} \oarg{key-val options}
 %   \end{quote}
-%   \cs{usephxmodu} is a user command, and \cs{phx@requiremodule} is a
+%   \cs{usephxmodu} is a user command, and \cs{RequirePhxmodu} is a
 %   developer command.
 %    \begin{macrocode}
 \def\usephxmodu{\phx@FWoptions\@pkgextension}
-\let\phx@requiremodule\usephxmodu
+\let\RequirePhxmodu\usephxmodu
 \@onlypreamble\usephxmodu
 \def\phx@FWoptions#1{\@ifnextchar[%]
   {\phx@FW@ptions#1}{\phx@FW@ptions#1[]}}
@@ -1427,8 +1421,7 @@ Math ($\d x$) v.s.\ Text (\d x)
 % \endgroup
 %    \begin{macrocode}
 %<*ab>
-\ProvidesFile {phx-ab.sty}
-  [\phx@date\ `ab' (autobraces) module of physics3]
+\ProvidesFile {phx-ab.sty} [\phx@date\ `ab' (autobraces) module of physics3]
 %    \end{macrocode}
 % If you don't know when to use \cs{phx@define@key}, \cs{phx@setkeys} and
 % \cs{phx@processkeyopt} in a module, see ahead. In \modu{ab}, the |tightbraces|
@@ -1723,13 +1716,12 @@ Math ($\d x$) v.s.\ Text (\d x)
 % \subsection{The \modu{ab.braket} module}
 %    \begin{macrocode}
 %<*ab.braket>
-\ProvidesFile {phx-ab.braket.sty}
-  [\phx@date\ `ab.braket' module of physics3]
+\ProvidesFile {phx-ab.braket.sty} [\phx@date\ `ab.braket' module of physics3]
 %    \end{macrocode}
 % This module requires \cs{phx@abopen} and \cs{phx@abclose} from \modu{ab}.
 % This module may have conflict with \modu{braket}.
 %    \begin{macrocode}
-\phx@requiremodule{ab}
+\RequirePhxmodu{ab}
 \ifdefined\phx@bra@@
   \PackageWarning{physics3}{You cannot load `ab.braket' and `braket'
     modules together.\MessageBreak Only `ab.braket' module works now.}
@@ -1915,13 +1907,12 @@ Math ($\d x$) v.s.\ Text (\d x)
 % \subsection{The \modu{braket} module}
 %    \begin{macrocode}
 %<*braket>
-\ProvidesFile {phx-braket.sty}
-  [\phx@date\ `braket' module of physics3]
+\ProvidesFile {phx-braket.sty} [\phx@date\ `braket' module of physics3]
 %    \end{macrocode}
 % This module requires \cs{phx@abopen} and \cs{phx@abclose} from \modu{ab}.
 % This module may have conflict with \modu{ab.braket}.
 %    \begin{macrocode}
-\phx@requiremodule{ab}
+\RequirePhxmodu{ab}
 \ifdefined\phx@abb@bkv
   \PackageWarning{physics3}{You cannot load `ab.braket' and `braket'
     modules together.\MessageBreak Only `braket' module works now.}
@@ -2533,14 +2524,14 @@ Math ($\d x$) v.s.\ Text (\d x)
 % hook is used for the compatibility of \pkg{unicode-math}.
 %    \begin{macrocode}
 \ifx \phx@reserveda \phx@true
-\AtBeginDocument
-{
-  \let\Resymbol\Re
-  \let\Imsymbol\Im
-  \DeclareRobustCommand\Re{\mathop{\operator@font Re}\nolimits}%
-  \DeclareRobustCommand\Im{\mathop{\operator@font Im}\nolimits}%
-  }
-  \fi
+  \AtBeginDocument
+    {
+      \let\Resymbol\Re
+      \let\Imsymbol\Im
+      \DeclareRobustCommand\Re{\mathop{\operator@font Re}\nolimits}%
+      \DeclareRobustCommand\Im{\mathop{\operator@font Im}\nolimits}%
+    }
+\fi
 %    \end{macrocode}
 % \end{macro}
 % Requires \pkg{fixdif} version 2.$x$.
@@ -2551,7 +2542,7 @@ Math ($\d x$) v.s.\ Text (\d x)
 % \begin{macro}[int]{\grad, \div, \curl, \laplacian}
 %   $\nabla$-related operators.
 %    \begin{macrocode}
-\phx@requiremodule{ab}
+\RequirePhxmodu{ab}
 \AtBeginDocument
   {
     \ifcsname div\endcsname\let\divsymbol\div\fi
@@ -2613,12 +2604,11 @@ Math ($\d x$) v.s.\ Text (\d x)
 % \subsection{The \modu{ab.legacy} module}
 %    \begin{macrocode}
 %<*ab.legacy>
-\ProvidesFile {phx-ab.legacy.sty}
-  [\phx@date\ `ab.legacy' module of physics3]
+\ProvidesFile {phx-ab.legacy.sty} [\phx@date\ `ab.legacy' module of physics3]
 %    \end{macrocode}
 % Requires \modu{ab}'s "tight" option.
 %    \begin{macrocode}
-\phx@requiremodule{ab}
+\RequirePhxmodu{ab}
 \phx@define@key{ab.legacy}{order}{\mathcal O}{\def\phx@ab@ordersym{#1}}
 \phx@setkeys{ab.legacy}{order}
 \phx@processkeyopt{ab.legacy}

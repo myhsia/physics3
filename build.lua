@@ -10,7 +10,7 @@
 --]==========================================]--
 
 module              = "physics3"
-version             = "v0.1A"
+version             = "v0.1B"
 date                = "2026-01-26"
 maintainer          = "Mingyu Xia"
 uploader            = "Mingyu Xia"
@@ -54,8 +54,11 @@ function update_tag(file, content, tagname, tagdate)
   tagdate = date
   if string.match(file, "%.dtx$") then
     content = string.gsub(content,
-      "\\ProvidesExplPackage {" .. module .. "} %{[^}]+%} %{[^}]+%}[\r\n%s]*%{[^}]+%}",
-      "\\ProvidesExplPackage {" .. module .. "} {" .. tagdate .. "} {" .. tagname .. "}\n  {" .. summary .. "}")
+      "\\def \\phx@date    %{[^}]+%}",
+      "\\def \\phx@date    {" .. tagdate .. "}")
+    content = string.gsub(content,
+      "\\def \\phx@version %{[^}]+%}",
+      "\\def \\phx@version {" .. tagname .. "}")
     content = string.gsub(content,
       "\\date{Released %d+%-%d+%-%d+\\quad \\texttt{v([%d%.A-Z]+)}}",
       "\\date{Released " .. tagdate .. "\\quad \\texttt{" .. tagname .. "}}")
