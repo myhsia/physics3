@@ -37,6 +37,7 @@ intcalc
 kvdefinekeys
 kvsetkeys
 ltxcmds
+mathtools
 #
 # Preamble
 derivative
