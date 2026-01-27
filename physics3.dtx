@@ -109,6 +109,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
 \usephxmodu{ab.legacy, qtext.legacy}
 \setcounter{tocdepth}{2}
 \ExplSyntaxOn \makeatletter
+\newcommand \mail[1]{\href{mailto:#1}{\ttfamily #1}}
 \DeclareDocumentCommand \key { s m }
   {
     \IfBooleanTF {#1} { \textcolor{red}{\ttfamily \bfseries #2} }
@@ -198,10 +199,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
 %   \url{https://ctan.org/pkg/physics3}}
 % }
 %
-% \author{Mingyu Xia\thanks{\texttt{^^A
-%     \href{mailto:xiamingyu@westlake.edu.cn}{xiamingyu@westlake.edu.cn}^^A
-%   }}
-% }
+% \author{Mingyu Xia\thanks{\mail{xiamingyu@westlake.edu.cn}}}
 %
 % \date{Released 2026-01-31\quad \texttt{v0.1B}}
 %
