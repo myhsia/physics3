@@ -29,6 +29,9 @@ hypdoc
 lm
 underscore
 #
+# Required
+etoolbox
+#
 # Preamble
 derivative
 fixdif
