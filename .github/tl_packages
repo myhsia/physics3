@@ -30,6 +30,7 @@ hyperref
 lm
 oberdiek
 underscore
+xcolor
 #
 # Required
 etoolbox
