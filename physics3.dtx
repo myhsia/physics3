@@ -2492,11 +2492,11 @@ Math ($\d x$) v.s.\ Text (\d x)
 %<*operator>
 \ProvidesExplFile {phx-operator.sty} {\phx@date} {\phx@version}
   {`operator' module of physics3}
-\@@_define_key:nnnn { op.lega } { ReIm } { true } { \def\phx@reserveda{#1}  }
-\@@_define_key:nnnn { op.lega } { PV   } {      } { \def\@phx@oplega@PV{#1} }
-\@@_define_key:nnnn { op.lega } { pv   } {      } { \def\@phx@oplega@pv{#1} }
-\@@_setkeys:nn     { op.lega } { PV = \mathcal{P}, pv = {p.v.}, ReIm = true}
-\@@_processkeyopt:n { ab }
+\@@_define_key:nnnn { operator } { ReIm } { true } { \def\phx@reserveda{#1}  }
+\@@_define_key:nnnn { operator } { PV   } {      } { \def\@phx@oplega@PV{#1} }
+\@@_define_key:nnnn { operator } { pv   } {      } { \def\@phx@oplega@pv{#1} }
+\@@_setkeys:nn      { operator } { PV = \mathcal{P}, pv = {p.v.}, ReIm = true}
+\@@_processkeyopt:n { operator }
 %    \end{macrocode}
 % \begin{macro}[int]
 %   {
