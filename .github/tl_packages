@@ -1,8 +1,11 @@
 # Shell
 l3build
-latex-bin
 latexmk
 makeindex
+pdftex
+pdflatex
+xetex
+xelatex
 #
 # l3doc
 l3kernel
