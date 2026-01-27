@@ -2,8 +2,6 @@
 l3build
 latexmk
 makeindex
-pdftex
-xetex
 #
 # l3doc
 l3kernel
@@ -27,11 +25,12 @@ enumitem
 fancyvrb
 hypdoc
 lm
+pgf
 underscore
 #
 # Required
-etoolbox
-infwarerr
+# etoolbox
+# infwarerr
 #
 # Preamble
 derivative
