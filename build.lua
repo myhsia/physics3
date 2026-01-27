@@ -31,6 +31,7 @@ excludefiles        = {"*~"}
 textfiles           = {"*.md", "LICENSE", "*.lua"}
 typesetexe          = "latexmk -xelatex"
 typesetruns         = 1
+unpackexe           = "xetex"
 uploadconfig  = {
   announcement_file = "announcement.md",
   pkg               = module,
