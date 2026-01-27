@@ -3,9 +3,7 @@ l3build
 latexmk
 makeindex
 pdftex
-pdflatex
 xetex
-xelatex
 #
 # l3doc
 l3kernel
