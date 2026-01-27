@@ -30,6 +30,7 @@ hyperref
 lm
 manfnt
 metafont
+mfware
 oberdiek
 underscore
 xcolor
