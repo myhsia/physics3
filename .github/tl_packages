@@ -37,7 +37,6 @@ xcolor
 #
 # Required
 etoolbox
-intcalc
 kvdefinekeys
 kvsetkeys
 ltxcmds
