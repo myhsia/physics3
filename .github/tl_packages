@@ -26,6 +26,7 @@ csquotes
 enumitem
 fancyvrb
 hypdoc
+hyperref
 lm
 oberdiek
 underscore
