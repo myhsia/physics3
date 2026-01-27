@@ -33,6 +33,7 @@ underscore
 # Required
 etoolbox
 intcalc
+ltxcmds
 #
 # Preamble
 derivative
