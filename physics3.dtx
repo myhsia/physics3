@@ -798,13 +798,12 @@ $ \Bxmat*[showtop = 2, showleft = 1,
 % This module provides a series of commands for log-like operators and some
 % commands for nabla-related operators ($\nabla$)
 % \begin{quote}
-%   "\asin  \acos  \atan  \acsc  \asec  \acot"
-%   "\erf   \erfc  \rank  \Tr    \tr    \identity"\\
-%   "\Res   \res   \PV    \pv    \upe   \iu "\\
-%   "\Re    \Im    \grad  \curl  \div   \laplacian"
+%   "\asin \acos \atan \acsc \asec \acot \erf \erfc     "\\
+%   "\rank \Tr   \tr   \Res  \res  \Re   \Im  \identity "\\
+%   "\PV   \pv   \upe  \iu   \grad \curl \div \laplacian"
 % \end{quote}
 % \begin{itemize}[leftmargin = 0pt]
-%   \item The first two lines of commands yield what they look like in math mode
+%   \item The first fifteen commands yield what they look like in math mode
 %   \item \cs{PV} yields ``$\PV$'' as an ordinary symbol and \cs{pv}
 %   yields ``$\pv$''.
 %   \item \cs{Re} and \cs{Im} are redefined as ``$\Re$'' and ``$\Im$''.
@@ -829,12 +828,13 @@ $ \Bxmat*[showtop = 2, showleft = 1,
 \makeatletter\def\RequirePhxmodu#1{}^^A
 \def\PackageWarning#1#2{}^^A
 \catcode`\%14\relax \input phx-braket.sty \catcode`\%9\relax \makeatother
-\begin{example}{6}
+\begin{example}{7}
 % \usephxmodu{braket}
-$ \asin x  $, $ \PV f(z) = \pv f(z) $\\[1ex]
+$ \asin x $, $ \PV f(z) = \pv f(z)  $\\[1ex]
+$ \erfc(x) = 1 - \erf(x)            $\\[1ex]
 $ \identity = \int \d^2 \alpha
-  \kbproj\alpha/\pi $\\[1ex]
-$ \Re z = \Im z = \upe^{\iu\pi} = -1$\\[1ex]
+    \kbproj \alpha/\pi              $\\[1ex]
+$ \Re z = \Im z = \exp(\iu\pi) = -1 $\\[1ex]
 $ \grad V$, $\div (x,y,z)$, $ \curl(x,y,z) $
 \end{example}
 \endgroup
@@ -878,17 +878,9 @@ $ \bm {0 A z \alpha \Omega} $
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{2}
+\begin{example}{6}
 \def\0{1+\frac12}
 $ \abs\0 $, $ \norm[Big]\0 $, $ \order*\0 $
-\end{example}
-% \iffalse
-%</example>
-% \fi
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{4}
 \def\0{1+\frac x2}
 $ \eval      {\0}_a^b $,
 $ \peval*    {\0}_a^b $,
@@ -2651,5 +2643,4 @@ Math ($\d x$) v.s.\ Text (\d x)
 %</qtext.legacy>
 %    \end{macrocode}
 % \end{implementation}
-% \clearpage
 % \PrintIndex
