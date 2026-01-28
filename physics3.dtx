@@ -2593,8 +2593,7 @@ Math ($\d x$) v.s.\ Text (\d x)
 \phx@d@l@geny\norm\Vert\Vert
 \DeclareDocumentCommand\order{som}{%
   \phx@ab@ordersym
-  \IfBooleanTF{#1}
-    {(#3)}
+  \IfBooleanTF{#1} {(#3)}
     {\IfValueTF{#2}
       {\csname#2l\endcsname(#3\csname#2r\endcsname)}
       {\phx@abopen(#3\phx@abclose)}%
