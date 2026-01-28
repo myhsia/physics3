@@ -798,9 +798,10 @@ $ \Bxmat*[showtop = 2, showleft = 1,
 % This module provides a series of commands for log-like operators and some
 % commands for nabla-related operators ($\nabla$)
 % \begin{quote}
-%   "\asin  \acos  \atan  \acsc  \asec  \acot  \rank  \erf"\\
-%   "\Tr    \tr    \Res   \res   \PV    \pv    \upe   \iu "\\
-%   "\Re    \Im    \identity     \grad  \curl  \div   \laplacian"
+%   "\asin  \acos  \atan  \acsc  \asec  \acot"
+%   "\erf   \erfc  \rank  \Tr    \tr    \identity"\\
+%   "\Res   \res   \PV    \pv    \upe   \iu "\\
+%   "\Re    \Im    \grad  \curl  \div   \laplacian"
 % \end{quote}
 % \begin{itemize}[leftmargin = 0pt]
 %   \item The first two lines of commands yield what they look like in math mode
@@ -2485,12 +2486,12 @@ Math ($\d x$) v.s.\ Text (\d x)
 % \begin{macro}[int]
 %   {
 %     \asin,  \acos,  \atan,  \acsc,  \asec,  \acot,
-%     \Tr,    \tr,    \rank,  \erf,   \Res,   \res,
-%     \PV,    \pv,    \upe,   \iu,    \identity
+%     \erf,   \erfc,  \Tr,    \tr,    \rank,  \identity,
+%     \Res,   \res,   \PV,    \pv,    \upe,   \iu
 %   }
 %    \begin{macrocode}
 \clist_map_inline:nn
-  { asin, acos, atan, acsc, asec, acot, Tr, tr, rank, erf, Res, res }
+  { asin, acos, atan, acsc, asec, acot, erf, erfc, Tr, tr, rank, Res, res }
   {
     \exp_args:Nc \DeclareRobustCommand {#1}
       { \mathop { \operator@font #1 } \nolimits }
