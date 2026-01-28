@@ -731,14 +731,15 @@ $ \vxmat{a}{2}{3} $
 % \iffalse
 %</example>
 % \fi
+% Similarly to the \modu{diagmat} module, the option "align" is supported.
 % If \meta{rows shown} or \meta{cols shown} contains non-digit characters,
 % extra dots will be added. For example,
 % \iffalse
 %<*example>
 % \fi
 \begin{example}{2}
-$ \bxmat*[showtop = 1, showleft = 2]
-    {X}{m}{n} $
+$ \bxmat*[showtop = 1, showleft = 2,
+          align = l] {X}{m}{n} $
 \end{example}
 % \iffalse
 %</example>
@@ -2193,6 +2194,7 @@ Math ($\d x$) v.s.\ Text (\d x)
 %     \l_@@_diagmat_tl,
 %     \l_@@_mat_empty_tl,
 %     \l_@@_mat_align_tl,
+%     \l_@@_xmat_align_c_tl,
 %   }
 % This module requires some new variables.
 %    \begin{macrocode}
@@ -2202,6 +2204,7 @@ Math ($\d x$) v.s.\ Text (\d x)
 \tl_new:N    \l_@@_diagmat_tl
 \tl_new:N    \l_@@_mat_empty_tl
 \tl_new:N    \l_@@_mat_align_tl
+\tl_const:Nn \l_@@_mat_align_c_tl { c }
 \@@_processkeyopt:n { diagmat }
 \keys_define:nn { phy/diagmat }
   {
@@ -2268,7 +2271,9 @@ Math ($\d x$) v.s.\ Text (\d x)
         \tl_gput_right:No \l_@@_diagmat_tl { \l_@@_mat_line_tl }
         \tl_gclear:N \l_@@_mat_line_tl
       }
-    \tl_if_empty:NTF { \l_@@_mat_align_tl }
+    \bool_lazy_or:nnTF
+      { \tl_if_empty_p:N \l_@@_mat_align_tl                         }
+      { \tl_if_eq_p:NN   \l_@@_mat_align_tl \l_@@_mat_align_c_tl }
       {
         \begin { #1 matrix }
           \tl_use:N \l_@@_diagmat_tl
@@ -2311,6 +2316,8 @@ Math ($\d x$) v.s.\ Text (\d x)
   { \int_gset:Nn \l_@@_xmat_showtop_int { #1 } }
 \@@_define_key:nnnn { xmat } { showleft } { }
   { \int_gset:Nn \l_@@_xmat_showleft_int { #1 } }
+\@@_define_key:nnnn { diagmat } { align } { r }
+  { \tl_gset:Nn \l_@@_xmat_align_tl { #1 } }
 %    \end{macrocode}
 % \begin{variable}
 %   {
@@ -2319,8 +2326,8 @@ Math ($\d x$) v.s.\ Text (\d x)
 %     \l_@@_xmat_showtop_int,
 %     \l_@@_xmat_showleft_int,
 %     \l_@@_xmat_tl,
-%     \l_@@_xmat_showtop_int,
-%     \l_@@_xmat_showleft_int,
+%     \l_@@_xmat_align_tl,
+%     \l_@@_xmat_align_c_tl,
 %   }
 % This module requires some new variables.
 %    \begin{macrocode}
@@ -2329,6 +2336,8 @@ Math ($\d x$) v.s.\ Text (\d x)
 \int_new:N   \l_@@_xmat_showtop_int
 \int_new:N   \l_@@_xmat_showleft_int
 \tl_new:N    \l_@@_xmat_tl
+\tl_new:N    \l_@@_xmat_align_tl
+\tl_const:Nn \l_@@_xmat_align_c_tl { c }
 \int_gset:Nn \l_@@_xmat_showtop_int  { \value { MaxMatrixCols } - 2 }
 \int_gset:Nn \l_@@_xmat_showleft_int { \value { MaxMatrixCols } - 2 }
 %    \end{macrocode}
@@ -2353,6 +2362,7 @@ Math ($\d x$) v.s.\ Text (\d x)
     format  .cs_set:Np = \_@@_xmat_entry_format:nnn #1#2#3 ,
     showtop .int_set:N = \l_@@_xmat_showtop_int ,
     showleft.int_set:N = \l_@@_xmat_showleft_int ,
+    align   .tl_set:N  = \l_@@_xmat_align_tl ,
   }
 %    \end{macrocode}
 % \begin{macro}[pTF]{\_@@_if_digits_only:n}
@@ -2452,9 +2462,19 @@ Math ($\d x$) v.s.\ Text (\d x)
               { & \cdots & \_@@_xmat_entry_format:nnn { #3 } { #4 } { #5 } }
           }
       } % else relax
-    \begin { #1 matrix }
-      \tl_use:N \l_@@_xmat_tl
-    \end { #1 matrix }
+    \bool_lazy_or:nnTF
+      { \tl_if_empty_p:N \l_@@_xmat_align_tl                         }
+      { \tl_if_eq_p:NN   \l_@@_xmat_align_tl \l_@@_xmat_align_c_tl }
+      {
+        \begin { #1 matrix }
+          \tl_use:N \l_@@_xmat_tl
+        \end { #1 matrix }
+      }
+      {
+        \begin { #1 matrix* } [ \l_@@_xmat_align_tl ]
+          \tl_use:N \l_@@_xmat_tl
+        \end { #1 matrix* }
+      }
     \group_end:
   }
 %    \end{macrocode}
