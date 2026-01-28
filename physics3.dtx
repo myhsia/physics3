@@ -1839,18 +1839,11 @@ Math ($\d x$) v.s.\ Text (\d x)
 \def\@phx@ev@do@pt#1,{\ifx#1\relax\@empty\else
   \edef\reserved@a{\zap@space#1 \@empty}%
   \ifx\reserved@a\@empty\else
-    \ifcsname phx@del\expandafter\expandafter\expandafter
-    \expandafter\expandafter\expandafter\expandafter
-    \expandafter\expandafter\expandafter\expandafter
-    \expandafter\expandafter\expandafter\expandafter \string
-    \expandafter\expandafter\expandafter\expandafter
-    \expandafter\expandafter\expandafter \csname
-    \expandafter\expandafter\expandafter \detokenize
-    \expandafter{\reserved@a}\endcsname \endcsname
+    \ifcsname phx@del\expandafter \string \expandafter
+      \csname \expandafter \detokenize{\reserved@a}\endcsname \endcsname
       \xdef\@phx@ev{\reserved@a}%
     \else
-      \xdef\@phx@ev@basis{%
-        \reserved@a}%
+      \xdef\@phx@ev@basis{\reserved@a}%
     \fi
   \fi
   \expandafter\@phx@ev@do@pt\fi}
@@ -2094,18 +2087,11 @@ Math ($\d x$) v.s.\ Text (\d x)
 \def\@phx@ev@do@pt#1,{\ifx#1\relax\@empty\else
   \edef\reserved@a{\zap@space#1 \@empty}%
   \ifx\reserved@a\@empty\else
-    \ifcsname phx@del\expandafter\expandafter\expandafter
-    \expandafter\expandafter\expandafter\expandafter
-    \expandafter\expandafter\expandafter\expandafter
-    \expandafter\expandafter\expandafter\expandafter \string
-    \expandafter\expandafter\expandafter\expandafter
-    \expandafter\expandafter\expandafter \csname
-    \expandafter\expandafter\expandafter \detokenize
-    \expandafter{\reserved@a}\endcsname \endcsname
+    \ifcsname phx@del\expandafter \string \expandafter
+      \csname \expandafter \detokenize{\reserved@a}\endcsname \endcsname
       \xdef\@phx@ev{\reserved@a}%
     \else
-      \xdef\@phx@ev@basis{%
-        \reserved@a}%
+      \xdef\@phx@ev@basis{\reserved@a}%
     \fi
   \fi
   \expandafter\@phx@ev@do@pt\fi}
