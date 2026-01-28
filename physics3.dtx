@@ -689,11 +689,12 @@ $ A \doublecross B \doubledot C $
 %   Value of \cs{diagmat}'s empty entries (Default is blanck).
 %   \item[\key{align}]\val{l\textup\textbar{c}\textup\textbar{r}}:
 %   Align of \cs{diagmat}'s diagonal entries (Default: "r").
+%
+%   Their default values can be configured in the module option like this:
+%   \begin{quote}
+%     "\usephxmodu[empty = \cdot, align = r]{diagmat}"
+%   \end{quote}
 % \end{keyval}
-% Their default values can be configured in the module option like this:
-% \begin{quote}
-% "\usephxmodu[empty = \cdot, align = r]{diagmat}"
-% \end{quote}
 % For example,
 % \iffalse
 %<*example>
@@ -725,36 +726,38 @@ $ \bdiagmat* {1, -1, -1, -1} $
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{2}
-$ \vxmat{a}{2}{3} $
-\end{example}
-% \iffalse
-%</example>
-% \fi
-% Similarly to the \modu{diagmat} module, the option "align" is supported.
-% If \meta{rows shown} or \meta{cols shown} contains non-digit characters,
-% extra dots will be added. For example,
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{2}
-$ \bxmat*[showtop = 1, showleft = 2,
-          align = l] {X}{m}{n} $
+\begin{example}{1}
+$ \vxmat*{a}{2}{3} $
 \end{example}
 % \iffalse
 %</example>
 % \fi
 % \begin{keyval}
+%   \item[\key{align}]\val{l\textup\textbar{c}\textup\textbar{r}}:
+%   Similarly to the \modu{diagmat} module.
+%
+%   If \meta{rows/cols shown} contains non-digit characters, dots will be
+%   added. For example,
+% \iffalse
+%<*example>
+% \fi
+\begin{example}{2}
+$ \bxmat*[showtop = 1, showleft = 2,
+          align   = l]{X}{m}{n} $
+\end{example}
+% \iffalse
+%</example>
+% \fi
 %   \item[\key{showtop, showleft}]\val{int num}: Numbers of rows and columns to
 %   be shown at the top and the left side (Default: "MaxMatrixCols - 2").
-% \end{keyval}
-% Their default values can be configured in the module option like this:
-% \begin{quote}
-%   "\usephxmodu[showtop = 1, showleft = 2]{xmat}"
-% \end{quote}
-% This will also influence ``\cs{xmat}''s with digital \meta{rows shown} and
-% \meta{cols shown} they are larger than the values corresponding to "showtop"
-% and "showleft". For example,
+%
+%   Their default values can be configured in the module option like this:
+%   \begin{quote}
+%     "\usephxmodu[showtop = 1, showleft = 2]{xmat}"
+%   \end{quote}
+%   This will also influence ``\cs{xmat}''s with digital \meta{rows shown} and
+%   \meta{cols shown} they are larger than the values corresponding to "showtop"
+%   and "showleft". For example,
 % \iffalse
 %<*example>
 % \fi
@@ -765,8 +768,7 @@ $ \pxmat*[showtop  = 1,
 % \iffalse
 %</example>
 % \fi
-% The "format" option allows users to use a new entry format.
-% \begin{keyval}
+%   The "format" option allows users to use a new entry format.
 %   \item[\key{format}]\val{custom entry format in terms of \#1, \#2, and \#3}:
 %   \begin{arguments}
 %     \item The common entry, or the first mandatory \meta{entry} argument
@@ -778,20 +780,19 @@ $ \pxmat*[showtop  = 1,
 %     \end{multicols}
 %     \par \vspace{-12pt}
 %   \end{arguments}
-% \end{keyval}
-% This option should be only used in the optional argument of \cs{xmat}.
-% For example,
+%   This option should be only used in the optional argument of \cs{xmat}.
+%   For example,
 % \iffalse
 %<*example>
 % \fi
-\begin{example}{3}
+\begin{example}{2}
 $ \Bxmat*[showtop = 2, showleft = 1,
-          format = \texttt{#1[#2][#3]}]
-    {x}{m}{n} $
+          format = \texttt{#1[#2][#3]}]xmn $
 \end{example}
 % \iffalse
 %</example>
 % \fi
+% \end{keyval}
 % \end{function}
 %
 % \subsection{The \modu{operator} module}
