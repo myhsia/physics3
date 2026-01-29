@@ -122,10 +122,10 @@ The Current Maintainer of this work is **Mingyu Xia**.
       }
   }
 \DeclareCommandCopy \val \meta
-\def \TTF {true\textup{\textbar\textbf{false}\makebox[0pt][r]{^^A
-  \underline {\phantom{\bfseries true}\kern-0.1em}}}}
-\def \TFF {\textup{\textbf{true}\makebox[0pt][r]{^^A
+\def \TTF {\textup{\textbf{true}\makebox[0pt][r]{^^A
   \underline {\phantom{\bfseries true}\kern-0.1em}}\textbar}false}
+\def \TFF {true\textup{\textbar\textbf{false}\makebox[0pt][r]{^^A
+  \underline {\phantom{\bfseries false}\kern-0.1em}}}}
 \newlist{keyval}{itemize}{10}
 \setlist[keyval]{leftmargin = 0pt, labelsep = 0pt}
 \newwrite\example@out
@@ -800,9 +800,11 @@ $ \Bxmat*[showtop = 2, showleft = 1,
 % This module provides a series of commands for log-like operators and some
 % commands for nabla-related operators ($\nabla$)
 % \begin{quote}
-%   "\asin \acos \atan \acsc \asec \acot \erf \erfc     "\\
-%   "\rank \Tr   \tr   \Res  \res  \Re   \Im  \identity "\\
-%   "\PV   \pv   \upe  \iu   \grad \curl \div \laplacian"
+%   "\asin      \acos      \atan      \acsc      \asec      "\\
+%   "\acot      \erf       \erfc      \Tr        \tr        "\\
+%   "\rank      \Res       \res       \Re        \Im        "\\
+%   "\PV        \pv        \upe       \iu        \grad      "\\
+%   "\curl      \div       \laplacian \identity  \Identity  "
 % \end{quote}
 % \begin{itemize}[leftmargin = 0pt]
 %   \item The first fifteen commands yield what they look like in math mode
@@ -814,13 +816,16 @@ $ \Bxmat*[showtop = 2, showleft = 1,
 %   \item The ``$\divsymbol$'' symbol was redefined as \cs{divsymbol}.
 % \end{itemize}
 % \begin{keyval}
-%   \item[\key{ReIm}]\val{\TTF}: Determines whether to redefine \cs{Re}
+%   \item[\key{ReIm}]\val{\TFF}: Determines whether to redefine \cs{Re}
 %   and \cs{Im}.
 %   If you want to reserve the definition of \cs{Re} and \cs{Im}, you can write
 %   like this:
 %   \begin{quote}
 %     "\usephxmodu[ReIm = false]{operator}"
 %   \end{quote}
+%   \item[\key{identity}]^^A
+%    \val{bbold\textup\textbar bbm\textup\textbar dsrom\textup\textbar\ldots}
+%    Default font for the double-stroke \cs{identity} and \cs{Identity}.
 % \end{keyval}
 % For example,
 % \iffalse
@@ -834,8 +839,8 @@ $ \Bxmat*[showtop = 2, showleft = 1,
 % \usephxmodu{braket}
 $ \asin x $, $ \PV f(z) = \pv f(z)  $\\[1ex]
 $ \erfc(x) = 1 - \erf(x)            $\\[1ex]
-$ \identity = \int \d^2 \alpha
-    \kbproj \alpha/\pi              $\\[1ex]
+$ \identity[dsrom] = \Identity[dsrom] = \int
+    \d^2 \alpha \kbproj \alpha/\pi  $\\[1ex]
 $ \Re z = \Im z = \exp(\iu\pi) = -1 $\\[1ex]
 $ \grad V$, $\div (x,y,z)$, $ \curl(x,y,z) $
 \end{example}
@@ -848,14 +853,13 @@ $ \grad V$, $\div (x,y,z)$, $ \curl(x,y,z) $
 %
 % \subsection{The \modu{bm-um} module}
 %
-% Similarly to the \pkg{bm} package, this module also provides a
-% \cs[no-index]{bm} command, but can take \emph{a series of} math characters as
-% its argument, which works for the \pkg{unicode-math} package.
+% This module also provides a \cs[no-index]{bm} command, like the \pkg{bm}
+% package, but can take \emph{a series of} math characters as
+% its argument and works for the \pkg{unicode-math} package.
 %
-% The Latin letters or Greek letters in the argument will be switched to the
-% bold italic glyphs corresponding to them (if there exists bold italic
-% glyphs); else \cs[no-index]{bm} would switch to the bold upright glyphs.
-% For example,
+% The Latin letters or Greek letters in the argument will be switched to their
+% bold italic style if available; else \cs[no-index]{bm} would switch to the
+% bold upright glyphs. For example,
 % \iffalse
 %<*example>
 % \fi
@@ -2490,17 +2494,22 @@ Math ($\d x$) v.s.\ Text (\d x)
 %<*operator>
 \ProvidesExplFile {phx-operator.sty} {\phx@date} {\phx@version}
   {`operator' module of physics3}
-\@@_define_key:nnnn { operator } { ReIm } { true } { \def\phx@reserveda{#1}  }
-\@@_define_key:nnnn { operator } { PV   } {      } { \def\@phx@oplega@PV{#1} }
-\@@_define_key:nnnn { operator } { pv   } {      } { \def\@phx@oplega@pv{#1} }
-\@@_setkeys:nn      { operator } { PV = \mathcal{P}, pv = {p.v.}, ReIm = true}
+\@@_define_key:nnnn { operator } { ReIm     } { true  }
+  { \def\phx@reserveda {#1} }
+\@@_define_key:nnnn { operator } { identity } { } { \def\phx@oplega@id {#1} }
+\@@_define_key:nnnn { operator } { PV       } { } { \def\@phx@oplega@PV{#1} }
+\@@_define_key:nnnn { operator } { pv       } { } { \def\@phx@oplega@pv{#1} }
+\@@_setkeys:nn      { operator }
+  { PV = \mathcal{P}, pv = {p.v.}, ReIm = true, identity = bbold }
 \@@_processkeyopt:n { operator }
 %    \end{macrocode}
 % \begin{macro}[int]
 %   {
-%     \asin,  \acos,  \atan,  \acsc,  \asec,  \acot,
-%     \erf,   \erfc,  \Tr,    \tr,    \rank,  \identity,
-%     \Res,   \res,   \PV,    \pv,    \upe,   \iu
+%     \asin,     \acos,     \atan,     \acsc,     \asec,
+%     \acot,     \erf,      \erfc,     \Tr,       \tr,
+%     \rank,     \Res,      \res,      \PV,       \pv,
+%     \upe,      \iu,       \grad,     \curl,     \div,
+%     \laplacian,\identity, \Identity
 %   }
 %    \begin{macrocode}
 \clist_map_inline:nn
@@ -2509,11 +2518,37 @@ Math ($\d x$) v.s.\ Text (\d x)
     \exp_args:Nc \DeclareRobustCommand {#1}
       { \mathop { \operator@font #1 } \nolimits }
   }
-  \DeclareRobustCommand\PV  {\mathord{\@phx@oplega@PV}}
-  \DeclareRobustCommand\pv  {\mathop{\operator@font\@phx@oplega@pv{}}\nolimits}
-  \DeclareRobustCommand\upe {\mathrm e}
-  \DeclareRobustCommand\iu  {\mathrm i\mkern1mu}
-  \DeclareRobustCommand\identity{\mathbb I}
+\DeclareRobustCommand\PV  {\mathord{\@phx@oplega@PV}}
+\DeclareRobustCommand\pv  {\mathop{\operator@font\@phx@oplega@pv{}}\nolimits}
+\DeclareRobustCommand\upe {\mathrm e}
+\DeclareRobustCommand\iu  {\mathrm i\mkern1mu}
+\clist_map_inline:nn { i, I }
+  {
+    \exp_args:Nc \DeclareDocumentCommand {#1dentity} { o }
+      {
+        \group_begin:
+        \mode_if_math:TF
+          {
+            \mbox
+              {
+                \fontencoding{U} \fontseries{m} \fontshape{n}
+                \IfValueTF { ##1 }
+                  { \fontfamily { ##1 } } { \fontfamily { \phx@oplega@id } }
+                \selectfont
+                \tl_if_eq:nnT {#1} { i } { 1 }
+                \tl_if_eq:nnT {#1} { I } { I }
+              }
+          }
+          {
+            \exp_args:Nnx \msg_error:nn { physics3 }
+              {
+                The ~ \expandafter\string\csname #1dentity\endcsname\space
+                command ~ requires ~ math ~ mode.
+              }
+          }
+        \group_end:
+      }
+  }
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}[int]{\Re, \Im}
@@ -2663,4 +2698,4 @@ Math ($\d x$) v.s.\ Text (\d x)
 %</qtext.legacy>
 %    \end{macrocode}
 % \end{implementation}
-% \PrintIndex
+^^A % \PrintIndex
