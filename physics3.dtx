@@ -2207,7 +2207,7 @@ Math ($\d x$) v.s.\ Text (\d x)
 \tl_new:N    \l_@@_mat_align_tl
 \tl_const:Nn \l_@@_mat_align_c_tl { c }
 \@@_processkeyopt:n { diagmat }
-\keys_define:nn { phy/diagmat }
+\keys_define:nn { phy / diagmat }
   {
     empty   .tl_set:N  = \l_@@_mat_empty_tl,
     align   .tl_set:N  = \l_@@_mat_align_tl,
@@ -2243,7 +2243,7 @@ Math ($\d x$) v.s.\ Text (\d x)
     \int_set:Nn \l_@@_mat_dim_int { \clist_count:N \l_@@_mat_diag_clist }
     \int_compare:nNnT { \l_@@_mat_dim_int } > { \value { MaxMatrixCols } }
       { \setcounter { MaxMatrixCols } { \l_@@_mat_dim_int } }
-    \keys_set:nn { phy/diagmat } {#2}
+    \keys_set:nn { phy / diagmat } {#2}
     \tl_gclear:N \l_@@_diagmat_tl
     \int_step_inline:nnn { 1 } { \l_@@_mat_dim_int }
       {
