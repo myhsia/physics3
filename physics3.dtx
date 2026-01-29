@@ -800,11 +800,10 @@ $ \Bxmat*[showtop = 2, showleft = 1,
 % This module provides a series of commands for log-like operators and some
 % commands for nabla-related operators ($\nabla$)
 % \begin{quote}
-%   "\asin      \acos      \atan      \acsc      \asec      "\\
-%   "\acot      \erf       \erfc      \Tr        \tr        "\\
-%   "\rank      \Res       \res       \Re        \Im        "\\
-%   "\PV        \pv        \upe       \iu        \grad      "\\
-%   "\curl      \div       \laplacian \identity  \Identity  "
+%   "\asin   \acos   \atan   \acsc   \asec   \acot   \erf "\\
+%   "\erfc   \Tr     \tr     \rank   \Res    \res    \Re  "\\
+%   "\Im     \PV     \pv     \upe    \iu     \grad   \curl"\\
+%   "\div    \laplacian      \identity       \Identity    "
 % \end{quote}
 % \begin{itemize}[leftmargin = 0pt]
 %   \item The first fifteen commands yield what they look like in math mode
@@ -814,6 +813,9 @@ $ \Bxmat*[showtop = 2, showleft = 1,
 %   $\Resymbol$ and $\Imsymbol$ are redefined as \cs{Resymbol} and
 %   \cs{Imsymbol}, in default.
 %   \item The ``$\divsymbol$'' symbol was redefined as \cs{divsymbol}.
+%   \item This module requires the \pkg{fixdif} package with file
+%   date "2023/01/31"
+% at minimum.
 % \end{itemize}
 % \begin{keyval}
 %   \item[\key{ReIm}]\val{\TFF}: Determines whether to redefine \cs{Re}
@@ -823,10 +825,21 @@ $ \Bxmat*[showtop = 2, showleft = 1,
 %   \begin{quote}
 %     "\usephxmodu[ReIm = false]{operator}"
 %   \end{quote}
-%   \item[\key{identity}]^^A
-%    \val{bbold\textup\textbar bbm\textup\textbar dsrom\textup\textbar\ldots}
-%    Default font for the double-stroke \cs{identity} and \cs{Identity}.
 % \end{keyval}
+% This module also provides the \cs{identity} and \cs{Identity} commands for
+% inputting the double-stroke ``1'' ($\identity$) and ``I'' ($\Identity$)
+% respectively.
+% \begin{function}{\identity, \Identity}
+% \begin{syntax}
+%   \cs{identity} \oarg{font family}  \cs{Identity} \oarg{font family}
+% \end{syntax}
+% The optional argument can config the font for the double-stroke glyphs,
+% with the default value "bbold". One can also config it with the module option.
+% \begin{keyval}
+%   \item[\key{identity}]\val{font family}:
+%    Default font family for the double-stroke \cs{identity} and \cs{Identity}.
+% \end{keyval}
+% \end{function}
 % For example,
 % \iffalse
 %<*example>
@@ -835,12 +848,14 @@ $ \Bxmat*[showtop = 2, showleft = 1,
 \makeatletter\def\RequirePhxmodu#1{}^^A
 \def\PackageWarning#1#2{}^^A
 \catcode`\%14\relax \input phx-braket.sty \catcode`\%9\relax \makeatother
+\makeatletter \def\phx@oplega@id {bbold} \makeatother
 \begin{example}{7}
+% \usephxmodu[identity = bbold]{operator}
 % \usephxmodu{braket}
 $ \asin x $, $ \PV f(z) = \pv f(z)  $\\[1ex]
 $ \erfc(x) = 1 - \erf(x)            $\\[1ex]
-$ \identity[dsrom] = \Identity[dsrom] = \int
-    \d^2 \alpha \kbproj \alpha/\pi  $\\[1ex]
+$ \identity = \Identity[bbold] = \int
+  \d^2 \alpha \kbproj \alpha/\pi    $\\[1ex]
 $ \Re z = \Im z = \exp(\iu\pi) = -1 $\\[1ex]
 $ \grad V$, $\div (x,y,z)$, $ \curl(x,y,z) $
 \end{example}
@@ -848,8 +863,6 @@ $ \grad V$, $\div (x,y,z)$, $ \curl(x,y,z) $
 % \iffalse
 %</example>
 % \fi
-% This module requires the \pkg{fixdif} package with file date "2023/01/31"
-% at minimum.
 %
 % \subsection{The \modu{bm-um} module}
 %
@@ -2698,4 +2711,4 @@ Math ($\d x$) v.s.\ Text (\d x)
 %</qtext.legacy>
 %    \end{macrocode}
 % \end{implementation}
-^^A % \PrintIndex
+% \PrintIndex
