@@ -29,7 +29,6 @@
 %                                   phx-diagmat.sty,                    *
 %                                   phx-xmat.sty,                       *
 %                                   phx-operator.sty,                   *
-%                                   phx-bm-um.sty,                      *
 %                                   phx-ab.legacy.sty,                  *
 %                                   phx-qtext.legacy.sty,               *
 %           the documentation files physics3.pdf,                       *
@@ -105,7 +104,7 @@ The Current Maintainer of this work is **Mingyu Xia**.
 \usepackage{mathtools, fixdif, derivative, xcolor}
 \usepackage[warnings-off={mathtools-colon, mathtools-overbracket}]{unicode-math}
 \usepackage{physics3}
-\usephxmodu{ab, ab.braket, diagmat, doubleprod, operator, xmat, bm-um}
+\usephxmodu{ab, ab.braket, diagmat, doubleprod, operator, xmat}
 \usephxmodu{ab.legacy, qtext.legacy}
 \setcounter{tocdepth}{2}
 \ExplSyntaxOn \makeatletter
@@ -795,7 +794,7 @@ $ \Bxmat*[showtop = 2, showleft = 1,
 % \end{keyval}
 % \end{function}
 %
-% \subsection{The \modu{operator} module}
+% \subsection{The \modu{operator} module --- log-like and nabla-related operators}
 %
 % This module provides a series of commands for log-like operators and some
 % commands for nabla-related operators ($\nabla$)
@@ -864,25 +863,6 @@ $ \grad V$, $\div (x,y,z)$, $ \curl(x,y,z) $
 %</example>
 % \fi
 %
-% \subsection{The \modu{bm-um} module}
-%
-% This module also provides a \cs[no-index]{bm} command, like the \pkg{bm}
-% package, but can take \emph{a series of} math characters as
-% its argument and works for the \pkg{unicode-math} package.
-%
-% The Latin letters or Greek letters in the argument will be switched to their
-% bold italic style if available; else \cs[no-index]{bm} would switch to the
-% bold upright glyphs. For example,
-% \iffalse
-%<*example>
-% \fi
-\begin{example}{1}
-$ \bm {0 A z \alpha \Omega} $
-\end{example}
-% \iffalse
-%</example>
-% \fi
-%
 % \subsection{The \modu{ab.legacy} module}
 %
 % \begin{function}{\abs, \norm, \eval (\peval \beval), \order}
@@ -924,9 +904,9 @@ $ \beval[big]{\0}_a^b $
 %<*example>
 % \fi
 \begin{example}{4}
-$ A \qq {foo bar} B $\\[1ex]
-$ A \qq*{foo bar} B $\\[1ex]
-$ C \qcc D \qcc*  E $\\[1ex]
+$ A \qq {foo bar} B $\\
+$ A \qq*{foo bar} B $\\
+$ C \qcc D \qcc*  E $\\
 $ F \qif G \qthen H $
 \end{example}
 % \iffalse
@@ -1088,8 +1068,12 @@ $ F \qif G \qthen H $
 % However, the method above may not work well with \pkg{unicode-math}
 % because there are so many OpenType math fonts without a bold version.
 % When using \pkg{unicode-math}, it's recommended to use \cs{symbf} and
-% \cs{symbfit} for a separate vector. For example, "$\symbf{0}$" yields
-% $\symbf{0}$, and "$\symbfit{A}$" yields $\symbfit{A}$.
+% \cs{symbfit} for a separate vector\footnote{See
+% \href{https://github.com/latex3/latex2e/issues/1991\#issuecomment-3822731957}
+%   {Issue~\ttfamily\#1991} in the \LaTeXe\ repository
+% \href{https://github.com/latex3/latex2e}{on GitHub}, this bug will be
+% resolved someday.}. For example, "$\symbf{0}$" yields $\symbf{0}$, and
+% "$\symbfit{A}$" yields $\symbfit{A}$.
 %
 % The \cs{vdot} and \cs{cross} commands are not supported in any module
 % of \pkg{physics3}. Actually, there is no need to use a bold ``$\cdot$''
@@ -1107,12 +1091,6 @@ $ F \qif G \qthen H $
 %
 % The \modu{operator} requires the \pkg{fixdif} package at least
 % version 2.0 (file date on or after 2023/01/31).
-%
-% By the way, if you are used to writing \cs{bm} for a vector but interested in
-% \pkg{unicode-math}, the \modu{bm-um} module would be a passable
-% alternative to \pkg{bm} package. Notice that the \cs{bm} command from the
-% \modu{bm-um} module can only take \emph{one} letter (or \emph{one}
-% digit) as its argument.
 %
 % \subsubsection{Operators}
 %
@@ -2604,39 +2582,6 @@ Math ($\d x$) v.s.\ Text (\d x)
 %    \begin{macrocode}
 %</operator>
 %    \end{macrocode}
-% \subsection{The \modu{bm-um} module}
-%    \begin{macrocode}
-%<*bm-um>
-\ProvidesExplFile {phx-bm-um.sty} {\phx@date} {\phx@version}
-  {`bm-um' module of physics3}
-\AtBeginDocument
-  {
-    \@ifpackageloaded { unicode-math }
-      {
-        \DeclareRobustCommand \bm[1]
-          {
-            \mode_if_math:TF
-              {
-                \tl_map_inline:nn { #1 }
-                  {
-                    \token_if_eq_catcode:NNTF ##1 A
-                      { \symbfit { ##1 } } { \symbf { ##1 } }
-                  }
-              }
-              {
-                \exp_args:Nnx \msg_error:nn { physics3 }
-                  { The ~ \string\bm\space command ~ requires ~ math ~ mode. }
-              }
-          }
-      } {}
-  }
-%    \end{macrocode}
-%    \begin{macrocode}
-\file_input_stop:
-%    \end{macrocode}
-%    \begin{macrocode}
-%</bm-um>
-%    \end{macrocode}
 % \subsection{The \modu{ab.legacy} module}
 %    \begin{macrocode}
 %<*ab.legacy>
@@ -2701,4 +2646,4 @@ Math ($\d x$) v.s.\ Text (\d x)
 %</qtext.legacy>
 %    \end{macrocode}
 % \end{implementation}
-% \PrintIndex
+^^A % \PrintIndex
