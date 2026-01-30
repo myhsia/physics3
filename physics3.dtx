@@ -445,13 +445,13 @@ $ \pab[Big]{\0} $\quad $ \bab*{\0} $
 % personal habit.
 % \begin{function}{\bra, \ket}
 %   \begin{syntax}
-%     \cs{bra} \meta{* or size command}   "<" \meta{subformula} "|"^^A
+%     \cs{bra} \meta{* or size command}   \:"<"\meta{subformula}"|"^^A
 % \hfill---> \makebox[16\sttwd][r]{\modu{ab.braket} module}
-%     \cs{ket} \meta{* or size command}   "|" \meta{subformula} ">"^^A
+%     \cs{ket} \meta{* or size command}   \:"|"\meta{subformula}">"^^A
 % \hfill---> \makebox[16\sttwd][r]{\modu{ab.braket} module}
-%     \cs{bra} \meta{\meta{*} or \oarg{size option}} \marg{subformula}^^A
+%     \cs{bra} \meta{* or \oarg{size option}} \marg{subformula}^^A
 % \hfill---> \makebox[16\sttwd][r]{\modu{braket} module}
-%     \cs{ket} \meta{\meta{*} or \oarg{size option}} \marg{subformula}^^A
+%     \cs{ket} \meta{* or \oarg{size option}} \marg{subformula}^^A
 % \hfill---> \makebox[16\sttwd][r]{\modu{braket} module}
 %   \end{syntax}
 %   \begin{itemize}[leftmargin = 0pt]
@@ -500,7 +500,7 @@ $ \ket  \0 $\quad $ \ket*     \0   $%
 % \fi
 % \begin{function}{\braket}
 %   \begin{syntax}
-%     \cs{braket} \meta{* or size command}\:       "<" \meta{subformula} ">"^^A
+%     \cs{braket} \meta{* or size command}\:        "<"\meta{subformula}">"^^A
 % \hfill---> \makebox[16\sttwd][r]{\modu{ab.braket} module}
 %     \cs{braket} \meta{* or \oarg{size option, i}} i*\marg{subformula}^^A
 % \hfill---> \makebox[16\sttwd][r]{\modu{braket} module}
@@ -563,11 +563,11 @@ $ \ab|{\braket[3]{\psi}{\hat A}{\psi}}| $
 % \fi
 % \begin{function}{\ketbra}
 %   \begin{syntax}
-%     \cs{ketbra} \meta{* or size command}\:       "|" \meta{subformula_1} ">"
-% ""        \meta{optional formula}\:        "<" \meta{subformula_2} "|"^^A
+%     \cs{ketbra} \meta{* or size command}\:        "|"\meta{subformula_1}">"
+%       ""        \meta{optional formula}\:         "<"\meta{subformula_2}"|"^^A
 % \hfill---> \makebox[16\sttwd][r]{\modu{ab.braket} module}
 %     \cs{ketbra} \meta{* or \oarg{size option}}      \marg{subformula_1}
-% ""        \meta{optional formula}         \:\marg{subformula_2}^^A
+%       ""        \meta{optional formula}         \:\marg{subformula_2}^^A
 % \hfill---> \makebox[16\sttwd][r]{\modu{braket} module}
 %   \end{syntax}
 %   \begin{itemize}[leftmargin = 0pt]
@@ -2611,33 +2611,24 @@ Math ($\d x$) v.s.\ Text (\d x)
   {`bm-um' module of physics3}
 \AtBeginDocument
   {
-    \cs_if_exist:cF { symbf }
+    \@ifpackageloaded { unicode-math }
       {
-        \PackageError { physics3 }
+        \DeclareRobustCommand \bm[1]
           {
-            The ~ `bm-um' ~ module ~ requires ~
-            `unicode-math' ~ package
+            \mode_if_math:TF
+              {
+                \tl_map_inline:nn { #1 }
+                  {
+                    \token_if_eq_catcode:NNTF ##1 A
+                      { \symbfit { ##1 } } { \symbf { ##1 } }
+                  }
+              }
+              {
+                \exp_args:Nnx \msg_error:nn { physics3 }
+                  { The ~ \string\bm\space command ~ requires ~ math ~ mode. }
+              }
           }
-          {
-            Have ~ you ~ used ~ `unicode-math' ~
-            in ~ the ~ preamble?
-          }
-      }
-  }
-\DeclareDocumentCommand \bm { m }
-  {
-    \mode_if_math:TF
-      {
-        \tl_map_inline:nn { #1 }
-          {
-            \tl_if_head_eq_catcode:nNTF { ##1 } A
-              { \symbfit { ##1 } } { \symbf { ##1 } }
-          }
-      }
-      {
-        \msg_error:nn { physics3 }
-          { The ~ \string\bm\space command ~ requires ~ math ~ mode. }
-      }
+      } {}
   }
 %    \end{macrocode}
 %    \begin{macrocode}
