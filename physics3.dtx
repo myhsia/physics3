@@ -206,9 +206,9 @@ The Current Maintainer of this work is **Mingyu Xia**.
 % \begin{abstract}
 % This is the document for \pkg{physics3} package, which defines commands for
 % typesetting math formulae faster and more simply. \pkg{physics3} is a
-% modularized package, each module provides its own function.\footnote{^^A
+% modularized package, each module provides its own function\footnote{^^A
 %   If you are a user of the legacy \pkg{physics} package, see
-%   Section~\ref{sec:physics-legacy} before you start.}
+%   Section~\ref{sec:physics-legacy} before you start.}.
 % \end{abstract}
 %
 % \tableofcontents
@@ -342,7 +342,8 @@ $ \ab\{ \frac12 \} $
 %</example>
 % \fi
 % You can also write a command from \cs{big} to \cs{Biggg} between \cs{ab}
-% and the first delimiter, which means to specify the size of delimiters manually.
+% and the first delimiter, which means to specify the size of
+% delimiters manually.
 % Also, you can write a star ("*") between \cs{ab} and the first delimiter,
 % to prevent \cs{ab} from setting the size of delimiters. For example,
 % \iffalse
@@ -711,7 +712,7 @@ $ \bdiagmat* {1, -1, -1, -1} $
 % \begin{function}{\xmat, \pxmat, \bxmat, \Bxmat, \vxmat, \Vxmat}
 % \begin{syntax}
 %   \cs{\meta{delimeter type}xmat}\meta{*} \oarg{options} \marg{entry}^^A
-% \marg{rows shown} \marg{cols shown}
+% \marg{row label} \marg{col label}
 % \end{syntax}
 % Prefixes like "p", "b", "V" have the same meanings as "pmatrix", "bmatrix" and
 % "Vmatrix" in the \pkg{mathtools} package, a star ("*") follows the
@@ -731,7 +732,7 @@ $ \vxmat*{a}{2}{3} $
 %   \item[\key{align}]\val{l\textup\textbar{c}\textup\textbar{r}}:
 %   Similarly to the \modu{diagmat} module.
 %
-%   If \meta{rows/cols shown} contains non-digit characters, dots will be
+%   If \meta{rows/col label} contains non-digit characters, dots will be
 %   added. For example,
 % \iffalse
 %<*example>
@@ -750,8 +751,8 @@ $ \bxmat*[showtop = 1, showleft = 2,
 %   \begin{quote}
 %     "\usephxmodu[showtop = 1, showleft = 2]{xmat}"
 %   \end{quote}
-%   This will also influence ``\cs{xmat}''s with digital \meta{rows shown} and
-%   \meta{cols shown} they are larger than the values corresponding to "showtop"
+%   This will also influence ``\cs{xmat}''s with digital \meta{row label} and
+%   \meta{col label} they are larger than the values corresponding to "showtop"
 %   and "showleft". For example,
 % \iffalse
 %<*example>
@@ -790,7 +791,8 @@ $ \Bxmat*[showtop = 2, showleft = 1,
 % \end{keyval}
 % \end{function}
 %
-% \subsection{The \modu{operator} module --- log-like and nabla-related operators}
+% \subsection{The \modu{operator} module --- log-like and
+%   nabla-related operators}
 %
 % This module provides a series of commands for log-like operators and some
 % commands for nabla-related operators ($\nabla$)
@@ -861,14 +863,13 @@ $ \grad V$, $\div (x,y,z)$, $ \curl(x,y,z) $
 %
 % \subsection{The \modu{ab.legacy} module}
 %
-% \begin{function}{\abs, \norm, \eval (\peval \beval), \order}
+% \begin{function}{\abs, \norm, \eval, \peval, \beval, \order}
 % This module provides the left commands.
 % They share the same syntax as
 % \begin{syntax}
 %   \cs{\meta{cmd}}"*"\oarg{biggg}\marg{subformula}.
 % \end{syntax}
 % Star and \meta{biggg} are optional. Star stands for ``use the default size''.
-% \end{function}
 % For example,
 % \iffalse
 %<*example>
@@ -890,6 +891,7 @@ $ \beval[big]{\0}_a^b $
 %   "\usephxmodu[order = O]{ab.legacy}"
 % \end{quote}
 % Then "$\order{N}$" yields $O(N)$.
+% \end{function}
 %
 % \subsection{The \modu{qtext.legacy} module}
 %
@@ -1609,7 +1611,8 @@ Math ($\d x$) v.s.\ Text (\d x)
 % \end{macro}
 % \begin{macro}[int]{\phx@d@lx}
 %   \begin{quote}
-%     \cs{phx@d@lx} \marg{biggg or star branch name} \marg{automatic branch name} "{#3}"
+%     \cs{phx@d@lx} \marg{biggg or star branch name} ^^A
+%     \marg{automatic branch name} "{#3}"
 %   \end{quote}
 %    \begin{macrocode}
 \def\phx@d@lx#1#2#3{%
@@ -1659,7 +1662,8 @@ Math ($\d x$) v.s.\ Text (\d x)
 % This is so simple. No need to comment a lot.
 % \begin{macro}[int]{\phx@d@l@geny}
 %   \begin{quote}
-%     \cs{phx@d@l@geny} \meta{command} \meta{left delimiter} \meta{right delimiter}
+%     \cs{phx@d@l@geny} \meta{command} ^^A
+%     \meta{left delimiter} \meta{right delimiter}
 %   \end{quote}
 %   This command used to define commands like \cs{pab}.
 %    \begin{macrocode}
@@ -1736,7 +1740,8 @@ Math ($\d x$) v.s.\ Text (\d x)
 %    \end{macrocode}
 % \begin{macro}{\braket}
 %   \begin{quote}
-%     \cs{braket} \char`\<\ \meta{subformula 1} \char`\|\ \meta{subformula 2} {\color{gray}\textrm{[}\char`\|\ \meta{subformula 3} \textrm{\dots]}} \char`\>
+%     \cs{braket} "<"\meta{subformula_1} "|" \meta{subformula_2} ^^A
+%    {\color{gray}["|" \meta{subformula_3} \dots"]"} ">"
 %   \end{quote}
 %    \begin{macrocode}
 \begingroup
@@ -1760,7 +1765,8 @@ Math ($\d x$) v.s.\ Text (\d x)
 % \end{macro}
 % \begin{macro}{\ketbra}
 %   \begin{quote}
-%     \cs{braket} \char`\|\ \meta{subformula 1} \char`\>\ \meta{subformula 2} \char`\<\ \meta{subformula 3} \char`\|
+%     \cs{braket} "|"\meta{subformula_1}">" \meta{subformula_2} ^^A
+%  "<"\meta{subformula_3}"|"
 %   \end{quote}
 %    \begin{macrocode}
 \begingroup
@@ -1926,7 +1932,8 @@ Math ($\d x$) v.s.\ Text (\d x)
 % \end{macro}
 % \begin{macro}{\braket}
 %   \begin{quote}
-%     \cs{ket} * [\meta{biggg}, $n \in \{1,2,3\}$] \marg{subformula 1} \dots \marg{subformula $n$}
+%     \cs{ket} * [\meta{biggg}, $n \in \{1,2,3\}$] \marg{subformula 1} \dots
+%     \marg{subformula $n$}
 %   \end{quote}
 %    \begin{macrocode}
 \DeclareDocumentCommand \braket { s O{} }
@@ -1952,7 +1959,8 @@ Math ($\d x$) v.s.\ Text (\d x)
 % \end{macro}
 % \begin{macro}[int]{\phx@bk@in@i, \phx@bk@in@ii, \phx@bk@in@iii}
 %   \begin{quote}
-%     \cs{phx@bk@in@\meta{n.roman}} \marg{subformula 1} \dots \marg{subformula $n$}
+%     \cs{phx@bk@in@\meta{n.roman}} \marg{subformula 1} \dots
+%     \marg{subformula $n$}
 %   \end{quote}
 %   \meta{n.roman} is $n$ in roman lowercase, where $n \in \{1,2,3\}$.
 %    \begin{macrocode}
@@ -2358,7 +2366,8 @@ Math ($\d x$) v.s.\ Text (\d x)
 %    \end{macrocode}
 % \begin{macro}[pTF]{\_@@_if_digits_only:n}
 %   \begin{quote}
-%     \cs{@@_if_digits_only:nTF} \marg{token list} \marg{true code} \marg{flase code}
+%     \cs{@@_if_digits_only:nTF} \marg{token list} ^^A
+%     \marg{true code} \marg{flase code}
 %   \end{quote}
 %   Use \LaTeX3 regular expression to tell if \meta{token list}
 %   (the numbers of rows or columns) contain digits only.
@@ -2619,10 +2628,11 @@ Math ($\d x$) v.s.\ Text (\d x)
 \RequirePackage{amstext}
 \def\phx@qtext@#1#2{#1\text{#2}\quad}
 \DeclareRobustCommand\qqtext{\@ifstar{\phx@qtext@{}}{\phx@qtext@\quad}}
-\DeclareRobustCommand\qq{\qqtext}
+\DeclareRobustCommand\qq    {\qqtext}
 \DeclareRobustCommand\qcomma{,\quad}
-\DeclareRobustCommand\qc{\qcomma}
-\DeclareRobustCommand\qcc{\@ifstar{\phx@qtext@{}{c.c}}{\phx@qtext@\quad{c.c}}}
+\DeclareRobustCommand\qc    {\qcomma}
+\DeclareRobustCommand\qcc
+  {\@ifstar{\phx@qtext@{}{c.c}}{\phx@qtext@\quad{c.c}}}
 \clist_map_inline:nn
   {
     if,       then,   else,   otherwise,  unless,
