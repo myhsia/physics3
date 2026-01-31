@@ -102,11 +102,10 @@ The Current Maintainer of this work is **Mingyu Xia**.
 \documentclass[11pt, letterpaper, cs-break = true]{l3doc}
 \usepackage[osf, mono = false]{libertine}
 \usepackage{mathtools, fixdif, derivative, xcolor}
-\usepackage[warnings-off={mathtools-colon, mathtools-overbracket}]{unicode-math}
 \usepackage{physics3}
 \usephxmodu{ab, ab.braket, diagmat, doubleprod, operator, xmat}
 \usephxmodu{ab.legacy, qtext.legacy}
-\setcounter{tocdepth}{2}
+\setcounter{tocdepth}{1}
 \ExplSyntaxOn \makeatletter
 \newcommand \mail[1]{\href{mailto:#1}{\ttfamily #1}}
 \DeclareDocumentCommand \key { s m }
@@ -207,16 +206,13 @@ The Current Maintainer of this work is **Mingyu Xia**.
 % \begin{abstract}
 % This is the document for \pkg{physics3} package, which defines commands for
 % typesetting math formulae faster and more simply. \pkg{physics3} is a
-% modularized package, each module provides its own function.
-%
-% If you are a user of the legacy \pkg{physics} package, you can click
-% \hyperref[sec:physics-legacy]{here} to see the section for \pkg{physics} users
-% before you start. If you never used \pkg{physics} package before, just read
-% \emph{this} documentation.
+% modularized package, each module provides its own function.\footnote{^^A
+%   If you are a user of the legacy \pkg{physics} package, see
+%   Section~\ref{sec:physics-legacy} before you start.}
 % \end{abstract}
 %
 % \tableofcontents
-% 
+%
 % \clearpage
 %
 % \section{Introduction}
@@ -670,7 +666,7 @@ $ A \doublecross B \doubledot C $
 % \subsection{The \modu{diagmat} module --- simple diagonal matrices}
 %
 % This module requires the \pkg{mathtools} package and provides six
-% \cs{*diagmat} commands:
+% \cs[no-index]{*diagmat} commands:
 % \begin{function}
 %   {\diagmat, \pdiagmat, \bdiagmat, \Bdiagmat, \vdiagmat, \Vdiagmat}
 % \begin{syntax}
@@ -680,7 +676,7 @@ $ A \doublecross B \doubledot C $
 % be separated by commas.
 % Prefixes like "p", "b", "V" have the same meanings as "pmatrix", "bmatrix" and
 % "Vmatrix" in the \pkg{mathtools} package, a star ("*") follows the
-% \cs{*diagmat} commands correspond to "*smallmatrix" in the
+% \cs[no-index]{*diagmat} commands correspond to "*smallmatrix" in the
 % \pkg{mathtools} package.
 % \end{function}
 % \begin{keyval}
@@ -711,7 +707,7 @@ $ \bdiagmat* {1, -1, -1, -1} $
 % \subsection{The \modu{xmat} module --- matrices with formatted entries}
 %
 % This module requires the \pkg{mathtools} package and provides six
-% \cs{*xmat} commands:
+% \cs[no-index]{*xmat} commands:
 % \begin{function}{\xmat, \pxmat, \bxmat, \Bxmat, \vxmat, \Vxmat}
 % \begin{syntax}
 %   \cs{\meta{delimeter type}xmat}\meta{*} \oarg{options} \marg{entry}^^A
@@ -719,7 +715,7 @@ $ \bdiagmat* {1, -1, -1, -1} $
 % \end{syntax}
 % Prefixes like "p", "b", "V" have the same meanings as "pmatrix", "bmatrix" and
 % "Vmatrix" in the \pkg{mathtools} package, a star ("*") follows the
-% \cs{*xmat} commands correspond to "*smallmatrix" in the
+% \cs[no-index]{*xmat} commands correspond to "*smallmatrix" in the
 % \pkg{mathtools} package.
 % For example,
 % \iffalse
@@ -918,7 +914,8 @@ $ F \qif G \qthen H $
 % \modu{qtext.legacy} module, but I don't recommend using this module unless
 % you are maintaining a document written with \pkg{physics}'s \cs{q}\meta{foo}
 % commands.
-% \clearpage
+%
+% \clearpage \appendix
 %
 % \section{For the legacy \pkg{physics} users}\label{sec:physics-legacy}
 %
@@ -1072,8 +1069,7 @@ $ F \qif G \qthen H $
 % \href{https://github.com/latex3/latex2e/issues/1991\#issuecomment-3822731957}
 %   {Issue~\ttfamily\#1991} in the \LaTeXe\ repository
 % \href{https://github.com/latex3/latex2e}{on GitHub}, this bug will be
-% resolved someday.}. For example, "$\symbf{0}$" yields $\symbf{0}$, and
-% "$\symbfit{A}$" yields $\symbfit{A}$.
+% resolved someday.}.
 %
 % The \cs{vdot} and \cs{cross} commands are not supported in any module
 % of \pkg{physics3}. Actually, there is no need to use a bold ``$\cdot$''
@@ -1177,7 +1173,7 @@ Math ($\d x$) v.s.\ Text (\d x)
 % \cs{pxmat}, \cs{bxmat}, \cs{Bxmat}, \cs{vxmat} and \cs{Vxmat} are
 % also available.
 % \end{documentation}
-% \clearpage \appendix \addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
+% \clearpage
 % \begin{implementation}
 % \section{Code Implementation}
 % \subsection{The \pkg{physics3} package}
