@@ -1,0 +1,18 @@
+\documentclass{article} 
+\input regression-test.tex
+\usepackage{physics3}
+\usephxmodu{ab.braket}
+
+\begin{document}
+
+\START \showoutput
+
+% \TEST{Basic use of \string \expval}
+  {
+    $ \expval[Big, {\downarrow,\uparrow}]{a} $,\quad
+    $ \expval[{\downarrow,\uparrow}]{a}      $,\quad
+    $ \expval[Bigg]{a}                       $
+  }
+\END
+
+\end{document}
