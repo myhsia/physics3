@@ -636,7 +636,7 @@ $ \expval*[Big, \psi]\0 $
 % \fi
 %
 % \subsection{The \modu{doubleprod} module --- tensors' double product operator}
-% 
+%
 % This module provides the \cs{doublecross} and \cs{doubledot} commands,
 % which are regarded as binary operators by \TeX.
 % Take an example of this module:
@@ -1380,9 +1380,51 @@ Math ($\d x$) v.s.\ Text (\d x)
 \tl_new:N \l_@@_tmpb_tl
 %    \end{macrocode}
 % \end{variable}
-% The function that can gobble one token.
+% \begin{macro}[int]
+%   {
+%     \phx@del*,
+%     \phx@del\big,
+%     \phx@del\Big,
+%     \phx@del\bigg,
+%     \phx@del\Bigg,
+%     \phx@del\biggg,
+%     \phx@del\Biggg
+%   }
+%   The syntax seems not important. These following lines seems only
+%   for \cs{ifcsname} to judge if the commands are defined.
 %    \begin{macrocode}
-\cs_new:Npn \_@@_gobble_i:n #1 { }
+\def\phx@del#1#2#3{\phx@abopen#1#3\phx@abclose#2}
+\expandafter\def\csname phx@del\string*\endcsname
+  #1#2#3{\mathopen#1#3\mathclose#2}
+\expandafter\def\csname phx@del\string\big\endcsname
+  #1#2#3{\bigl#1#3\bigr#2}
+\expandafter\def\csname phx@del\string\Big\endcsname
+  #1#2#3{\Bigl#1#3\Bigr#2}
+\expandafter\def\csname phx@del\string\bigg\endcsname
+  #1#2#3{\biggl#1#3\biggr#2}
+\expandafter\def\csname phx@del\string\Bigg\endcsname
+  #1#2#3{\Biggl#1#3\Biggr#2}
+\expandafter\def\csname phx@del\string\biggg\endcsname
+  #1#2#3{\bigggl#1#3\bigggr#2}
+\expandafter\def\csname phx@del\string\Biggg\endcsname
+  #1#2#3{\Bigggl#1#3\Bigggr#2}
+%    \end{macrocode}
+% \end{macro}
+% Parsing the clist in optional argument.
+%    \begin{macrocode}
+\def\@phx@ev@do@pt#1,{\ifx#1\relax\@empty\else
+  \edef\reserved@a{\zap@space#1~\@empty}%
+  \ifx\reserved@a\@empty\else
+    \ifcsname phx@del\expandafter \string \expandafter
+      \csname \expandafter \detokenize{\reserved@a}\endcsname \endcsname
+      \xdef\@phx@ev{\reserved@a}%
+    \else
+      \xdef\@phx@ev@basis{\reserved@a}%
+    \fi
+  \fi
+  \expandafter\@phx@ev@do@pt\fi}
+\def\phx@ev@doopt#1{%
+  \edef\@phx@ev{\@empty}\edef\@phx@ev@basis{\@empty}\@phx@ev@do@pt#1,\relax,}
 %    \end{macrocode}
 %    \begin{macrocode}
 \file_input_stop:
@@ -1395,7 +1437,7 @@ Math ($\d x$) v.s.\ Text (\d x)
 %<@@=>
 %    \end{macrocode}
 % \subsection{The \modu{ab} module}
-% \begingroup\color{gray}%
+% \begingroup\color{gray}^^A
 % \noindent$\langle*\hbox{\sffamily gibberish}\rangle$\par
 % This module is important but the code is hard to read. One of the motivations
 % I manage \pkg{physics3} with \pkg{DocStrip} is that, when I tried to write a
@@ -1586,27 +1628,6 @@ Math ($\d x$) v.s.\ Text (\d x)
   {\mathopen#1\Vert#2\mathclose#1\Vert\endgroup}
 \phx@AB@gen{mb}\langle{mr\langle\rangle}%
   {\mathopen#1\langle#2\mathclose#1\rangle\endgroup}
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}[int]{\phx@del}
-%   The syntax seems not important. These following lines seems only
-%   for \cs{ifcsname} to judge if the commands are defined.
-%    \begin{macrocode}
-\def\phx@del#1#2#3{\phx@abopen#1#3\phx@abclose#2}
-\expandafter\def\csname phx@del\string*\endcsname
-  #1#2#3{\mathopen#1#3\mathclose#2}
-\expandafter\def\csname phx@del\string\big\endcsname
-  #1#2#3{\bigl#1#3\bigr#2}
-\expandafter\def\csname phx@del\string\Big\endcsname
-  #1#2#3{\Bigl#1#3\Bigr#2}
-\expandafter\def\csname phx@del\string\bigg\endcsname
-  #1#2#3{\biggl#1#3\biggr#2}
-\expandafter\def\csname phx@del\string\Bigg\endcsname
-  #1#2#3{\Biggl#1#3\Biggr#2}
-\expandafter\def\csname phx@del\string\biggg\endcsname
-  #1#2#3{\bigggl#1#3\bigggr#2}
-\expandafter\def\csname phx@del\string\Biggg\endcsname
-  #1#2#3{\Bigggl#1#3\Bigggr#2}
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}[int]{\phx@d@lx}
@@ -1825,21 +1846,7 @@ Math ($\d x$) v.s.\ Text (\d x)
       }%
   }
 %    \end{macrocode}
-% Parsing the optional argument of \cs{expval}.
 %    \begin{macrocode}
-\def\@phx@ev@do@pt#1,{\ifx#1\relax\@empty\else
-  \edef\reserved@a{\zap@space#1 \@empty}%
-  \ifx\reserved@a\@empty\else
-    \ifcsname phx@del\expandafter \string \expandafter
-      \csname \expandafter \detokenize{\reserved@a}\endcsname \endcsname
-      \xdef\@phx@ev{\reserved@a}%
-    \else
-      \xdef\@phx@ev@basis{\reserved@a}%
-    \fi
-  \fi
-  \expandafter\@phx@ev@do@pt\fi}
-\def\phx@ev@doopt#1{%
-  \edef\@phx@ev{\@empty}\edef\@phx@ev@basis{\@empty}\@phx@ev@do@pt#1,\relax,}
 \DeclareDocumentCommand \expval { s o m }
   {%
     \phx@ev@doopt{#2}%
@@ -2077,19 +2084,6 @@ Math ($\d x$) v.s.\ Text (\d x)
           \endgroup}%
       }%
   }
-\def\@phx@ev@do@pt#1,{\ifx#1\relax\@empty\else
-  \edef\reserved@a{\zap@space#1 \@empty}%
-  \ifx\reserved@a\@empty\else
-    \ifcsname phx@del\expandafter \string \expandafter
-      \csname \expandafter \detokenize{\reserved@a}\endcsname \endcsname
-      \xdef\@phx@ev{\reserved@a}%
-    \else
-      \xdef\@phx@ev@basis{\reserved@a}%
-    \fi
-  \fi
-  \expandafter\@phx@ev@do@pt\fi}
-\def\phx@ev@doopt#1{%
-  \edef\@phx@ev{\@empty}\edef\@phx@ev@basis{\@empty}\@phx@ev@do@pt#1,\relax,}
 \DeclareDocumentCommand \expval { s O{} m }
   {
     \phx@ev@doopt{#2}%
