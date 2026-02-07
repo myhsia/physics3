@@ -10,7 +10,7 @@
 --]==========================================]--
 
 module              = "physics3"
-version             = "v0.1B"
+version             = "v0.2A"
 date                = "2026-02-07"
 maintainer          = "Mingyu Xia"
 uploader            = "Mingyu Xia"
