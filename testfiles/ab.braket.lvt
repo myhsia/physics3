@@ -3,11 +3,11 @@
 \usepackage{physics3}
 \usephxmodu{ab.braket}
 
-\AUTHOR{Mingyu Xia}
-
 \begin{document}
 
 \START
+
+\loggingoutput
 
 \TEST {Basic use of \string \expval}
   {

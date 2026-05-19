@@ -25,6 +25,7 @@ description         = "The physics3 package defines commands for typesetting mat
          Do not Modify Unless Necessary
 --]==========================================]--
 
+checkengines        = {"pdftex", "xetex", "uptex"}
 ctanzip             = module
 cleanfiles          = {"*.log", "*.pdf", "*.zip", "*.curlopt"}
 excludefiles        = {"*~"}
